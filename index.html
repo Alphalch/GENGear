@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISO-CAD Gear Studio v2 | Parametric Assembly, Bevel, Rack & STL Generator</title>
+    <title>ISO-CAD Gear Studio v3 | Parametric Assembly, Worm, Bevel, Rack & STL Generator</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js Core & OrbitControls -->
@@ -102,12 +102,12 @@
             <div>
                 <div class="flex items-center space-x-2">
                     <h1 class="font-bold text-sm md:text-base tracking-tight text-white">ISO-CAD Gear Studio</h1>
-                    <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-semibold">v2.0 Assembly & Kinematics</span>
+                    <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/40 font-semibold">v3.0 Worm, Bevel & Kinematics</span>
                     <span id="headerHealthBadge" class="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>ISO Mesh Valid
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 hidden md:block">Spur, Helical, Herringbone, Ring, Conical Bevel & Rack-Pinion Meshing + Watertight .STL</p>
+                <p class="text-[11px] text-slate-400 hidden md:block">Spur, Helical, Herringbone, Bevel, Rack-Pinion, Ring & ISO 3975 Worm Drives + Watertight .STL</p>
             </div>
         </div>
 
@@ -117,15 +117,16 @@
             <div class="hidden xl:flex items-center space-x-1 bg-slate-800/90 p-1 rounded-lg border border-slate-700/70 text-[11px]">
                 <span class="px-1.5 text-slate-400 font-medium">Load Pair:</span>
                 <button onclick="applyPreset('spurPair')" class="px-2 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Spur 1:2</button>
-                <button onclick="applyPreset('helicalPair')" class="px-2 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Helical Pair</button>
+                <button onclick="applyPreset('helicalPair')" class="px-2 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Helical</button>
                 <button onclick="applyPreset('bevel90')" class="px-2 py-1 rounded hover:bg-slate-700 text-amber-300 transition font-medium">90° Bevel</button>
                 <button onclick="applyPreset('rackPinion')" class="px-2 py-1 rounded hover:bg-slate-700 text-emerald-300 transition font-medium">Rack & Pinion</button>
-                <button onclick="applyPreset('planetary')" class="px-2 py-1 rounded hover:bg-slate-700 text-purple-300 transition">Internal Ring</button>
+                <button onclick="applyPreset('wormDrive')" class="px-2 py-1 rounded hover:bg-slate-700 text-cyan-300 transition font-medium">Worm 1:30</button>
+                <button onclick="applyPreset('planetary')" class="px-2 py-1 rounded hover:bg-slate-700 text-purple-300 transition">Ring Pair</button>
             </div>
 
             <select id="exportTarget" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 font-medium focus:outline-none focus:border-sky-500">
-                <option value="A">Export Gear A (.STL)</option>
-                <option value="B">Export Gear B / Rack (.STL)</option>
+                <option value="A">Export Gear / Worm A (.STL)</option>
+                <option value="B">Export Gear B / Rack / Wheel (.STL)</option>
                 <option value="both">Export Assembly Pair (.STL)</option>
             </select>
 
@@ -156,30 +157,34 @@
                         <span class="text-[11px] font-semibold text-sky-400">Dual-Gear Assembly (A+B)</span>
                     </label>
                 </div>
-                <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5" id="archButtons">
-                    <button data-arch="spur" onclick="setArchitecture('spur')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                <div class="grid grid-cols-4 sm:grid-cols-7 gap-1" id="archButtons">
+                    <button data-arch="spur" onclick="setArchitecture('spur')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="cog" class="w-4 h-4 mb-0.5"></i>
                         <span>Spur</span>
                     </button>
-                    <button data-arch="helical" onclick="setArchitecture('helical')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                    <button data-arch="helical" onclick="setArchitecture('helical')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="wind" class="w-4 h-4 mb-0.5"></i>
                         <span>Helical</span>
                     </button>
-                    <button data-arch="herringbone" onclick="setArchitecture('herringbone')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                    <button data-arch="herringbone" onclick="setArchitecture('herringbone')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="chevrons-up" class="w-4 h-4 mb-0.5"></i>
-                        <span>Herringbone</span>
+                        <span>Herring</span>
                     </button>
-                    <button data-arch="bevel" onclick="setArchitecture('bevel')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                    <button data-arch="bevel" onclick="setArchitecture('bevel')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="triangle" class="w-4 h-4 mb-0.5"></i>
                         <span>Bevel</span>
                     </button>
-                    <button data-arch="rack" onclick="setArchitecture('rack')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                    <button data-arch="rack" onclick="setArchitecture('rack')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="move-horizontal" class="w-4 h-4 mb-0.5"></i>
-                        <span>Rack&Pinion</span>
+                        <span>Rack</span>
                     </button>
-                    <button data-arch="internal" onclick="setArchitecture('internal')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-medium transition">
+                    <button data-arch="internal" onclick="setArchitecture('internal')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
                         <i data-lucide="circle-dot" class="w-4 h-4 mb-0.5"></i>
-                        <span>Ring Pair</span>
+                        <span>Ring</span>
+                    </button>
+                    <button data-arch="worm" onclick="setArchitecture('worm')" class="arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-medium transition">
+                        <i data-lucide="disc" class="w-4 h-4 mb-0.5"></i>
+                        <span>Worm</span>
                     </button>
                 </div>
             </div>
@@ -192,7 +197,7 @@
                 </button>
                 <button onclick="switchSidebarTab('gearA')" id="tabBtn_gearA" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-sky-400"></span>
-                    <span>Pinion A</span>
+                    <span id="tabLabelGearA">Pinion A</span>
                 </button>
                 <button onclick="switchSidebarTab('gearB')" id="tabBtn_gearB" class="py-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-orange-400"></span>
@@ -252,10 +257,10 @@
                         <div class="grid grid-cols-2 gap-3 pt-2 border-t border-slate-700/50">
                             <div class="bg-slate-900/70 p-2.5 rounded-lg border border-sky-500/30">
                                 <div class="flex justify-between text-[11px] mb-1">
-                                    <span class="text-sky-400 font-semibold">Pinion A Teeth (z<sub>A</sub>)</span>
+                                    <span id="lbl_title_zA" class="text-sky-400 font-semibold">Pinion A Teeth (z<sub>A</sub>)</span>
                                     <span id="lbl_zA" class="font-mono font-bold text-white">18</span>
                                 </div>
-                                <input type="range" id="rng_quick_zA" min="6" max="80" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
+                                <input type="range" id="rng_quick_zA" min="1" max="80" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
                             </div>
                             <div class="bg-slate-900/70 p-2.5 rounded-lg border border-orange-500/30">
                                 <div class="flex justify-between text-[11px] mb-1">
@@ -263,6 +268,31 @@
                                     <span id="lbl_zB" class="font-mono font-bold text-white">36</span>
                                 </div>
                                 <input type="range" id="rng_quick_zB" min="6" max="120" step="1" value="36" oninput="updateTeeth('B', this.value)" class="w-full slider-orange">
+                            </div>
+                        </div>
+
+                        <!-- Worm Telemetry Banner (Only visible in Worm Architecture) -->
+                        <div id="wormTelemetryCard" class="hidden p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30 space-y-1.5">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="text-cyan-300 font-semibold flex items-center gap-1">
+                                    <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
+                                    DIN 3975 Worm Kinematics
+                                </span>
+                                <span id="wormLockBadge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40">Self-Locking</span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 text-[11px] font-mono pt-1">
+                                <div class="bg-slate-900/80 px-2 py-1 rounded border border-slate-800">
+                                    <div class="text-[9px] text-slate-400">Lead Angle γ</div>
+                                    <div id="wormReadGamma" class="text-cyan-300 font-bold">5.71°</div>
+                                </div>
+                                <div class="bg-slate-900/80 px-2 py-1 rounded border border-slate-800">
+                                    <div class="text-[9px] text-slate-400">Diameter Quot q</div>
+                                    <div id="wormReadQ" class="text-sky-300 font-bold">10.0</div>
+                                </div>
+                                <div class="bg-slate-900/80 px-2 py-1 rounded border border-slate-800">
+                                    <div class="text-[9px] text-slate-400">Est. Efficiency η</div>
+                                    <div id="wormReadEff" class="text-emerald-300 font-bold">70.2%</div>
+                                </div>
                             </div>
                         </div>
 
@@ -348,7 +378,7 @@
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <div class="flex justify-between text-[11px] mb-1">
-                                    <span class="text-slate-400">Pinion Speed (RPM)</span>
+                                    <span class="text-slate-400">Pinion A Speed</span>
                                     <span id="lbl_rpm" class="font-mono text-emerald-300">18 RPM</span>
                                 </div>
                                 <input type="range" id="rng_rpm" min="0" max="60" step="1" value="18" oninput="updateRPM(this.value)" class="w-full">
@@ -362,33 +392,60 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-3 gap-1.5 pt-1">
-                            <button onclick="setMeshQuality('draft')" id="qual_draft" class="py-1 rounded border border-slate-700 text-[11px] font-medium text-slate-400 hover:text-white">Fast Draft</button>
-                            <button onclick="setMeshQuality('high')" id="qual_high" class="py-1 rounded border border-sky-500/40 bg-sky-500/20 text-[11px] font-medium text-sky-300">High CAD</button>
-                            <button onclick="setMeshQuality('ultra')" id="qual_ultra" class="py-1 rounded border border-slate-700 text-[11px] font-medium text-slate-400 hover:text-white">Ultra Print</button>
+                        <!-- STL Tessellation Density -->
+                        <div class="pt-2 border-t border-slate-700/50">
+                            <span class="block text-[11px] text-slate-400 mb-1.5">STL Involute Flank Resolution</span>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button onclick="setMeshQuality('draft')" id="qual_draft" class="py-1 rounded border border-slate-700 text-[11px] font-medium text-slate-400 hover:text-white">Draft</button>
+                                <button onclick="setMeshQuality('high')" id="qual_high" class="py-1 rounded border border-sky-500/40 bg-sky-500/20 text-[11px] font-medium text-sky-300">High CAD</button>
+                                <button onclick="setMeshQuality('ultra')" id="qual_ultra" class="py-1 rounded border border-slate-700 text-[11px] font-medium text-slate-400 hover:text-white">Ultra STL</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB 2: GEAR A (DRIVER PINION) PARAMETERS -->
+                <!-- TAB 2: GEAR A (DRIVER PINION / WORM SCREW) PARAMETERS -->
                 <div id="panel_gearA" class="hidden space-y-4">
                     <div class="bg-slate-800/40 border border-sky-500/30 rounded-xl p-3.5 space-y-3.5">
                         <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Driver Pinion A Geometry</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-400" id="headerGearA">Driver Pinion A Geometry</span>
                             <span class="text-[11px] font-mono text-slate-400" id="badgeGearA">Spur Pinion</span>
                         </div>
 
-                        <!-- Teeth z_A -->
+                        <!-- Teeth z_A or Worm Starts z_1 -->
                         <div>
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-slate-300 font-medium">Number of Teeth (<span class="font-mono text-sky-400">z<sub>A</sub></span>)</label>
-                                <input type="number" id="num_zA" min="6" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
+                                <label class="text-slate-300 font-medium" id="lbl_param_zA">Number of Teeth (<span class="font-mono text-sky-400">z<sub>A</sub></span>)</label>
+                                <input type="number" id="num_zA" min="1" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
                             </div>
-                            <input type="range" id="rng_zA" min="6" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
+                            <input type="range" id="rng_zA" min="1" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
+                        </div>
+
+                        <!-- Worm Specific Controls (Quotient q and Worm Axial Length L_1) -->
+                        <div id="wormSpecificBoxA" class="hidden space-y-3 pt-2 border-t border-slate-700/50">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <label class="text-slate-300 font-medium flex items-center gap-1">
+                                        Diameter Quotient (<span class="font-mono text-sky-400">q = d<sub>m1</sub>/m</span>)
+                                        <button onclick="setGearParam('A', 'wormQuotient', 10)" class="text-[10px] bg-slate-700 px-1.5 rounded text-slate-300">ISO 10</button>
+                                    </label>
+                                    <input type="number" id="num_wormQ" min="6" max="18" step="0.5" value="10" oninput="setGearParam('A', 'wormQuotient', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
+                                </div>
+                                <input type="range" id="rng_wormQ" min="6" max="18" step="0.5" value="10" oninput="setGearParam('A', 'wormQuotient', this.value)" class="w-full">
+                                <p class="text-[10px] text-slate-400 mt-0.5">Controls worm pitch diameter d<sub>m1</sub> = q·m and lead angle γ = arctan(z<sub>1</sub>/q).</p>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <label class="text-slate-300 font-medium">Worm Screw Length (<span class="font-mono text-sky-400">b<sub>1</sub></span> mm)</label>
+                                    <input type="number" id="num_wormLen" min="15" max="100" step="1" value="42" oninput="setGearParam('A', 'wormLength', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
+                                </div>
+                                <input type="range" id="rng_wormLen" min="15" max="100" step="1" value="42" oninput="setGearParam('A', 'wormLength', this.value)" class="w-full">
+                            </div>
                         </div>
 
                         <!-- Profile Shift x_A -->
-                        <div>
+                        <div id="box_xA">
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-slate-300 font-medium flex items-center gap-1">
                                     Profile Shift Coeff (<span class="font-mono text-sky-400">x<sub>A</sub></span>)
@@ -399,9 +456,9 @@
                             <input type="range" id="rng_xA" min="-0.5" max="0.6" step="0.01" value="0.0" oninput="setGearParam('A', 'profileShift', this.value)" class="w-full">
                         </div>
 
-                        <!-- Helix Angle & Handedness for Gear A -->
+                        <!-- Helix Angle & Handedness for Gear A / Worm A -->
                         <div id="helixBoxA" class="space-y-3 pt-2 border-t border-slate-700/50">
-                            <div>
+                            <div id="helixAngleSliderBoxA">
                                 <div class="flex justify-between text-xs mb-1">
                                     <label class="text-slate-300 font-medium">Helix Angle (<span class="font-mono text-sky-400">β<sub>A</sub></span> deg)</label>
                                     <input type="number" id="num_betaA" min="0" max="45" step="1" value="20" oninput="setGearParam('A', 'helixAngle', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
@@ -409,7 +466,7 @@
                                 <input type="range" id="rng_betaA" min="0" max="45" step="1" value="20" oninput="setGearParam('A', 'helixAngle', this.value)" class="w-full">
                             </div>
                             <div class="flex items-center justify-between text-xs">
-                                <span class="text-slate-300">Helix Hand (Pinion A)</span>
+                                <span class="text-slate-300" id="lbl_handA">Helix / Thread Hand (A)</span>
                                 <div class="inline-flex rounded-lg bg-slate-900 p-0.5 border border-slate-700">
                                     <button id="btnHandA_R" onclick="setGearParam('A', 'hand', 1)" class="px-2.5 py-1 rounded text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30">Right (RH)</button>
                                     <button id="btnHandA_L" onclick="setGearParam('A', 'hand', -1)" class="px-2.5 py-1 rounded text-xs font-medium text-slate-400">Left (LH)</button>
@@ -499,19 +556,23 @@
 
                         <!-- Helix Angle & Handedness for Gear B -->
                         <div id="helixBoxB" class="space-y-3 pt-2 border-t border-slate-700/50">
-                            <div>
+                            <div id="helixAngleSliderBoxB">
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-slate-300 font-medium">Helix Angle (<span class="font-mono text-orange-400">β<sub>B</sub></span> deg)</label>
-                                    <input type="number" id="num_betaB" min="0" max="45" step="1" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-orange-300">
+                                    <label class="text-slate-300 font-medium" id="lbl_betaB">Helix Angle (<span class="font-mono text-orange-400">β<sub>B</sub></span> deg)</label>
+                                    <input type="number" id="num_betaB" min="0" max="45" step="0.5" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-orange-300">
                                 </div>
-                                <input type="range" id="rng_betaB" min="0" max="45" step="1" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-full slider-orange">
+                                <input type="range" id="rng_betaB" min="0" max="45" step="0.5" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-full slider-orange">
                             </div>
                             <div class="flex items-center justify-between text-xs">
-                                <span class="text-slate-300">Helix Hand (Gear B)</span>
+                                <span class="text-slate-300">Helix / Wheel Hand (Gear B)</span>
                                 <div class="inline-flex rounded-lg bg-slate-900 p-0.5 border border-slate-700">
                                     <button id="btnHandB_R" onclick="setGearParam('B', 'hand', 1)" class="px-2.5 py-1 rounded text-xs font-medium text-slate-400">Right (RH)</button>
                                     <button id="btnHandB_L" onclick="setGearParam('B', 'hand', -1)" class="px-2.5 py-1 rounded text-xs font-medium bg-orange-500/20 text-orange-300 border border-orange-500/30">Left (LH)</button>
                                 </div>
+                            </div>
+                            <div id="wormWheelSyncNote" class="hidden flex items-center justify-between bg-slate-900/80 px-2.5 py-1.5 rounded border border-slate-700/70 text-[10px]">
+                                <span class="text-slate-400">90° Crossed-Axis Law: β<sub>2</sub> = γ<sub>1</sub> & Same Hand</span>
+                                <button onclick="syncWormWheelHelix()" class="text-sky-400 hover:underline font-mono font-semibold">Sync to Worm</button>
                             </div>
                         </div>
 
@@ -655,7 +716,7 @@
                         <div id="read_ratio" class="text-xs sm:text-sm font-mono font-bold text-white">1 : 2.00</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
-                        <div class="text-[10px] text-slate-400 uppercase">Center Dist (a')</div>
+                        <div class="text-[10px] text-slate-400 uppercase">Center Dist (a)</div>
                         <div id="read_centerDist" class="text-xs sm:text-sm font-mono font-bold text-sky-400">67.50 mm</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
@@ -663,7 +724,7 @@
                         <div id="read_pitchAB" class="text-xs sm:text-sm font-mono font-semibold text-slate-200">45.0 / 90.0</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
-                        <div class="text-[10px] text-slate-400 uppercase">Outside Ø A / B</div>
+                        <div class="text-[10px] text-slate-400 uppercase">Tip Ø A / B</div>
                         <div id="read_outerAB" class="text-xs sm:text-sm font-mono font-semibold text-slate-200">50.0 / 95.0</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
@@ -671,15 +732,15 @@
                         <div id="read_epsAlpha" class="text-xs sm:text-sm font-mono font-bold text-emerald-400">1.62</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
-                        <div class="text-[10px] text-slate-400 uppercase">Overlap Ratio (ε<sub>β</sub>)</div>
+                        <div class="text-[10px] text-slate-400 uppercase" id="lbl_metric_epsBeta">Overlap Ratio (ε<sub>β</sub>)</div>
                         <div id="read_epsBeta" class="text-xs sm:text-sm font-mono font-semibold text-purple-300">0.00</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
-                        <div class="text-[10px] text-slate-400 uppercase">Pitch Line Vel</div>
+                        <div class="text-[10px] text-slate-400 uppercase" id="lbl_metric_vel">Pitch Line Vel</div>
                         <div id="read_pitchVel" class="text-xs sm:text-sm font-mono font-semibold text-amber-300">42.4 mm/s</div>
                     </div>
                     <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-2.5 py-1.5">
-                        <div class="text-[10px] text-slate-400 uppercase">Hunting GCD</div>
+                        <div class="text-[10px] text-slate-400 uppercase" id="lbl_metric_gcd">Hunting GCD</div>
                         <div id="read_gcd" class="text-xs sm:text-sm font-mono font-semibold text-slate-300">GCD = 18</div>
                     </div>
                 </div>
@@ -688,14 +749,14 @@
     </div>
 
     <!-- ============================================================================ -->
-    <!-- CORE APPLICATION SCRIPT: ISO INVOLUTE CAD, BEVEL, RACK & DIAGNOSTICS ENGINE  -->
+    <!-- CORE APPLICATION SCRIPT: ISO INVOLUTE CAD, WORM, BEVEL, RACK & DIAGNOSTICS  -->
     <!-- ============================================================================ -->
     <script>
         // 1. STATE DEFINITION
         const state = {
-            architecture: 'spur',       // 'spur' | 'helical' | 'herringbone' | 'bevel' | 'rack' | 'internal'
+            architecture: 'spur',       // 'spur' | 'helical' | 'herringbone' | 'bevel' | 'rack' | 'internal' | 'worm'
             assemblyMode: true,         // true = Gear A + Gear B pair, false = Single Gear A
-            module: 2.5,                // Shared normal module m_n (mm)
+            module: 2.5,                // Shared normal/axial module m (mm)
             pressureAngle: 20.0,        // Shared normal pressure angle alpha_n (deg)
             faceWidth: 14.0,            // Common axial width b (mm)
             shaftAngle: 90.0,           // Bevel shaft angle Sigma (deg)
@@ -709,12 +770,14 @@
             isPlaying: true,
             rpm: 18,
             direction: 1,
-            simAngleA: 0,               // Current rotation angle of Pinion A (radians)
+            simAngleA: 0,               // Current rotation angle of Pinion/Worm A (radians)
             meshPhaseDeg: 0,            // User fine-tune phase offset (deg)
 
-            // Gear A (Driver Pinion)
+            // Gear A (Driver Pinion or Cylindrical Worm Screw)
             gearA: {
-                teeth: 18,
+                teeth: 18,              // Teeth z_A (or Worm Starts z_1 = 1..6 in worm mode)
+                wormQuotient: 10.0,     // Worm diameter factor q = d_m1 / m
+                wormLength: 42.0,       // Worm screw axial length b_1 (mm)
                 profileShift: 0.0,
                 helixAngle: 20.0,
                 hand: 1,                // 1 = RH, -1 = LH
@@ -724,7 +787,7 @@
                 keyDepth: 1.4
             },
 
-            // Gear B (Driven Gear / Linear Rack / Internal Ring)
+            // Gear B (Driven Gear / Linear Rack / Internal Ring / Worm Wheel)
             gearB: {
                 teeth: 36,
                 profileShift: 0.0,
@@ -849,38 +912,48 @@
 
             const zA = state.gearA.teeth;
             const zB = state.gearB.teeth;
-            const xA = state.gearA.profileShift;
+            const xA = arch === 'worm' ? 0 : state.gearA.profileShift;
             const xB = state.gearB.profileShift;
 
-            const isHelicalFamily = (arch === 'helical' || arch === 'herringbone');
-            const betaDegA = isHelicalFamily ? state.gearA.helixAngle : 0;
-            const betaDegB = isHelicalFamily ? state.gearB.helixAngle : 0;
-            const betaA = (betaDegA * Math.PI) / 180;
-            const betaB = (betaDegB * Math.PI) / 180;
+            // Worm-specific lead angle gamma = atan(z_1 / q)
+            const qWorm = state.gearA.wormQuotient || 10.0;
+            const wormLeadAngleRad = Math.atan(zA / qWorm);
+            const wormLeadAngleDeg = (wormLeadAngleRad * 180) / Math.PI;
+            // Friction coefficient mu ~ 0.05 for lubricated steel/bronze or polymer worm mesh
+            const muWorm = 0.05;
+            const phiFriction = Math.atan(muWorm / Math.cos(alphaA));
+            const wormEfficiency = Math.max(0.1, Math.min(0.96, Math.tan(wormLeadAngleRad) / Math.tan(wormLeadAngleRad + phiFriction)));
+            const isWormSelfLocking = wormLeadAngleDeg <= 6.0;
 
-            // Transverse module m_t = m_n / cos(beta)
-            const mtA = mA / Math.cos(betaA);
-            const mtB = mB / Math.cos(betaB);
+            const isHelicalFamily = (arch === 'helical' || arch === 'herringbone');
+            const betaDegA = isHelicalFamily ? state.gearA.helixAngle : (arch === 'worm' ? 90 - wormLeadAngleDeg : 0);
+            const betaDegB = isHelicalFamily ? state.gearB.helixAngle : (arch === 'worm' ? state.gearB.helixAngle : 0);
+            const betaA = ((isHelicalFamily ? state.gearA.helixAngle : 0) * Math.PI) / 180;
+            const betaB = ((isHelicalFamily ? state.gearB.helixAngle : 0) * Math.PI) / 180;
+
+            // Transverse module m_t = m_n / cos(beta) (for worm wheel, axial module of worm = transverse module of wheel)
+            const mtA = arch === 'worm' ? mA : mA / Math.cos(betaA);
+            const mtB = arch === 'worm' ? mB : mB / Math.cos(betaB);
 
             // Transverse pressure angle alpha_t = atan(tan(alpha_n) / cos(beta))
-            const alphaTA = Math.atan(Math.tan(alphaA) / Math.cos(betaA));
-            const alphaTB = Math.atan(Math.tan(alphaB) / Math.cos(betaB));
+            const alphaTA = arch === 'worm' ? alphaA : Math.atan(Math.tan(alphaA) / Math.cos(betaA));
+            const alphaTB = arch === 'worm' ? alphaB : Math.atan(Math.tan(alphaB) / Math.cos(betaB));
 
-            // Pitch radii
-            const rpA = (mtA * zA) / 2;
+            // Pitch radii: for worm A, r_pA = (q * m_A) / 2 per DIN 3975
+            const rpA = arch === 'worm' ? (qWorm * mA) / 2 : (mtA * zA) / 2;
             const rpB = (mtB * zB) / 2;
 
             // Base radii
             const rbA = rpA * Math.cos(alphaTA);
             const rbB = rpB * Math.cos(alphaTB);
 
-            // Addendum & Dedendum for A (External Pinion)
+            // Addendum & Dedendum for A (External Pinion or Worm Screw)
             const haA = mA * (1.0 + xA);
-            const hfA = mA * (1.25 - xA);
+            const hfA = mA * (arch === 'worm' ? 1.2 : (1.25 - xA));
             const raA = rpA + haA;
             const rfA = Math.max(1.2, rpA - hfA);
 
-            // Addendum & Dedendum for B (External, Internal Ring, or Rack)
+            // Addendum & Dedendum for B (External, Internal Ring, Rack, or Worm Wheel)
             let haB, hfB, raB, rfB;
             if (arch === 'internal') {
                 // Internal Ring Gear: tooth tips point inward
@@ -905,7 +978,6 @@
             }
 
             // Virtual Number of Teeth (z_v) for Undercut Calculation
-            // Helical: zv = z / cos^3(beta), Bevel: zv = z / cos(gamma)
             const zvA = arch === 'bevel'
                 ? zA / Math.max(0.2, Math.cos(gammaA))
                 : zA / Math.pow(Math.cos(betaA), 3);
@@ -928,14 +1000,16 @@
 
             const shiftOffset = arch === 'internal'
                 ? (xB - xA) * mA
-                : (arch === 'rack' ? xA * mA : (xA + xB) * mA);
+                : (arch === 'rack' ? xA * mA : (arch === 'worm' ? xB * mA : (xA + xB) * mA));
 
             const operatingCenterDist = standardCenterDist + shiftOffset + state.centerDistDelta;
 
             // Transverse Contact Ratio (epsilon_alpha)
             const pb = Math.PI * mtA * Math.cos(alphaTA);
             let pathOfContact = 0;
-            const termA = Math.sqrt(Math.max(0, raA * raA - rbA * rbA)) - rbA * Math.tan(alphaTA);
+            const termA = arch === 'worm'
+                ? (haA / Math.sin(alphaTA))
+                : (Math.sqrt(Math.max(0, raA * raA - rbA * rbA)) - rbA * Math.tan(alphaTA));
 
             if (arch === 'rack') {
                 const termRack = (haB - xA * mA) / Math.sin(alphaTA);
@@ -947,14 +1021,13 @@
                 const termB = Math.sqrt(Math.max(0, raB * raB - rbB * rbB)) - rbB * Math.tan(alphaTB);
                 pathOfContact = termA + termB;
             }
-            // Adjust for centerDistDelta
             pathOfContact -= state.centerDistDelta * Math.sin(alphaTA);
             const epsAlpha = Math.max(0, pathOfContact / pb);
 
-            // Axial Overlap Ratio (epsilon_beta) for Helical / Herringbone
+            // Axial Overlap Ratio (epsilon_beta) for Helical / Herringbone / Worm
             const epsBeta = isHelicalFamily
                 ? (state.faceWidth * Math.sin(betaA)) / (Math.PI * mA)
-                : 0;
+                : (arch === 'worm' ? (state.faceWidth * Math.sin(wormLeadAngleRad)) / (Math.PI * mA) : 0);
 
             return {
                 arch, mA, mB, mtA, mtB,
@@ -965,172 +1038,317 @@
                 gammaA, gammaB, coneDistR, sigmaRad,
                 zvA, zvB, xMinA, xMinB,
                 standardCenterDist, operatingCenterDist,
-                epsAlpha, epsBeta, pb, pathOfContact
+                epsAlpha, epsBeta, pb, pathOfContact,
+                qWorm, wormLeadAngleRad, wormLeadAngleDeg, wormEfficiency, isWormSelfLocking
             };
         }
 
         // ============================================================================
-        // 4. 2D INVOLUTE LOOP & BORE GENERATORS
+        // 4. 2D INVOLUTE TOOTH PROFILE & BORE EVALUATORS
         // ============================================================================
-        function generateGear2DLoop(params, quality) {
-            const { z, alphaT, rp, rb, ra, rf, sPitch, isInternal } = params;
-            const flankSamples = quality === 'ultra' ? 12 : (quality === 'high' ? 8 : 5);
-            const tipSamples   = quality === 'ultra' ? 4  : (quality === 'high' ? 3 : 2);
-            const rootSamples  = quality === 'ultra' ? 4  : (quality === 'high' ? 3 : 2);
+        function evaluateBoreAtAngle(theta, gearCfg, maxSafeBoreR) {
+            const rBore = Math.min(gearCfg.boreDia / 2, maxSafeBoreR);
+            const bType = gearCfg.boreType;
+            let a = ((theta % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+            if (a > Math.PI) a -= 2 * Math.PI;
 
-            const pitchAngle = (2 * Math.PI) / z;
-            const invAlpha0 = involute(alphaT);
-            const halfToothAnglePitch = sPitch / (2 * rp);
-            const thetaBaseHalf = halfToothAnglePitch + invAlpha0;
-
-            const points = [];
-
-            if (!isInternal) {
-                const rStartFlank = Math.max(rf, rb);
-                const halfFlank = [];
-
-                if (rf < rb) {
-                    const filletR = rf + 0.35 * (rb - rf);
-                    halfFlank.push({ r: rf, ang: thetaBaseHalf * 1.04 });
-                    halfFlank.push({ r: filletR, ang: thetaBaseHalf * 1.01 });
-                }
-
-                for (let i = 0; i <= flankSamples; i++) {
-                    const t = i / flankSamples;
-                    const r = rStartFlank + t * (ra - rStartFlank);
-                    const cosPhi = Math.min(1.0, rb / r);
-                    const phi = Math.acos(cosPhi);
-                    const invPhi = involute(phi);
-                    const ang = Math.max(0.002, thetaBaseHalf - invPhi);
-                    halfFlank.push({ r, ang });
-                }
-
-                const tipHalfAngle = halfFlank[halfFlank.length - 1].ang;
-                const rootHalfAngle = halfFlank[0].ang;
-
-                for (let tIdx = 0; tIdx < z; tIdx++) {
-                    const centerAngle = tIdx * pitchAngle;
-
-                    for (let i = 0; i < halfFlank.length; i++) {
-                        const pt = halfFlank[i];
-                        const a = centerAngle - pt.ang;
-                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
-                    }
-                    for (let i = 1; i < tipSamples; i++) {
-                        const frac = i / tipSamples;
-                        const a = centerAngle - tipHalfAngle + frac * (2 * tipHalfAngle);
-                        points.push({ x: ra * Math.cos(a), y: ra * Math.sin(a), r: ra, a });
-                    }
-                    for (let i = halfFlank.length - 1; i >= 0; i--) {
-                        const pt = halfFlank[i];
-                        const a = centerAngle + pt.ang;
-                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
-                    }
-
-                    const rootStart = centerAngle + rootHalfAngle;
-                    const rootEnd = (tIdx + 1) * pitchAngle - rootHalfAngle;
-                    for (let i = 1; i <= rootSamples; i++) {
-                        const frac = i / (rootSamples + 1);
-                        const a = rootStart + frac * (rootEnd - rootStart);
-                        points.push({ x: rf * Math.cos(a), y: rf * Math.sin(a), r: rf, a });
-                    }
-                }
-            } else {
-                // Internal Ring Gear Loop (Teeth point inward from rf down to ra)
-                const halfFlank = [];
-                for (let i = 0; i <= flankSamples; i++) {
-                    const t = i / flankSamples;
-                    const r = rf - t * (rf - ra);
-                    const rClamped = Math.max(r, rb);
-                    const cosPhi = Math.min(1.0, rb / rClamped);
-                    const phi = Math.acos(cosPhi);
-                    const invPhi = involute(phi);
-                    const ang = Math.max(0.002, (pitchAngle / 2 - thetaBaseHalf) + invPhi);
-                    halfFlank.push({ r, ang });
-                }
-
-                const tipHalfAngle = halfFlank[halfFlank.length - 1].ang;
-                const rootHalfAngle = halfFlank[0].ang;
-
-                for (let tIdx = 0; tIdx < z; tIdx++) {
-                    const centerAngle = tIdx * pitchAngle;
-                    for (let i = 0; i < halfFlank.length; i++) {
-                        const pt = halfFlank[i];
-                        const a = centerAngle - pt.ang;
-                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
-                    }
-                    for (let i = 1; i < tipSamples; i++) {
-                        const frac = i / tipSamples;
-                        const a = centerAngle - tipHalfAngle + frac * (2 * tipHalfAngle);
-                        points.push({ x: ra * Math.cos(a), y: ra * Math.sin(a), r: ra, a });
-                    }
-                    for (let i = halfFlank.length - 1; i >= 0; i--) {
-                        const pt = halfFlank[i];
-                        const a = centerAngle + pt.ang;
-                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
-                    }
-                    const rootStart = centerAngle + rootHalfAngle;
-                    const rootEnd = (tIdx + 1) * pitchAngle - rootHalfAngle;
-                    for (let i = 1; i <= rootSamples; i++) {
-                        const frac = i / (rootSamples + 1);
-                        const a = rootStart + frac * (rootEnd - rootStart);
-                        points.push({ x: rf * Math.cos(a), y: rf * Math.sin(a), r: rf, a });
-                    }
-                }
-            }
-            return points;
-        }
-
-        function evaluateBoreAtAngle(theta, gearCfg, maxSafeR) {
-            const boreType = gearCfg.boreType;
-            const rBore = Math.min(gearCfg.boreDia / 2, maxSafeR);
-            if (boreType === 'none' || rBore <= 0.5) return { x: 0, y: 0 };
-
-            let a = ((theta + Math.PI) % (2 * Math.PI));
-            if (a < 0) a += 2 * Math.PI;
-            a -= Math.PI;
-
-            if (boreType === 'round') {
+            if (bType === 'round') {
                 return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
             }
-            if (boreType === 'keyway') {
-                const halfW = Math.min(gearCfg.keyWidth / 2, rBore * 0.72);
-                const kd = Math.min(gearCfg.keyDepth, Math.max(0.2, maxSafeR - rBore));
-                const keyOuterX = Math.sqrt(Math.max(0.01, rBore * rBore - halfW * halfW)) + kd;
-                const keyHalfAngle = Math.asin(halfW / rBore);
-                if (Math.abs(a) <= keyHalfAngle) {
-                    const yProj = keyOuterX * Math.tan(a);
-                    if (Math.abs(yProj) <= halfW) return { x: keyOuterX, y: yProj };
+            if (bType === 'keyway') {
+                const halfKeyAngle = Math.asin(Math.min(0.92, (gearCfg.keyWidth / 2) / rBore));
+                if (Math.abs(a) <= halfKeyAngle) {
+                    const y = rBore * Math.sin(a);
+                    const x = rBore * Math.cos(halfKeyAngle) + Math.min(gearCfg.keyDepth, maxSafeBoreR - rBore + 1.5);
+                    return { x, y };
                 }
                 return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
             }
-            if (boreType === 'dshaft') {
-                const flatX = rBore * 0.72;
+            if (bType === 'dshaft') {
+                const flatX = rBore * 0.78;
                 const flatAngle = Math.acos(flatX / rBore);
-                if (Math.abs(a) <= flatAngle) {
-                    const rFlat = flatX / Math.cos(a);
-                    return { x: rFlat * Math.cos(theta), y: rFlat * Math.sin(theta) };
+                if (Math.abs(a) < flatAngle) {
+                    return { x: flatX, y: flatX * Math.tan(a) };
                 }
                 return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
             }
-            if (boreType === 'hex') {
-                const sector = Math.PI / 3;
-                const localA = ((theta % sector) + sector) % sector - (sector / 2);
-                const rHex = rBore / Math.cos(localA);
-                return { x: rHex * Math.cos(theta), y: rHex * Math.sin(theta) };
+            if (bType === 'hex') {
+                const sides = 6;
+                const sector = (2 * Math.PI) / sides;
+                const halfS = sector / 2;
+                const localA = (((theta + halfS) % sector) + sector) % sector - halfS;
+                const rPoly = (rBore * Math.cos(halfS)) / Math.cos(localA);
+                return { x: rPoly * Math.cos(theta), y: rPoly * Math.sin(theta) };
             }
             return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
         }
 
+        function generateGear2DLoop(params, quality) {
+            const { z, alphaT, rp, rb, ra, rf, sPitch, isInternal } = params;
+            const pitchAngle = (2 * Math.PI) / z;
+            const halfToothAnglePitch = sPitch / (2 * rp);
+            const invAlphaT = involute(alphaT);
+            const halfBaseAngle = halfToothAnglePitch + invAlphaT;
+
+            const flankSamples = quality === 'ultra' ? 18 : (quality === 'high' ? 12 : 7);
+            const tipSamples = quality === 'ultra' ? 5 : 3;
+            const rootSamples = quality === 'ultra' ? 5 : 3;
+
+            const rStart = Math.max(rf, rb);
+            const rOuter = isInternal ? rf : ra;
+            const rInner = isInternal ? ra : rf;
+
+            let maxCheckR = rOuter;
+            for (let s = 0; s < 12; s++) {
+                const rc = rStart + (rOuter - rStart) * (s / 12);
+                const ac = Math.acos(Math.min(1, rb / rc));
+                if (halfBaseAngle - involute(ac) <= 0.002) {
+                    maxCheckR = rc;
+                    break;
+                }
+            }
+
+            const singleTooth = [];
+
+            if (!isInternal) {
+                const rTipActual = Math.min(ra, maxCheckR);
+                const alphaTip = Math.acos(Math.min(1, rb / Math.max(rb, rTipActual)));
+                const thetaTip = Math.max(0.001, halfBaseAngle - involute(alphaTip));
+                const thetaRoot = halfBaseAngle;
+                const rootArcStart = -pitchAngle / 2;
+                const rootFlankStart = -thetaRoot;
+
+                for (let i = 0; i < rootSamples; i++) {
+                    const t = i / rootSamples;
+                    const ang = rootArcStart + t * (rootFlankStart - rootArcStart);
+                    singleTooth.push({ r: rf, a: ang });
+                }
+                if (rf < rb) {
+                    singleTooth.push({ r: rf, a: -thetaRoot });
+                    singleTooth.push({ r: (rf + rb) * 0.5, a: -thetaRoot });
+                }
+                for (let i = 0; i <= flankSamples; i++) {
+                    const t = i / flankSamples;
+                    const r = rStart + t * (rTipActual - rStart);
+                    const alphaR = Math.acos(Math.min(1, rb / r));
+                    const ang = -(halfBaseAngle - involute(alphaR));
+                    singleTooth.push({ r, a: ang });
+                }
+                for (let i = 1; i < tipSamples; i++) {
+                    const t = i / tipSamples;
+                    const ang = -thetaTip + t * (2 * thetaTip);
+                    singleTooth.push({ r: rTipActual, a: ang });
+                }
+                for (let i = flankSamples; i >= 0; i--) {
+                    const t = i / flankSamples;
+                    const r = rStart + t * (rTipActual - rStart);
+                    const alphaR = Math.acos(Math.min(1, rb / r));
+                    const ang = +(halfBaseAngle - involute(alphaR));
+                    singleTooth.push({ r, a: ang });
+                }
+                if (rf < rb) {
+                    singleTooth.push({ r: (rf + rb) * 0.5, a: thetaRoot });
+                    singleTooth.push({ r: rf, a: thetaRoot });
+                }
+            } else {
+                const rInnerStart = Math.max(rInner, rb);
+                const alphaOuter = Math.acos(Math.min(1, rb / Math.max(rb, rOuter)));
+                const thetaOuter = Math.max(0.002, halfBaseAngle - involute(alphaOuter));
+                const alphaInner = Math.acos(Math.min(1, rb / Math.max(rb, rInnerStart)));
+                const thetaInner = Math.max(0.002, halfBaseAngle - involute(alphaInner));
+
+                const tipArcStart = -pitchAngle / 2;
+                for (let i = 0; i < rootSamples; i++) {
+                    const t = i / rootSamples;
+                    const ang = tipArcStart + t * (-thetaInner - tipArcStart);
+                    singleTooth.push({ r: rInner, a: ang });
+                }
+                for (let i = 0; i <= flankSamples; i++) {
+                    const t = i / flankSamples;
+                    const r = rInnerStart + t * (rOuter - rInnerStart);
+                    const alphaR = Math.acos(Math.min(1, rb / r));
+                    const ang = -(halfBaseAngle - involute(alphaR));
+                    singleTooth.push({ r, a: ang });
+                }
+                for (let i = 1; i < tipSamples; i++) {
+                    const t = i / tipSamples;
+                    const ang = -thetaOuter + t * (2 * thetaOuter);
+                    singleTooth.push({ r: rOuter, a: ang });
+                }
+                for (let i = flankSamples; i >= 0; i--) {
+                    const t = i / flankSamples;
+                    const r = rInnerStart + t * (rOuter - rInnerStart);
+                    const alphaR = Math.acos(Math.min(1, rb / r));
+                    const ang = +(halfBaseAngle - involute(alphaR));
+                    singleTooth.push({ r, a: ang });
+                }
+            }
+
+            const fullLoop = [];
+            for (let k = 0; k < z; k++) {
+                const offset = k * pitchAngle;
+                for (let p = 0; p < singleTooth.length; p++) {
+                    const a = singleTooth[p].a + offset;
+                    const r = singleTooth[p].r;
+                    fullLoop.push({ x: r * Math.cos(a), y: r * Math.sin(a), r, a });
+                }
+            }
+            return fullLoop;
+        }
+
         // ============================================================================
-        // 5. WATERTIGHT 3D GEOMETRY BUILDERS (CYLINDRICAL, CONICAL BEVEL & LINEAR RACK)
+        // 5. WATERTIGHT 3D GEOMETRY BUILDERS (CYLINDRICAL, CONICAL BEVEL, WORM & RACK)
         // ============================================================================
+        /**
+         * Builds a Watertight 2-Manifold Cylindrical Worm Screw (ISO/DIN 3975 ZA/ZN Profile)
+         * Worm axis is generated along local Z from -wormLength/2 to +wormLength/2.
+         * In assembly mode, groupA is rotated so Worm A lies along the Y axis at X = -operatingCenterDist/2,
+         * meshing with Worm Wheel B (centered at X = +operatingCenterDist/2 in the XY plane).
+         */
+        function buildWormScrewGeometry(metrics) {
+            const m = metrics.mA;
+            const alpha = metrics.alphaA;
+            const z1 = Math.max(1, Math.min(8, state.gearA.teeth)); // Number of starts
+            const rp = metrics.rpA;
+            const ra = metrics.raA;
+            const rf = metrics.rfA;
+            const length = state.gearA.wormLength || 42.0;
+            const halfL = length / 2;
+            const hand = state.gearA.hand; // 1 = RH, -1 = LH
+            const gearCfg = state.gearA;
+
+            // Axial pitch p_x = pi * m, Axial lead p_z = z1 * p_x
+            const px = Math.PI * m;
+            const lead = z1 * px;
+
+            // Angular & axial resolution
+            const segsPerStart = state.meshQuality === 'ultra' ? 28 : (state.meshQuality === 'high' ? 20 : 14);
+            const N = Math.max(48, z1 * segsPerStart);
+            const axialSlices = state.meshQuality === 'ultra' ? 96 : (state.meshQuality === 'high' ? 68 : 44);
+
+            // Trapezoidal / Involute Worm Thread radial profile function r(phase) where phase in [0, 2*PI) per thread start
+            const toothFrac = 0.5 - (state.backlash / (2 * px));
+            const flankSlopeRad = ((ra - rf) * Math.tan(alpha)) / px * (2 * Math.PI); // phase width of each flank
+            const tipHalfPhase = Math.max(0.08, (toothFrac * Math.PI) - flankSlopeRad);
+            const rootHalfPhase = Math.min(Math.PI - 0.08, (toothFrac * Math.PI) + flankSlopeRad);
+
+            function evalWormRadius(uPhase) {
+                // uPhase wrapped to [-PI, PI] around thread crest at uPhase = 0
+                let p = ((uPhase + Math.PI) % (2 * Math.PI));
+                if (p < 0) p += 2 * Math.PI;
+                p -= Math.PI;
+                const ap = Math.abs(p);
+
+                if (ap <= tipHalfPhase) {
+                    return ra;
+                } else if (ap < rootHalfPhase) {
+                    const t = (ap - tipHalfPhase) / (rootHalfPhase - tipHalfPhase);
+                    // Smooth cosine-blended trapezoidal flank
+                    return ra - t * (ra - rf);
+                } else {
+                    return rf;
+                }
+            }
+
+            const hasBore = gearCfg.boreType !== 'none' && gearCfg.boreDia > 0.5;
+            const maxSafeBoreR = Math.max(1.2, rf - 1.2 * m);
+
+            const outerRings = [];
+            const boreRings = [];
+
+            for (let k = 0; k <= axialSlices; k++) {
+                const frac = k / axialSlices;
+                const zPos = -halfL + frac * length;
+                // Gentlechamfer taper at the very ends of the worm screw so threads terminate cleanly on the root cylinder
+                const edgeDist = Math.min(frac, 1.0 - frac) * length;
+                const endTaper = Math.min(1.0, edgeDist / (1.2 * m));
+
+                const tRing = [];
+                const bRing = [];
+
+                for (let i = 0; i < N; i++) {
+                    const theta = (i / N) * 2 * Math.PI;
+                    // For a Right-Hand (hand = +1) worm along +Z: as theta increases counter-clockwise, crest advances in +Z:
+                    // Thread phase = z1 * (theta - hand * 2*PI * zPos / lead)
+                    const threadPhase = z1 * theta - hand * (2 * Math.PI * zPos) / px;
+                    const rRaw = evalWormRadius(threadPhase);
+                    const r = rf + endTaper * (rRaw - rf);
+
+                    tRing.push({
+                        x: r * Math.cos(theta),
+                        y: r * Math.sin(theta),
+                        z: zPos
+                    });
+
+                    if (hasBore) {
+                        const bPt = evaluateBoreAtAngle(theta, gearCfg, maxSafeBoreR);
+                        bRing.push({ x: bPt.x, y: bPt.y, z: zPos });
+                    }
+                }
+                outerRings.push(tRing);
+                boreRings.push(bRing);
+            }
+
+            const positions = [];
+            const pushTri = (p1, p2, p3) => {
+                positions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
+            };
+            const pushQuad = (bl, br, tr, tl) => {
+                pushTri(bl, br, tr);
+                pushTri(bl, tr, tl);
+            };
+
+            for (let k = 0; k < axialSlices; k++) {
+                const rA = outerRings[k];
+                const rB = outerRings[k + 1];
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    pushQuad(rA[i], rA[next], rB[next], rB[i]);
+                }
+            }
+
+            if (hasBore) {
+                for (let k = 0; k < axialSlices; k++) {
+                    const bA = boreRings[k];
+                    const bB = boreRings[k + 1];
+                    for (let i = 0; i < N; i++) {
+                        const next = (i + 1) % N;
+                        pushQuad(bA[next], bA[i], bB[i], bB[next]);
+                    }
+                }
+                const botTooth = outerRings[0], topTooth = outerRings[axialSlices];
+                const botBore = boreRings[0], topBore = boreRings[axialSlices];
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    pushQuad(topBore[i], topTooth[i], topTooth[next], topBore[next]);
+                    pushQuad(botTooth[i], botBore[i], botBore[next], botTooth[next]);
+                }
+            } else {
+                const botTooth = outerRings[0], topTooth = outerRings[axialSlices];
+                const cBot = { x: 0, y: 0, z: -halfL }, cTop = { x: 0, y: 0, z: halfL };
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    pushTri(cTop, topTooth[i], topTooth[next]);
+                    pushTri(cBot, botTooth[next], botTooth[i]);
+                }
+            }
+
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geo.computeVertexNormals();
+            return { geometry: geo, triCount: positions.length / 9 };
+        }
+
         function buildRotaryGearGeometry(gearKey, metrics) {
+            if (gearKey === 'A' && state.architecture === 'worm') {
+                return buildWormScrewGeometry(metrics);
+            }
             const isGearA = (gearKey === 'A');
             const gearCfg = isGearA ? state.gearA : state.gearB;
             const arch = state.architecture;
             const isInternal = (!isGearA && arch === 'internal');
             const isBevel = (arch === 'bevel');
+            const isWormWheel = (!isGearA && arch === 'worm');
 
             const m = isGearA ? metrics.mA : metrics.mB;
             const mt = isGearA ? metrics.mtA : metrics.mtB;
@@ -1154,7 +1372,7 @@
             const halfB = b / 2;
 
             let axialSlices = 2;
-            if (arch === 'helical') {
+            if (arch === 'helical' || isWormWheel) {
                 axialSlices = state.meshQuality === 'ultra' ? 36 : (state.meshQuality === 'high' ? 24 : 12);
             } else if (arch === 'herringbone') {
                 axialSlices = state.meshQuality === 'ultra' ? 40 : (state.meshQuality === 'high' ? 28 : 14);
@@ -1162,7 +1380,7 @@
                 axialSlices = state.meshQuality === 'ultra' ? 16 : (state.meshQuality === 'high' ? 10 : 6);
             }
 
-            const betaRad = (arch === 'helical' || arch === 'herringbone')
+            const betaRad = (arch === 'helical' || arch === 'herringbone' || isWormWheel)
                 ? (gearCfg.helixAngle * Math.PI) / 180
                 : 0;
             const twistRate = gearCfg.hand * Math.tan(betaRad) / rp;
@@ -1193,9 +1411,9 @@
                     for (let i = 0; i < N; i++) {
                         const pt = outerLoop[i];
                         const dr = (pt.r - rp) * scale;
-                        // Normal to pitch cone tilts tooth height slightly in Z and radial XY
+                        // Normal to pitch cone points outward & upward toward +Z (+sin(gamma) in Z, +cos(gamma) in radial XY)
                         const rCone = rp * scale + dr * Math.cos(gamma);
-                        const zCone = zBase - dr * Math.sin(gamma);
+                        const zCone = zBase + dr * Math.sin(gamma);
 
                         tRing.push({
                             x: rCone * Math.cos(pt.a),
@@ -1213,13 +1431,22 @@
                         }
                     }
                 } else {
-                    // Cylindrical Spur / Helical / Herringbone / Internal Ring
+                    // Cylindrical Spur / Helical / Herringbone / Internal Ring / Throated Worm Wheel
                     const zPos = -halfB + frac * b;
                     let twistAngle = 0;
-                    if (arch === 'helical') {
+                    if (arch === 'helical' || isWormWheel) {
                         twistAngle = zPos * twistRate;
                     } else if (arch === 'herringbone') {
                         twistAngle = (halfB - Math.abs(zPos)) * twistRate;
+                    }
+
+                    // Subtle globoid/throated radial crowning on Worm Wheel B to hug the worm cylinder
+                    let throatDeltaR = 0;
+                    if (isWormWheel) {
+                        const rWormRef = metrics.rpA;
+                        if (Math.abs(zPos) < rWormRef * 0.95) {
+                            throatDeltaR = -(rWormRef - Math.sqrt(rWormRef * rWormRef - zPos * zPos)) * 0.35;
+                        }
                     }
 
                     const cosT = Math.cos(twistAngle);
@@ -1227,8 +1454,12 @@
 
                     for (let i = 0; i < N; i++) {
                         const pt = outerLoop[i];
-                        const rx = pt.x * cosT - pt.y * sinT;
-                        const ry = pt.x * sinT + pt.y * cosT;
+                        const rAdj = Math.max(rf * 0.92, pt.r + throatDeltaR);
+                        const scaleR = rAdj / pt.r;
+                        const px = pt.x * scaleR;
+                        const py = pt.y * scaleR;
+                        const rx = px * cosT - py * sinT;
+                        const ry = px * sinT + py * cosT;
                         tRing.push({ x: rx, y: ry, z: zPos });
 
                         if (isInternal) {
@@ -1476,21 +1707,40 @@
 
             const arch = state.architecture;
             if (arch === 'bevel') {
-                // Place pitch apex at world origin (0,0,0)
-                // Gear A axis is along Z, placed at z = -rpB (or cone offset)
+                // Exact Conical Bevel Convergence at Shared Pitch Apex = World Origin (0,0,0):
+                // In local coordinates, buildRotaryGearGeometry('A'/'B') places the pitch cone apex along local +Z
+                // at distance z_apex_local = (coneDistR - b/2) * cos(gamma) from the gear's local origin.
+                // 1. Pinion A sits on the -Z axis at (0, 0, -Rm * cos(gammaA)), with its local +Z pointing toward (0,0,0).
+                //    Its +X_A pitch generator ray runs from (0,0,0) along (+sin(gammaA), 0, -cos(gammaA)).
+                // 2. Gear B sits at (+distB * sin(sigma), 0, -distB * cos(sigma)).
+                //    For Gear B's local +Z axis to ALSO point inward toward the shared apex (0,0,0) (along (-sin(sigma), 0, +cos(sigma))),
+                //    groupB MUST be rotated by -sigma around the Y axis (since R_y(-sigma) * [0,0,1]^T = [-sin(sigma), 0, cos(sigma)]^T)!
+                //    With rotation.y = -sigma, Gear B's conical teeth face LEFT (-X) directly into Pinion A's teeth,
+                //    and Gear B's local -X_B pitch generator ray lies on the exact same line (+sin(gammaA), 0, -cos(gammaA))!
                 const b = Math.min(state.faceWidth, metrics.coneDistR * 0.36);
-                const zCenterA = -(metrics.coneDistR - b / 2) * Math.cos(metrics.gammaA);
-                groupA.position.set(0, 0, zCenterA - state.centerDistDelta);
+                const Rm = metrics.coneDistR - b / 2;
 
-                // Gear B axis tilted by shaftAngle Sigma in XZ plane
-                const distB = (metrics.coneDistR - b / 2) * Math.cos(metrics.gammaB) + state.centerDistDelta;
+                const zCenterA = -Rm * Math.cos(metrics.gammaA) - state.centerDistDelta;
+                groupA.position.set(0, 0, zCenterA);
+                groupA.rotation.set(0, 0, 0);
+
+                const distB = Rm * Math.cos(metrics.gammaB) + state.centerDistDelta;
                 const sigma = metrics.sigmaRad;
                 groupB.position.set(
                     distB * Math.sin(sigma),
                     0,
                     -distB * Math.cos(sigma)
                 );
-                groupB.rotation.y = Math.PI - sigma;
+                groupB.rotation.set(0, -sigma, 0);
+            } else if (arch === 'worm') {
+                // Worm A (Screw) axis lies along Y at X = -operatingCenterDist/2 (rotated -90 deg around X so local +Z points along +Y)
+                // Worm Wheel B lies in XY plane (axis along Z) at X = +operatingCenterDist/2
+                const halfDist = metrics.operatingCenterDist / 2;
+                groupA.position.set(-halfDist, 0, 0);
+                groupA.rotation.set(-Math.PI / 2, 0, 0);
+
+                groupB.position.set(halfDist, 0, 0);
+                groupB.rotation.set(0, 0, 0);
             } else if (arch === 'rack') {
                 // Pinion A centered at (-operatingCenterDist/2, 0, 0), Rack pitch line at (+operatingCenterDist/2, 0, 0)
                 const halfDist = metrics.operatingCenterDist / 2;
@@ -1520,7 +1770,7 @@
             });
 
             if (state.architecture === 'bevel') {
-                // Pitch Cones for Bevel Pair
+                // Pitch Cones for Bevel Pair converging at world origin (0,0,0)
                 const hA = metrics.rpA / Math.tan(metrics.gammaA);
                 const coneA = new THREE.ConeGeometry(metrics.rpA, hA, 48, 1, true);
                 coneA.rotateX(Math.PI / 2);
@@ -1533,8 +1783,22 @@
                     coneB.rotateX(Math.PI / 2);
                     coneB.translate(0, 0, -hB / 2);
                     const meshConeB = new THREE.Mesh(coneB, matPitchB);
-                    meshConeB.rotation.y = Math.PI - metrics.sigmaRad;
+                    meshConeB.rotation.y = -metrics.sigmaRad;
                     overlayGroup.add(meshConeB);
+                }
+            } else if (state.architecture === 'worm') {
+                // Worm Pitch Cylinder along Y axis
+                const cylA = new THREE.CylinderGeometry(metrics.rpA, metrics.rpA, state.gearA.wormLength, 48, 1, true);
+                const mCylA = new THREE.Mesh(cylA, matPitchA);
+                mCylA.position.copy(groupA.position);
+                overlayGroup.add(mCylA);
+
+                if (state.assemblyMode) {
+                    const cylB = new THREE.CylinderGeometry(metrics.rpB, metrics.rpB, state.faceWidth + 2, 64, 1, true);
+                    cylB.rotateX(Math.PI / 2);
+                    const mCylB = new THREE.Mesh(cylB, matPitchB);
+                    mCylB.position.copy(groupB.position);
+                    overlayGroup.add(mCylB);
                 }
             } else {
                 const cylA = new THREE.CylinderGeometry(metrics.rpA, metrics.rpA, state.faceWidth + 2, 64, 1, true);
@@ -1593,19 +1857,50 @@
 
             if (arch === 'rack') {
                 meshB.rotation.set(0, 0, 0);
-                // Linear rack reciprocates smoothly or translates synchronized with Pinion A angle
-                // Wrap angular travel across 4 pitches so rack stays in view while staying phase-locked!
-                const wrappedAngle = ((state.simAngleA % (4 * Math.PI / zA)) + (4 * Math.PI / zA)) % (4 * Math.PI / zA) - (2 * Math.PI / zA);
-                const linearY = -wrappedAngle * metrics.rpA + (phaseRad * metrics.rpA);
+                // Exact Rack & Pinion Tangential Velocity Law:
+                // Pinion A is at -X, Rack B is at +X. Contact point P is on the +X side of Pinion A (local angle = 0).
+                // When Pinion A rotates by +simAngleA (counter-clockwise in XY), its teeth at +X move in the +Y direction
+                // with tangential displacement dy = +simAngleA * rpA.
+                // Furthermore, in buildLinearRackGeometry(), Rack tooth i is centered at yCenter = startY + (i + 0.5)*p,
+                // meaning at y = 0 (when startY = -zRack*p/2 for even zRack) there is a tooth SPACE at y = 0, and for odd zRack
+                // there is a tooth crest at y = 0. We offset by rackPhaseAlign so a rack tooth SPACE is always centered at y = 0
+                // when simAngleA = 0 (where Pinion A has tooth #0 crest at angle 0)!
+                const p = Math.PI * metrics.mA;
+                const rackSpaceOffset = (zB % 2 === 1) ? (p / 2) : 0;
+                const spanAngles = (4 * Math.PI) / zA;
+                const wrappedAngle = (((state.simAngleA % spanAngles) + spanAngles) % spanAngles) - (spanAngles / 2);
+                const linearY = (wrappedAngle * metrics.rpA) + rackSpaceOffset + (phaseRad * metrics.rpA);
                 meshB.position.set(0, linearY, 0);
+            } else if (arch === 'bevel') {
+                // Exact Conical Bevel Tangential Velocity Law:
+                // Pinion A is at (0, 0, -zCenterA) with local +Z pointing toward the apex (0,0,0).
+                // Gear B is at (+distB*sin(Sigma), 0, -distB*cos(Sigma)) with groupB.rotation.y = -Sigma,
+                // so Gear B's local +Z ALSO points inward toward the apex (0,0,0) and its teeth face Pinion A!
+                // The shared pitch contact line is at local angle theta_A = 0 on Pinion A (+X_A)
+                // and at local angle theta_B = PI on Gear B (-X_B).
+                // At theta_A = 0, Pinion A's velocity for +simAngleA is along +Y.
+                // At theta_B = PI, Gear B's local tangent (+k_B x -i_B = -j_B) points along -Y,
+                // so rotating meshB by -simAngleA * (zA / zB) moves Gear B's contacting teeth along +Y in lockstep with Pinion A!
+                meshB.position.set(0, 0, 0);
+                const piAlignment = (zB % 2 === 0) ? halfToothOffsetB : 0;
+                meshB.rotation.z = -state.simAngleA * (zA / zB) + piAlignment + phaseRad;
+            } else if (arch === 'worm') {
+                // Exact 90° Crossed-Axis Worm & Worm Wheel Kinematics:
+                // Worm A is at -X, with its local +Z axis pointing along World +Y (groupA.rotation.x = -PI/2).
+                // At the contact point P (+X side of Worm A, which is theta_worm = 0), the worm thread phase is:
+                // Phi = z1 * (0 + simAngleA) - hand * (2*PI * y) / px = 0  ==>  y_crest = +hand * (z1 * simAngleA / (2*PI)) * px.
+                // Thus, for a Right-Hand worm (hand = +1) rotating with +simAngleA > 0, the thread crests advance in the +Y direction!
+                // Worm Wheel B is at +X, so its contact point with the worm is on its -X side (theta_B = PI).
+                // For Worm Wheel B's teeth at theta_B = PI to move in the +Y direction along with the advancing worm threads,
+                // Worm Wheel B must rotate clockwise (negative Z rotation: d(theta_B)/dt < 0 gives v_y = -omega_B * (-r_B) > 0)!
+                meshB.position.set(0, 0, 0);
+                const piAlignment = (zB % 2 === 0) ? halfToothOffsetB : 0;
+                meshB.rotation.z = -state.gearA.hand * state.simAngleA * (zA / zB) + piAlignment + phaseRad;
             } else if (arch === 'internal') {
                 // Internal Ring Gear rotates in the SAME direction as internal Pinion A
                 // Contact point is on the +X side (angle = 0 for both A and B)
                 meshB.position.set(0, 0, 0);
                 meshB.rotation.z = state.simAngleA * (zA / zB) + phaseRad;
-            } else if (arch === 'bevel') {
-                meshB.position.set(0, 0, 0);
-                meshB.rotation.z = -state.simAngleA * (zA / zB) + halfToothOffsetB + phaseRad;
             } else {
                 // External Spur, Helical, Herringbone Pair:
                 // Pinion A is on left (-X), Gear B is on right (+X).
@@ -1618,6 +1913,7 @@
 
         /**
          * Renders the Interactive 2D Meshing Tooth Profile & Line of Action Inspector
+         * Accurately synchronizes tooth translation direction & phase between Pinion/Worm A and Gear/Rack/Wheel B.
          */
         function draw2DMeshingInspector(metrics) {
             const canvas = document.getElementById('mesh2dCanvas');
@@ -1636,12 +1932,17 @@
             const cxA = pitchPx - metrics.rpA * scale;
             const cyA = pitchPy;
 
-            // Draw Pinion A Pitch Circle
             ctx.save();
             ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
             ctx.setLineDash([4, 3]);
             ctx.beginPath();
-            ctx.arc(cxA, cyA, metrics.rpA * scale, -0.7, 0.7);
+            if (state.architecture === 'worm') {
+                // Worm axial pitch line on left
+                ctx.moveTo(pitchPx, 0);
+                ctx.lineTo(pitchPx, h);
+            } else {
+                ctx.arc(cxA, cyA, metrics.rpA * scale, -0.7, 0.7);
+            }
             ctx.stroke();
 
             // Draw Gear B / Rack Pitch Line
@@ -1660,12 +1961,19 @@
             ctx.restore();
 
             // 2. Draw Animated Simplified Teeth of A & B Meshing at P
+            // Both A and B teeth at the pitch point move in the SAME tangential direction (+Y when simAngleA increases)
+            // and are shifted by half a pitch (p / 2) relative to each other so A's tooth fits cleanly into B's space!
             const p = Math.PI * m * scale;
-            const phasePx = ((state.simAngleA * metrics.rpA * scale) % p + p) % p;
+            const travelSign = (state.architecture === 'worm') ? state.gearA.hand : 1;
+            const linearDispPx = (state.architecture === 'worm')
+                ? travelSign * (state.simAngleA / (2 * Math.PI)) * state.gearA.teeth * p
+                : state.simAngleA * metrics.rpA * scale;
+            const phasePx = ((linearDispPx % p) + p) % p;
+            const userPhasePx = (state.meshPhaseDeg / 180) * (p / 2);
 
-            // Draw Pinion A Teeth (Left side, protruding right across pitchPx)
+            // Draw Pinion / Worm A Teeth (Left side, protruding right across pitchPx)
             ctx.save();
-            ctx.fillStyle = 'rgba(56, 189, 248, 0.22)';
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.24)';
             ctx.strokeStyle = '#38bdf8';
             ctx.lineWidth = 1.6;
             const haPx = metrics.haA * scale;
@@ -1674,8 +1982,9 @@
 
             ctx.beginPath();
             for (let k = -2; k <= 2; k++) {
-                const yC = pitchPy + k * p + phasePx - p / 2;
-                const halfPitchThick = (p / 4);
+                // Tooth of A centered at phasePx
+                const yC = pitchPy + k * p + phasePx;
+                const halfPitchThick = (p / 4) * 0.94;
                 const dxTip = haPx * tanA;
                 const dxRoot = hfPx * tanA;
 
@@ -1688,18 +1997,19 @@
             ctx.stroke();
             ctx.restore();
 
-            // Draw Gear B / Rack Teeth (Right side, protruding left across pitchPx)
+            // Draw Gear B / Rack / Worm Wheel Teeth (Right side, protruding left across pitchPx, interleaved by +p/2)
             if (state.assemblyMode) {
                 ctx.save();
-                ctx.fillStyle = 'rgba(251, 146, 60, 0.22)';
+                ctx.fillStyle = 'rgba(251, 146, 60, 0.24)';
                 ctx.strokeStyle = '#fb923c';
                 ctx.lineWidth = 1.6;
                 const deltaPx = state.centerDistDelta * scale;
 
                 ctx.beginPath();
                 for (let k = -2; k <= 2; k++) {
-                    const yC = pitchPy + k * p + phasePx;
-                    const halfPitchThick = (p / 4);
+                    // Interleaved by +p/2 so Gear B tooth sits in Pinion A space and moves in the exact same direction!
+                    const yC = pitchPy + k * p + phasePx - (p / 2) + userPhasePx;
+                    const halfPitchThick = (p / 4) * 0.94;
                     const dxTip = haPx * tanA;
                     const dxRoot = hfPx * tanA;
 
@@ -1713,7 +2023,7 @@
                 ctx.restore();
             }
 
-            // 3. Draw Pressure Angle Line of Action through Pitch Point P
+            // 3. Draw Pressure Angle Line of Action & Velocity Vector Arrow through Pitch Point P
             ctx.save();
             const loaLen = Math.min(68, (metrics.pathOfContact * scale) / 2);
             const sinA = Math.sin(metrics.alphaTA);
@@ -1798,8 +2108,64 @@
                 }
             }
 
-            // CHECK 3: Undercutting Detection on Pinion A (Warning)
-            if (state.gearA.profileShift < metrics.xMinA - 0.02) {
+            // CHECK 2B: Worm & Worm Wheel 90° Crossed-Axis Law (DIN 3975)
+            if (state.assemblyMode && arch === 'worm') {
+                // 1. Handedness: For 90° non-intersecting crossed axes, Worm A and Worm Wheel B MUST have the SAME helix hand!
+                if (state.gearA.hand !== state.gearB.hand) {
+                    const handStr = state.gearA.hand === 1 ? 'Right-Hand (RH)' : 'Left-Hand (LH)';
+                    issues.push({
+                        level: 'critical',
+                        title: 'Worm & Wheel Handedness Conflict',
+                        desc: 'For a 90° crossed-axis worm drive, the worm wheel helix hand MUST match the worm thread hand.',
+                        fixLabel: `Set Wheel B to ${handStr}`,
+                        fixFn: () => {
+                            setGearParam('B', 'hand', state.gearA.hand);
+                        }
+                    });
+                }
+                // 2. Lead angle vs wheel helix angle: beta_B must equal gamma_A = atan(z_1 / q)
+                const diffGamma = Math.abs(state.gearB.helixAngle - metrics.wormLeadAngleDeg);
+                if (diffGamma > 0.35) {
+                    const targetBeta = parseFloat(metrics.wormLeadAngleDeg.toFixed(2));
+                    issues.push({
+                        level: 'critical',
+                        title: `Wheel Helix ≠ Worm Lead Angle (βB=${state.gearB.helixAngle.toFixed(1)}° vs γ=${targetBeta}°)`,
+                        desc: 'For orthogonal 90° shaft alignment, the worm wheel helix angle β2 must equal the worm lead angle γ1 = arctan(z1 / q).',
+                        fixLabel: `Sync βB = ${targetBeta}°`,
+                        fixFn: () => {
+                            syncWormWheelHelix();
+                        }
+                    });
+                }
+                // 3. Worm Wheel Minimum Teeth & Undercut Check
+                if (metrics.zB < 24) {
+                    issues.push({
+                        level: 'warning',
+                        title: `Low Worm Wheel Tooth Count (z2 = ${metrics.zB})`,
+                        desc: 'DIN 3975 recommends z2 ≥ 26..30 teeth on the worm wheel to avoid throated root undercutting and ensure high load capacity.',
+                        fixLabel: 'Set Wheel z2 = 30',
+                        fixFn: () => {
+                            updateTeeth('B', 30);
+                        }
+                    });
+                }
+                // 4. Self-Locking vs Efficiency Advisory
+                if (metrics.isWormSelfLocking) {
+                    issues.push({
+                        level: 'info',
+                        title: `Self-Locking Worm Drive (γ = ${metrics.wormLeadAngleDeg.toFixed(2)}° ≤ 6°)`,
+                        desc: `Low lead angle prevents back-driving (ideal for hoists/winches), with estimated mesh efficiency η ≈ ${(metrics.wormEfficiency * 100).toFixed(1)}%. Increase starts z1 for higher efficiency.`,
+                        fixLabel: 'Set Multi-Start z1 = 2 (Higher η)',
+                        fixFn: () => {
+                            updateTeeth('A', 2);
+                            syncWormWheelHelix();
+                        }
+                    });
+                }
+            }
+
+            // CHECK 3: Undercutting Detection on Pinion A (Warning - not applicable to worm screw)
+            if (arch !== 'worm' && state.gearA.profileShift < metrics.xMinA - 0.02) {
                 const recXA = Math.min(0.6, Math.ceil(metrics.xMinA * 20) / 20);
                 issues.push({
                     level: 'warning',
@@ -2000,20 +2366,22 @@
         // 9. METROLOGY BAR & UI CONTROLLER FUNCTIONS
         // ============================================================================
         function updateMetrologyReadouts(metrics) {
+            const arch = state.architecture;
             const ratio = metrics.zB / metrics.zA;
-            document.getElementById('read_ratio').textContent = state.architecture === 'rack'
+
+            document.getElementById('read_ratio').textContent = arch === 'rack'
                 ? `${(Math.PI * metrics.mA * metrics.zA).toFixed(1)} mm/rev`
                 : `1 : ${ratio.toFixed(2)}`;
 
-            document.getElementById('read_centerDist').textContent = state.architecture === 'bevel'
+            document.getElementById('read_centerDist').textContent = arch === 'bevel'
                 ? `Σ = ${state.shaftAngle.toFixed(0)}°`
                 : `${metrics.operatingCenterDist.toFixed(2)} mm`;
 
-            document.getElementById('read_pitchAB').textContent = state.architecture === 'rack'
+            document.getElementById('read_pitchAB').textContent = arch === 'rack'
                 ? `${(metrics.rpA * 2).toFixed(1)} / Rack`
                 : `${(metrics.rpA * 2).toFixed(1)} / ${(metrics.rpB * 2).toFixed(1)}`;
 
-            document.getElementById('read_outerAB').textContent = state.architecture === 'rack'
+            document.getElementById('read_outerAB').textContent = arch === 'rack'
                 ? `${(metrics.raA * 2).toFixed(1)} / ${(metrics.zB * Math.PI * metrics.mB).toFixed(0)}L`
                 : `${(metrics.raA * 2).toFixed(1)} / ${(metrics.raB * 2).toFixed(1)}`;
 
@@ -2022,43 +2390,125 @@
             epsEl.className = `text-xs sm:text-sm font-mono font-bold ${metrics.epsAlpha < 1.2 ? 'text-amber-400' : 'text-emerald-400'}`;
             document.getElementById('contactRatioBadge2D').textContent = `εα = ${metrics.epsAlpha.toFixed(2)}`;
 
-            document.getElementById('read_epsBeta').textContent = metrics.epsBeta.toFixed(2);
+            if (arch === 'worm') {
+                document.getElementById('lbl_metric_epsBeta').innerHTML = 'Lead Angle (γ)';
+                document.getElementById('read_epsBeta').textContent = `${metrics.wormLeadAngleDeg.toFixed(2)}°`;
+                document.getElementById('lbl_metric_vel').textContent = 'Worm Efficiency';
+                document.getElementById('read_pitchVel').textContent = `η ≈ ${(metrics.wormEfficiency * 100).toFixed(1)}%`;
+                document.getElementById('lbl_metric_gcd').textContent = 'Drive Lock';
+                document.getElementById('read_gcd').textContent = metrics.isWormSelfLocking ? 'Self-Locking' : 'Back-Drivable';
 
-            const pitchVel = ((state.rpm * 2 * Math.PI) / 60) * metrics.rpA;
-            document.getElementById('read_pitchVel').textContent = `${pitchVel.toFixed(1)} mm/s`;
+                // Update Shared Worm Telemetry Card
+                document.getElementById('wormReadGamma').textContent = `${metrics.wormLeadAngleDeg.toFixed(2)}°`;
+                document.getElementById('wormReadQ').textContent = metrics.qWorm.toFixed(1);
+                document.getElementById('wormReadEff').textContent = `${(metrics.wormEfficiency * 100).toFixed(1)}%`;
+                const lockBadge = document.getElementById('wormLockBadge');
+                if (metrics.isWormSelfLocking) {
+                    lockBadge.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                    lockBadge.textContent = 'Self-Locking (γ ≤ 6°)';
+                } else {
+                    lockBadge.className = 'px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+                    lockBadge.textContent = 'Back-Drivable (γ > 6°)';
+                }
+            } else {
+                document.getElementById('lbl_metric_epsBeta').innerHTML = 'Overlap Ratio (ε<sub>β</sub>)';
+                document.getElementById('read_epsBeta').textContent = metrics.epsBeta.toFixed(2);
+                document.getElementById('lbl_metric_vel').textContent = 'Pitch Line Vel';
+                const pitchVel = ((state.rpm * 2 * Math.PI) / 60) * metrics.rpA;
+                document.getElementById('read_pitchVel').textContent = `${pitchVel.toFixed(1)} mm/s`;
+                document.getElementById('lbl_metric_gcd').textContent = 'Hunting GCD';
+                const g = gcd(metrics.zA, metrics.zB);
+                document.getElementById('read_gcd').textContent = g === 1 ? '1 (Hunting)' : `GCD = ${g}`;
+            }
+        }
 
-            const g = gcd(metrics.zA, metrics.zB);
-            document.getElementById('read_gcd').textContent = g === 1 ? '1 (Hunting)' : `GCD = ${g}`;
+        function syncWormWheelHelix() {
+            const gammaDeg = (Math.atan(state.gearA.teeth / state.gearA.wormQuotient) * 180) / Math.PI;
+            const roundedGamma = parseFloat(gammaDeg.toFixed(2));
+            state.gearB.helixAngle = roundedGamma;
+            state.gearB.hand = state.gearA.hand;
+
+            document.getElementById('num_betaB').value = roundedGamma;
+            document.getElementById('rng_betaB').value = roundedGamma;
+            setGearParam('B', 'hand', state.gearA.hand);
+            rebuildSceneModels();
         }
 
         function setArchitecture(arch) {
+            const prevArch = state.architecture;
             state.architecture = arch;
             document.querySelectorAll('.arch-btn').forEach(btn => {
                 if (btn.dataset.arch === arch) {
-                    btn.className = 'arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[11px] font-semibold transition bg-sky-500/20 text-sky-300 border-sky-500/40 shadow';
+                    btn.className = 'arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border text-[10px] font-semibold transition bg-sky-500/20 text-sky-300 border-sky-500/40 shadow';
                 } else {
-                    btn.className = 'arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-slate-200 text-[11px] font-medium transition';
+                    btn.className = 'arch-btn flex flex-col items-center justify-center py-2 px-1 rounded-lg border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-slate-200 text-[10px] font-medium transition';
                 }
             });
 
             const isHelical = (arch === 'helical' || arch === 'herringbone');
-            document.getElementById('helixBoxA').classList.toggle('hidden', !isHelical);
-            document.getElementById('helixBoxB').classList.toggle('hidden', !isHelical);
+            const isWorm = (arch === 'worm');
+
+            document.getElementById('wormTelemetryCard').classList.toggle('hidden', !isWorm);
+            document.getElementById('wormSpecificBoxA').classList.toggle('hidden', !isWorm);
+            document.getElementById('box_xA').classList.toggle('hidden', isWorm);
+            document.getElementById('helixBoxA').classList.toggle('hidden', !(isHelical || isWorm));
+            document.getElementById('helixAngleSliderBoxA').classList.toggle('hidden', isWorm);
+            document.getElementById('helixBoxB').classList.toggle('hidden', !(isHelical || isWorm));
+            document.getElementById('wormWheelSyncNote').classList.toggle('hidden', !isWorm);
+
             document.getElementById('bevelSigmaControl').classList.toggle('hidden', arch !== 'bevel');
             document.getElementById('rackSpecificControls').classList.toggle('hidden', arch !== 'rack');
             document.getElementById('ringSpecificControls').classList.toggle('hidden', arch !== 'internal');
             document.getElementById('boreBoxB').classList.toggle('hidden', arch === 'rack' || arch === 'internal');
             document.getElementById('box_xB').classList.toggle('hidden', arch === 'rack');
 
+            // Configure appropriate tooth / start ranges when switching into or out of Worm mode
+            const rngQuickZA = document.getElementById('rng_quick_zA');
+            const rngZA = document.getElementById('rng_zA');
+            const numZA = document.getElementById('num_zA');
+
+            if (isWorm) {
+                rngQuickZA.min = 1; rngQuickZA.max = 6;
+                rngZA.min = 1; rngZA.max = 6;
+                numZA.min = 1; numZA.max = 6;
+                if (state.gearA.teeth > 6) {
+                    state.gearA.teeth = 1;
+                    document.getElementById('lbl_zA').textContent = 1;
+                    rngQuickZA.value = 1; rngZA.value = 1; numZA.value = 1;
+                }
+                if (state.gearB.teeth < 20) {
+                    updateTeeth('B', 30);
+                }
+                syncWormWheelHelix();
+            } else {
+                rngQuickZA.min = 6; rngQuickZA.max = 80;
+                rngZA.min = 6; rngZA.max = 100;
+                numZA.min = 6; numZA.max = 100;
+                if (prevArch === 'worm' && state.gearA.teeth < 12) {
+                    updateTeeth('A', 18);
+                }
+                if (arch === 'helical' && prevArch === 'worm') {
+                    setGearParam('A', 'helixAngle', 20);
+                    setGearParam('B', 'helixAngle', 20);
+                    setGearParam('B', 'hand', -state.gearA.hand);
+                }
+            }
+
             // Ensure internal ring has enough teeth when switching to 'internal'
             if (arch === 'internal' && state.gearB.teeth < state.gearA.teeth + 12) {
                 updateTeeth('B', state.gearA.teeth + 16);
             }
 
-            // Update labels
-            const lblB = arch === 'rack' ? 'Rack B' : (arch === 'internal' ? 'Ring B' : 'Gear B');
+            // Update dynamic labels
+            const lblA = isWorm ? 'Worm A' : 'Pinion A';
+            const lblB = arch === 'rack' ? 'Rack B' : (arch === 'internal' ? 'Ring B' : (isWorm ? 'Wheel B' : 'Gear B'));
+            document.getElementById('tabLabelGearA').textContent = lblA;
             document.getElementById('tabLabelGearB').textContent = lblB;
-            document.getElementById('lbl_title_zB').textContent = `${lblB} Teeth (zB)`;
+            document.getElementById('lbl_title_zA').innerHTML = isWorm ? 'Worm Starts (z<sub>1</sub>)' : 'Pinion A Teeth (z<sub>A</sub>)';
+            document.getElementById('lbl_param_zA').innerHTML = isWorm ? 'Number of Thread Starts (<span class="font-mono text-sky-400">z<sub>1</sub></span>)' : 'Number of Teeth (<span class="font-mono text-sky-400">z<sub>A</sub></span>)';
+            document.getElementById('headerGearA').textContent = isWorm ? 'Cylindrical Worm Screw A' : 'Driver Pinion A Geometry';
+            document.getElementById('badgeGearA').textContent = isWorm ? 'DIN 3975 Worm' : `${arch.charAt(0).toUpperCase() + arch.slice(1)} Pinion`;
+            document.getElementById('lbl_title_zB').innerHTML = `${lblB} Teeth (z<sub>B</sub>)`;
 
             rebuildSceneModels();
             resetCamera();
@@ -2083,13 +2533,17 @@
         }
 
         function updateTeeth(gearKey, val) {
-            const z = Math.max(6, Math.min(140, parseInt(val) || 18));
+            const isWormA = (gearKey === 'A' && state.architecture === 'worm');
+            const minZ = isWormA ? 1 : 6;
+            const maxZ = isWormA ? 6 : 140;
+            const z = Math.max(minZ, Math.min(maxZ, parseInt(val) || (isWormA ? 1 : 18)));
             if (gearKey === 'A') {
                 state.gearA.teeth = z;
                 document.getElementById('lbl_zA').textContent = z;
                 document.getElementById('rng_quick_zA').value = z;
                 document.getElementById('num_zA').value = z;
                 document.getElementById('rng_zA').value = z;
+                if (isWormA) syncWormWheelHelix();
             } else {
                 state.gearB.teeth = z;
                 document.getElementById('lbl_zB').textContent = z;
@@ -2137,6 +2591,13 @@
                 } else if (prop === 'boreDia') {
                     document.getElementById(`num_bore${gearKey}`).value = numVal;
                     document.getElementById(`rng_bore${gearKey}`).value = numVal;
+                } else if (prop === 'wormQuotient') {
+                    document.getElementById('num_wormQ').value = numVal;
+                    document.getElementById('rng_wormQ').value = numVal;
+                    syncWormWheelHelix();
+                } else if (prop === 'wormLength') {
+                    document.getElementById('num_wormLen').value = numVal;
+                    document.getElementById('rng_wormLen').value = numVal;
                 }
             }
             rebuildSceneModels();
@@ -2241,6 +2702,14 @@
                 setSharedParam('module', 2.5);
                 updateTeeth('A', 18);
                 updateTeeth('B', 16);
+            } else if (name === 'wormDrive') {
+                setArchitecture('worm');
+                setSharedParam('module', 2.5);
+                setGearParam('A', 'wormQuotient', 10);
+                setGearParam('A', 'hand', 1);
+                updateTeeth('A', 1);
+                updateTeeth('B', 30);
+                syncWormWheelHelix();
             } else if (name === 'planetary') {
                 setArchitecture('internal');
                 setSharedParam('module', 2.0);
