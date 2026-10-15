@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO 53 / DIN 867 Parametric Gear CAD & STL Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js Core & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        cad: {
+                            bg: '#0b0f17',
+                            panel: '#131b2e',
+                            border: '#23304c',
+                            accent: '#0ea5e9',
+                            accentHover: '#38bdf8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        /* Custom CAD Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        /* Range Slider Styling */
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #1e293b;
+            height: 6px;
+            border-radius: 4px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            border: 2px solid #0f172a;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+            transition: transform 0.1s ease, background-color 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #7dd3fc;
+        }
+        .cad-grid-bg {
+            background-image: radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col select-none">
+
+    <!-- Top Navigation & Action Bar -->
+    <header class="h-14 bg-slate-900/95 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 z-20">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-lg bg-sky-500/10 border border-sky-500/40 flex items-center justify-center text-sky-400 shadow-inner">
+                <i data-lucide="settings" class="w-5 h-5 animate-spin" style="animation-duration: 18s;"></i>
+            </div>
+            <div>
+                <div class="flex items-center space-x-2">
+                    <h1 class="font-bold text-sm md:text-base tracking-tight text-white">ISO-CAD Gear Studio</h1>
+                    <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-500/30 font-semibold">ISO 53 / DIN 867</span>
+                </div>
+                <p class="text-[11px] text-slate-400 hidden sm:block">True Involute Profile Generator & Watertight Manifold .STL Exporter</p>
+            </div>
+        </div>
+
+        <!-- Quick Presets & Export -->
+        <div class="flex items-center space-x-2 md:space-x-3">
+            <div class="hidden xl:flex items-center space-x-1.5 bg-slate-800/80 p-1 rounded-lg border border-slate-700/70 text-xs">
+                <span class="px-2 text-slate-400 font-medium">Presets:</span>
+                <button onclick="applyPreset('standard')" class="px-2.5 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Standard Spur</button>
+                <button onclick="applyPreset('helical')" class="px-2.5 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Quiet Helical</button>
+                <button onclick="applyPreset('herringbone')" class="px-2.5 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Heavy Herringbone</button>
+                <button onclick="applyPreset('ring')" class="px-2.5 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Planetary Ring</button>
+            </div>
+
+            <!-- STL Format Selector -->
+            <select id="stlFormat" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2.5 py-2 font-mono focus:outline-none focus:border-sky-500">
+                <option value="binary">Binary .STL (Compact)</option>
+                <option value="ascii">ASCII .STL (Text)</option>
+            </select>
+
+            <!-- Export STL Button -->
+            <button id="exportStlBtn" onclick="exportSTL()" class="flex items-center space-x-2 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-xs md:text-sm px-4 py-2 rounded-lg shadow-lg shadow-sky-500/20 border border-sky-400/30 transition active:scale-95">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export .STL</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+
+        <!-- Left Control Sidebar (Scrollable Parametric Controls) -->
+        <aside class="w-full lg:w-[400px] xl:w-[430px] bg-slate-900/95 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col h-[52vh] lg:h-full shrink-0 z-10">
+            
+            <!-- Gear Type Selector Tabs -->
+            <div class="p-3 border-b border-slate-800 bg-slate-950/50">
+                <label class="block text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">1. Select Gear Architecture</label>
+                <div class="grid grid-cols-4 gap-1.5" id="gearTypeTabs">
+                    <button data-type="spur" onclick="setGearType('spur')" class="gear-tab active-tab flex flex-col items-center justify-center p-2 rounded-lg border text-xs font-medium transition">
+                        <i data-lucide="cog" class="w-4 h-4 mb-1"></i>
+                        <span>Spur</span>
+                    </button>
+                    <button data-type="helical" onclick="setGearType('helical')" class="gear-tab flex flex-col items-center justify-center p-2 rounded-lg border text-xs font-medium transition">
+                        <i data-lucide="wind" class="w-4 h-4 mb-1"></i>
+                        <span>Helical</span>
+                    </button>
+                    <button data-type="herringbone" onclick="setGearType('herringbone')" class="gear-tab flex flex-col items-center justify-center p-2 rounded-lg border text-xs font-medium transition">
+                        <i data-lucide="chevrons-up" class="w-4 h-4 mb-1"></i>
+                        <span>Herringbone</span>
+                    </button>
+                    <button data-type="internal" onclick="setGearType('internal')" class="gear-tab flex flex-col items-center justify-center p-2 rounded-lg border text-xs font-medium transition">
+                        <i data-lucide="circle-dot" class="w-4 h-4 mb-1"></i>
+                        <span>Ring Gear</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Parametric Controls Container -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-5">
+
+                <!-- SECTION A: ISO Tooth & Module Parameters -->
+                <div class="bg-slate-800/40 border border-slate-800 rounded-xl p-3.5 space-y-3.5">
+                    <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="sliders" class="w-4 h-4 text-sky-400"></i>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">ISO Tooth Geometry</h2>
+                        </div>
+                        <span class="text-[11px] font-mono text-sky-400" id="moduleBadge">m = 2.5 mm</span>
+                    </div>
+
+                    <!-- Module (m) -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium flex items-center gap-1">
+                                Module (<span class="font-mono text-sky-400">m</span>)
+                                <button onclick="setStandardModule()" title="Snap to nearest ISO 54 standard module" class="text-[10px] bg-slate-700 hover:bg-slate-600 text-slate-200 px-1.5 py-0.2 rounded ml-1">ISO Snap</button>
+                            </label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_module" min="0.5" max="10" step="0.1" value="2.5" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_module" min="0.5" max="10" step="0.05" value="2.5" class="w-full">
+                    </div>
+
+                    <!-- Number of Teeth (z) -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">Number of Teeth (<span class="font-mono text-sky-400">z</span>)</label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_teeth" min="6" max="120" step="1" value="24" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">teeth</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_teeth" min="6" max="120" step="1" value="24" class="w-full">
+                    </div>
+
+                    <!-- Pressure Angle (alpha) -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium flex items-center gap-1.5">
+                                Pressure Angle (<span class="font-mono text-sky-400">α</span>)
+                                <span class="inline-flex space-x-1">
+                                    <button onclick="setParam('pressureAngle', 14.5)" class="px-1.5 py-0.5 text-[10px] rounded bg-slate-700/80 hover:bg-slate-600 text-slate-300 font-mono">14.5°</button>
+                                    <button onclick="setParam('pressureAngle', 20)" class="px-1.5 py-0.5 text-[10px] rounded bg-sky-500/20 border border-sky-500/40 text-sky-300 font-mono">20° ISO</button>
+                                    <button onclick="setParam('pressureAngle', 25)" class="px-1.5 py-0.5 text-[10px] rounded bg-slate-700/80 hover:bg-slate-600 text-slate-300 font-mono">25°</button>
+                                </span>
+                            </label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_pressureAngle" min="12" max="30" step="0.5" value="20" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">deg</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_pressureAngle" min="12" max="30" step="0.5" value="20" class="w-full">
+                    </div>
+
+                    <!-- Profile Shift Coefficient (x) - Teeth Modulation -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium flex items-center gap-1">
+                                Profile Shift / Modulation (<span class="font-mono text-sky-400">x</span>)
+                                <button onclick="setParam('profileShift', 0)" class="text-[10px] bg-slate-700 hover:bg-slate-600 text-slate-300 px-1.5 rounded">Reset 0</button>
+                            </label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_profileShift" min="-0.5" max="0.6" step="0.02" value="0.0" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">coeff</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_profileShift" min="-0.5" max="0.6" step="0.01" value="0.0" class="w-full">
+                        <div id="undercutWarning" class="hidden mt-1.5 p-2 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-300 flex items-center justify-between">
+                            <span>Undercut risk at low teeth count!</span>
+                            <button onclick="autoFixUndercut()" class="underline font-semibold hover:text-amber-200 ml-2">Auto-Shift (x)</button>
+                        </div>
+                    </div>
+
+                    <!-- Face Width / Axial Thickness (b) -->
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">Face Width / Thickness (<span class="font-mono text-sky-400">b</span>)</label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_faceWidth" min="2" max="80" step="0.5" value="14" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_faceWidth" min="2" max="80" step="0.5" value="14" class="w-full">
+                    </div>
+
+                    <!-- Helix Angle (beta) & Handedness -->
+                    <div id="helixControls" class="space-y-3 pt-2 border-t border-slate-700/50">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1">
+                                <label class="text-slate-300 font-medium">Helix Angle (<span class="font-mono text-sky-400">β</span>)</label>
+                                <div class="flex items-center space-x-1">
+                                    <input type="number" id="num_helixAngle" min="0" max="45" step="1" value="20" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                    <span class="text-slate-500 font-mono text-[11px]">deg</span>
+                                </div>
+                            </div>
+                            <input type="range" id="rng_helixAngle" min="0" max="45" step="1" value="20" class="w-full">
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-300 font-medium">Helix Handedness</span>
+                            <div class="inline-flex rounded-lg bg-slate-900 p-0.5 border border-slate-700">
+                                <button id="handRightBtn" onclick="setHandedness(1)" class="px-2.5 py-1 rounded-md text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30">Right (RH)</button>
+                                <button id="handLeftBtn" onclick="setHandedness(-1)" class="px-2.5 py-1 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200">Left (LH)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ring Wall Thickness (Only for Internal Ring Gear) -->
+                    <div id="ringWallControls" class="hidden pt-2 border-t border-slate-700/50">
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">Outer Ring Wall Rim (<span class="font-mono text-sky-400">w<sub>r</sub></span>)</label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_ringWall" min="3" max="50" step="0.5" value="10" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_ringWall" min="3" max="50" step="0.5" value="10" class="w-full">
+                    </div>
+
+                    <!-- 3D Printing Backlash / Clearance -->
+                    <div class="pt-2 border-t border-slate-700/50">
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">3D Print Backlash (<span class="font-mono text-sky-400">j<sub>n</sub></span>)</label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_backlash" min="0" max="0.6" step="0.02" value="0.08" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300 focus:outline-none focus:border-sky-500">
+                                <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_backlash" min="0" max="0.6" step="0.01" value="0.08" class="w-full">
+                    </div>
+                </div>
+
+                <!-- SECTION B: Bore, Keyway & Shaft Interface (For External Gears) -->
+                <div id="boreSection" class="bg-slate-800/40 border border-slate-800 rounded-xl p-3.5 space-y-3.5">
+                    <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <i data-lucide="circle-dashed" class="w-4 h-4 text-emerald-400"></i>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">Bore, Keyway & Hub</h2>
+                        </div>
+                        <span class="text-[10px] font-mono text-emerald-400">DIN 6885</span>
+                    </div>
+
+                    <!-- Bore Shape Type -->
+                    <div>
+                        <label class="block text-xs text-slate-300 font-medium mb-1.5">Shaft Bore Profile</label>
+                        <select id="boreTypeSelect" onchange="onBoreTypeChange(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500">
+                            <option value="round">Round Shaft Bore</option>
+                            <option value="keyway" selected>Round + ISO/DIN Keyway</option>
+                            <option value="dshaft">D-Shaft (Flat Set-Screw Side)</option>
+                            <option value="hex">Hexagonal Bore (Across Flats)</option>
+                            <option value="square">Square Bore</option>
+                            <option value="none">No Bore (Solid Center)</option>
+                        </select>
+                    </div>
+
+                    <!-- Bore Diameter -->
+                    <div id="boreDiameterControl">
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">Bore Diameter (<span class="font-mono text-emerald-400">d<sub>b</sub></span>)</label>
+                            <div class="flex items-center space-x-1">
+                                <input type="number" id="num_boreDia" min="2" max="150" step="0.5" value="12" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-emerald-300 focus:outline-none focus:border-emerald-500">
+                                <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                            </div>
+                        </div>
+                        <input type="range" id="rng_boreDia" min="2" max="100" step="0.5" value="12" class="w-full">
+                    </div>
+
+                    <!-- ISO Keyway Controls -->
+                    <div id="keywayControls" class="space-y-3 pt-2 border-t border-slate-700/50">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] text-slate-400">Keyway Dimensions</span>
+                            <button onclick="applyAutoKeyway()" class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition font-mono">
+                                Auto DIN 6885
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Key Width (<span class="font-mono">b<sub>k</sub></span> mm)</label>
+                                <input type="number" id="num_keyWidth" min="1" max="36" step="0.5" value="4" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 font-mono text-xs text-emerald-300">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-400 mb-1">Key Depth (<span class="font-mono">t<sub>2</sub></span> mm)</label>
+                                <input type="number" id="num_keyDepth" min="0.5" max="20" step="0.1" value="1.8" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 font-mono text-xs text-emerald-300">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- D-Shaft Flat Depth -->
+                    <div id="dShaftControls" class="hidden pt-2 border-t border-slate-700/50">
+                        <div class="flex justify-between text-xs mb-1">
+                            <label class="text-slate-300 font-medium">D-Flat Cut Depth (%)</label>
+                            <span id="dFlatVal" class="font-mono text-emerald-300">15%</span>
+                        </div>
+                        <input type="range" id="rng_dFlat" min="5" max="35" step="1" value="15" class="w-full">
+                    </div>
+
+                    <!-- Protruding Cylindrical Hub & Web Relief -->
+                    <div class="pt-2 border-t border-slate-700/50 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label for="chk_hub" class="text-xs font-medium text-slate-200 cursor-pointer flex items-center gap-2">
+                                <input type="checkbox" id="chk_hub" onchange="toggleHub(this.checked)" class="rounded bg-slate-900 border-slate-700 text-sky-500 focus:ring-0">
+                                <span>Add Protruding Axial Hub</span>
+                            </label>
+                            <span class="text-[10px] font-mono text-slate-400">Top Boss</span>
+                        </div>
+
+                        <div id="hubSliders" class="hidden space-y-3 pl-2 border-l-2 border-sky-500/40">
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <label class="text-slate-300">Hub Diameter (<span class="font-mono text-sky-400">d<sub>h</sub></span>)</label>
+                                    <div class="flex items-center space-x-1">
+                                        <input type="number" id="num_hubDia" min="6" max="160" step="1" value="26" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
+                                        <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                                    </div>
+                                </div>
+                                <input type="range" id="rng_hubDia" min="6" max="160" step="1" value="26" class="w-full">
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <label class="text-slate-300">Hub Length (<span class="font-mono text-sky-400">l<sub>h</sub></span>)</label>
+                                    <div class="flex items-center space-x-1">
+                                        <input type="number" id="num_hubLen" min="1" max="50" step="0.5" value="8" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-sky-300">
+                                        <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                                    </div>
+                                </div>
+                                <input type="range" id="rng_hubLen" min="1" max="50" step="0.5" value="8" class="w-full">
+                            </div>
+                        </div>
+
+                        <!-- Weight Reduction Recessed Web -->
+                        <div class="flex items-center justify-between pt-1">
+                            <label for="chk_recess" class="text-xs font-medium text-slate-200 cursor-pointer flex items-center gap-2">
+                                <input type="checkbox" id="chk_recess" onchange="toggleRecess(this.checked)" class="rounded bg-slate-900 border-slate-700 text-sky-500 focus:ring-0">
+                                <span>Weight-Saving Recessed Web</span>
+                            </label>
+                            <span class="text-[10px] font-mono text-slate-400">Dual-Sided Pocket</span>
+                        </div>
+
+                        <div id="recessSliders" class="hidden pl-2 border-l-2 border-emerald-500/40">
+                            <div class="flex justify-between text-xs mb-1">
+                                <label class="text-slate-300">Web Recess Depth (each side)</label>
+                                <div class="flex items-center space-x-1">
+                                    <input type="number" id="num_recessDepth" min="0.5" max="30" step="0.5" value="3.5" class="w-16 bg-slate-900 border border-slate-700 rounded px-1.5 py-0.5 text-right font-mono text-xs text-emerald-300">
+                                    <span class="text-slate-500 font-mono text-[11px]">mm</span>
+                                </div>
+                            </div>
+                            <input type="range" id="rng_recessDepth" min="0.5" max="25" step="0.5" value="3.5" class="w-full">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION C: Mesh Quality / Slicer Resolution -->
+                <div class="bg-slate-800/40 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-3.5 h-3.5 text-purple-400"></i>
+                            Mesh Resolution
+                        </span>
+                        <span id="polyCountBadge" class="text-[11px] font-mono text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/30">0 tris</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5 pt-1">
+                        <button onclick="setMeshQuality('draft')" id="qual_draft" class="qual-btn py-1.5 rounded border border-slate-700 text-xs font-medium text-slate-400 hover:text-white">Fast Draft</button>
+                        <button onclick="setMeshQuality('high')" id="qual_high" class="qual-btn py-1.5 rounded border border-sky-500/40 bg-sky-500/20 text-xs font-medium text-sky-300">High CAD</button>
+                        <button onclick="setMeshQuality('ultra')" id="qual_ultra" class="qual-btn py-1.5 rounded border border-slate-700 text-xs font-medium text-slate-400 hover:text-white">Ultra Print</button>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Right 3D Viewport & Engineering Overlay -->
+        <main class="flex-1 flex flex-col relative bg-cad-bg overflow-hidden">
+            
+            <!-- 3D Canvas Container -->
+            <div id="viewportContainer" class="flex-1 relative w-full h-full">
+                <!-- Floating Viewport Toolbar (Top Left) -->
+                <div class="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-slate-900/85 backdrop-blur-md p-1.5 rounded-xl border border-slate-700/80 shadow-xl">
+                    <button onclick="resetCamera()" title="Reset Camera View" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-200 hover:bg-slate-800 transition">
+                        <i data-lucide="focus" class="w-3.5 h-3.5 text-sky-400"></i>
+                        <span>Reset View</span>
+                    </button>
+                    <button onclick="setCameraTop()" title="Top Orthographic Alignment" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-200 hover:bg-slate-800 transition">
+                        <i data-lucide="compass" class="w-3.5 h-3.5 text-emerald-400"></i>
+                        <span>Top XY</span>
+                    </button>
+                    <button id="btnWireframe" onclick="toggleWireframe()" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition">
+                        <i data-lucide="box" class="w-3.5 h-3.5 text-purple-400"></i>
+                        <span>Wireframe</span>
+                    </button>
+                    <button id="btnAutoRotate" onclick="toggleAutoRotate()" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-slate-800 transition">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <span>Turntable</span>
+                    </button>
+                    <button id="btnPitchCylinder" onclick="togglePitchCylinder()" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30 transition">
+                        <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+                        <span>Pitch Ø</span>
+                    </button>
+                </div>
+
+                <!-- 2D Single Tooth Involute Inspector (Top Right Floating Card) -->
+                <div class="absolute top-3 right-3 z-10 w-56 sm:w-64 bg-slate-900/90 backdrop-blur-md rounded-xl border border-slate-700/80 shadow-2xl overflow-hidden">
+                    <div class="px-3 py-2 border-b border-slate-800 flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                            <i data-lucide="scan-line" class="w-3.5 h-3.5 text-sky-400"></i>
+                            2D Involute Profile
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">1:1 Tooth</span>
+                    </div>
+                    <div class="p-2 flex flex-col items-center cad-grid-bg">
+                        <canvas id="tooth2dCanvas" width="220" height="150" class="w-full h-[135px] rounded"></canvas>
+                        <div class="w-full flex justify-between text-[10px] font-mono px-1 pt-1 border-t border-slate-800/80 text-slate-400">
+                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-sky-400 inline-block"></span>Pitch Circle</span>
+                            <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>Base Circle</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Toast Notification -->
+                <div id="toastBanner" class="hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-30 bg-emerald-950/95 border border-emerald-500/50 text-emerald-200 px-4 py-2 rounded-xl shadow-2xl text-xs font-medium flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                    <span id="toastMessage">Watertight Binary STL exported!</span>
+                </div>
+            </div>
+
+            <!-- Real-Time ISO 53 Engineering Readout Panel (Bottom Bar) -->
+            <section class="bg-slate-900/95 border-t border-slate-800 px-4 py-2.5 shrink-0 z-10">
+                <div class="flex items-center justify-between mb-1.5">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">Real-Time ISO 21771 / DIN 867 Metrology Readout</span>
+                        <span id="filenamePreview" class="hidden sm:inline-block text-[11px] font-mono text-slate-400 bg-slate-800 px-2 py-0.5 rounded">ISO_Spur_Gear_m2.5_z24.stl</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-emerald-400 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Watertight 2-Manifold Ready
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Pitch Diameter (d)</div>
+                        <div id="read_pitchDia" class="text-sm font-mono font-semibold text-sky-400">60.00 mm</div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Outside / Tip Ø (d<sub>a</sub>)</div>
+                        <div id="read_outerDia" class="text-sm font-mono font-semibold text-white">65.00 mm</div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Root / Dedendum Ø (d<sub>f</sub>)</div>
+                        <div id="read_rootDia" class="text-sm font-mono font-semibold text-slate-200">53.75 mm</div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Base Circle Ø (d<sub>b</sub>)</div>
+                        <div id="read_baseDia" class="text-sm font-mono font-semibold text-amber-400">56.38 mm</div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Circular Pitch (p)</div>
+                        <div id="read_circPitch" class="text-sm font-mono font-semibold text-slate-200">7.85 mm</div>
+                    </div>
+                    <div class="bg-slate-950/80 border border-slate-800/90 rounded-lg px-3 py-1.5">
+                        <div class="text-[10px] text-slate-400 uppercase">Arc Tooth Thick (s)</div>
+                        <div id="read_toothThick" class="text-sm font-mono font-semibold text-emerald-400">3.85 mm</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Application Logic: Parametric Involute Math, Watertight Manifold Builder & Three.js Renderer -->
+    <script>
+        // ============================================================================
+        // 1. APPLICATION STATE & ISO PARAMETERS
+        // ============================================================================
+        const state = {
+            gearType: 'spur',          // 'spur' | 'helical' | 'herringbone' | 'internal'
+            module: 2.5,               // m (mm)
+            teeth: 24,                 // z
+            pressureAngle: 20,         // alpha (degrees)
+            profileShift: 0.0,         // x (-0.5 to +0.6)
+            faceWidth: 14.0,           // b (mm)
+            helixAngle: 20.0,          // beta (degrees, used for helical & herringbone)
+            handedness: 1,             // 1 = Right Hand, -1 = Left Hand
+            ringWall: 10.0,            // wr (mm, outer rim wall thickness for internal ring gear)
+            backlash: 0.08,            // jn (mm, 3D printing clearance)
+            boreType: 'keyway',        // 'round' | 'keyway' | 'dshaft' | 'hex' | 'square' | 'none'
+            boreDia: 12.0,             // db (mm)
+            keyWidth: 4.0,             // bk (mm)
+            keyDepth: 1.8,             // t2 (mm)
+            dFlatPercent: 15,          // % of diameter shaved flat
+            hasHub: false,
+            hubDia: 26.0,
+            hubLen: 8.0,
+            hasRecess: false,
+            recessDepth: 3.5,
+            meshQuality: 'high',       // 'draft' | 'high' | 'ultra'
+            wireframe: false,
+            autoRotate: false,
+            showPitchCylinder: true
+        };
+
+        // Standard ISO 54 Modules Series I
+        const ISO_MODULES = [0.5, 0.6, 0.8, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0];
+
+        // DIN 6885 Standard Keyway Lookup Table [maxBoreDia, keyWidth, shaftHubDepth_t2]
+        const DIN_6885_KEYWAYS = [
+            [8, 2.0, 1.0],
+            [10, 3.0, 1.4],
+            [12, 4.0, 1.8],
+            [17, 5.0, 2.3],
+            [22, 6.0, 2.8],
+            [30, 8.0, 3.3],
+            [38, 10.0, 3.3],
+            [44, 12.0, 3.3],
+            [50, 14.0, 3.8],
+            [58, 16.0, 4.3],
+            [65, 18.0, 4.4],
+            [75, 20.0, 4.9],
+            [85, 22.0, 5.4],
+            [95, 25.0, 5.4],
+            [200, 28.0, 6.4]
+        ];
+
+        // ============================================================================
+        // 2. THREE.JS SCENE INITIALIZATION
+        // ============================================================================
+        let scene, camera, renderer, controls;
+        let gearMesh = null;
+        let pitchCylinderMesh = null;
+        let currentGeometry = null;
+
+        function initThreeViewport() {
+            const container = document.getElementById('viewportContainer');
+            const w = container.clientWidth || 800;
+            const h = container.clientHeight || 600;
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0b0f17);
+
+            camera = new THREE.PerspectiveCamera(40, w / h, 0.5, 3000);
+            camera.position.set(0, -115, 95);
+            camera.up.set(0, 0, 1); // Z-up engineering convention
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.06;
+            controls.maxDistance = 1200;
+            controls.minDistance = 8;
+
+            // Studio CAD Lighting Setup (Z-up)
+            const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.55);
+            scene.add(ambientLight);
+
+            const keyLight = new THREE.DirectionalLight(0xffffff, 0.95);
+            keyLight.position.set(120, -140, 180);
+            scene.add(keyLight);
+
+            const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.45);
+            fillLight.position.set(-140, 100, 80);
+            scene.add(fillLight);
+
+            const rimLight = new THREE.DirectionalLight(0x818cf8, 0.4);
+            rimLight.position.set(0, 150, -120);
+            scene.add(rimLight);
+
+            // Engineering XY Reference Grid (Rotated to lie on XY plane Z=0)
+            const gridHelper = new THREE.GridHelper(240, 24, 0x0ea5e9, 0x1e293b);
+            gridHelper.rotation.x = Math.PI / 2;
+            scene.add(gridHelper);
+
+            window.addEventListener('resize', onViewportResize);
+            animateLoop();
+        }
+
+        function onViewportResize() {
+            const container = document.getElementById('viewportContainer');
+            if (!container || !renderer) return;
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        }
+
+        function animateLoop() {
+            requestAnimationFrame(animateLoop);
+            if (state.autoRotate && gearMesh) {
+                gearMesh.rotation.z += 0.006;
+                if (pitchCylinderMesh) pitchCylinderMesh.rotation.z += 0.006;
+            }
+            if (controls) controls.update();
+            if (renderer && scene && camera) renderer.render(scene, camera);
+        }
+
+        // ============================================================================
+        // 3. ISO 53 / DIN 867 INVOLUTE GEAR MATHEMATICS & 2D PROFILE GENERATOR
+        // ============================================================================
+        function involuteAngle(alphaRad) {
+            return Math.tan(alphaRad) - alphaRad;
+        }
+
+        /**
+         * Computes all ISO gear dimensions and generates a uniform-length closed 2D tooth ring
+         * and inner bore ring so we can build a 100% watertight 2-manifold 3D extrusion.
+         */
+        function computeGearDimensions() {
+            const m = state.module;
+            const z = state.teeth;
+            const alpha = (state.pressureAngle * Math.PI) / 180;
+            const x = state.profileShift;
+            const isInternal = state.gearType === 'internal';
+
+            // Pitch diameter & radius
+            const d = m * z;
+            const rPitch = d / 2;
+
+            // Base circle diameter & radius
+            const db = d * Math.cos(alpha);
+            const rBase = db / 2;
+
+            // Addendum & Dedendum according to ISO 53
+            let ha, hf, rOuter, rRoot;
+            if (!isInternal) {
+                ha = m * (1.0 + x);
+                hf = m * (1.25 - x);
+                rOuter = rPitch + ha;
+                rRoot = Math.max(1.2, rPitch - hf);
+            } else {
+                // Internal ring gear has inward-pointing teeth:
+                // Tip diameter is smaller than pitch diameter, root diameter is larger
+                ha = m * (1.0 - x);
+                hf = m * (1.25 + x);
+                rOuter = Math.max(2.0, rPitch - ha); // Inward tooth tip radius
+                rRoot = rPitch + hf;                  // Root trough radius
+            }
+
+            // Circular pitch & tooth thickness at pitch circle
+            const circPitch = Math.PI * m;
+            const backlashLinear = state.backlash;
+            const sPitch = (circPitch / 2) + (2 * x * m * Math.tan(alpha)) - backlashLinear;
+
+            // Minimum profile shift to avoid undercut: x_min = 1 - z * sin^2(alpha) / 2
+            const zMinUndercut = 2 / Math.pow(Math.sin(alpha), 2);
+            const xMinRecommended = Math.max(-0.5, 1.0 - (z * Math.pow(Math.sin(alpha), 2)) / 2);
+            const hasUndercutRisk = !isInternal && (z + 2 * x < zMinUndercut - 0.5);
+
+            return {
+                m, z, alpha, x, isInternal,
+                d, rPitch, db, rBase,
+                da: rOuter * 2, rOuter,
+                df: rRoot * 2, rRoot,
+                circPitch, sPitch,
+                hasUndercutRisk, xMinRecommended
+            };
+        }
+
+        /**
+         * Generates the closed 2D tooth loop vertices in counter-clockwise order.
+         * Every tooth has fixed segment counts so slice-to-slice topology is strictly invariant.
+         */
+        function buildGearToothLoop2D(dims, quality) {
+            const { z, alpha, rPitch, rBase, rOuter, rRoot, sPitch, isInternal } = dims;
+
+            const flankSamples = quality === 'ultra' ? 14 : (quality === 'high' ? 10 : 6);
+            const tipSamples   = quality === 'ultra' ? 5  : (quality === 'high' ? 3  : 2);
+            const rootSamples  = quality === 'ultra' ? 5  : (quality === 'high' ? 3  : 2);
+
+            const pitchAngle = (2 * Math.PI) / z;
+            const invAlpha0 = involuteAngle(alpha);
+
+            // Half-tooth angular thickness at the pitch circle
+            const halfToothAnglePitch = sPitch / (2 * rPitch);
+
+            // Base angular half-thickness
+            const thetaBaseHalf = halfToothAnglePitch + invAlpha0;
+
+            const points = [];
+
+            if (!isInternal) {
+                // EXTERNAL GEAR TOOTH PROFILE (Spur, Helical, Herringbone)
+                const rStartFlank = Math.max(rRoot, rBase);
+
+                // Precompute right-side flank (radius, positive angle offset from tooth centerline)
+                const halfFlank = [];
+                if (rRoot < rBase) {
+                    // Radial root-to-base transition with slight trochoid fillet ease
+                    const filletR = rRoot + 0.35 * (rBase - rRoot);
+                    halfFlank.push({ r: rRoot, ang: thetaBaseHalf * 1.04 });
+                    halfFlank.push({ r: filletR, ang: thetaBaseHalf * 1.01 });
+                }
+
+                for (let i = 0; i <= flankSamples; i++) {
+                    const t = i / flankSamples;
+                    const r = rStartFlank + t * (rOuter - rStartFlank);
+                    const cosPhi = Math.min(1.0, rBase / r);
+                    const phi = Math.acos(cosPhi);
+                    const invPhi = involuteAngle(phi);
+                    // Angle from tooth centerline decreases as radius increases
+                    const ang = Math.max(0.002, thetaBaseHalf - invPhi);
+                    halfFlank.push({ r, ang });
+                }
+
+                const tipHalfAngle = halfFlank[halfFlank.length - 1].ang;
+                const rootHalfAngle = halfFlank[0].ang;
+
+                for (let tIdx = 0; tIdx < z; tIdx++) {
+                    const centerAngle = tIdx * pitchAngle;
+
+                    // 1. Left Flank (ascending from root to tip: angle is centerAngle - ang)
+                    for (let i = 0; i < halfFlank.length; i++) {
+                        const pt = halfFlank[i];
+                        const a = centerAngle - pt.ang;
+                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
+                    }
+
+                    // 2. Tip Land Arc (from centerAngle - tipHalfAngle to centerAngle + tipHalfAngle)
+                    for (let i = 1; i < tipSamples; i++) {
+                        const frac = i / tipSamples;
+                        const a = centerAngle - tipHalfAngle + frac * (2 * tipHalfAngle);
+                        points.push({ x: rOuter * Math.cos(a), y: rOuter * Math.sin(a), r: rOuter, a });
+                    }
+
+                    // 3. Right Flank (descending from tip to root: angle is centerAngle + ang)
+                    for (let i = halfFlank.length - 1; i >= 0; i--) {
+                        const pt = halfFlank[i];
+                        const a = centerAngle + pt.ang;
+                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
+                    }
+
+                    // 4. Root Dedendum Arc (connecting to next tooth's left root)
+                    const rootStart = centerAngle + rootHalfAngle;
+                    const rootEnd = (tIdx + 1) * pitchAngle - rootHalfAngle;
+                    for (let i = 1; i <= rootSamples; i++) {
+                        const frac = i / (rootSamples + 1);
+                        const a = rootStart + frac * (rootEnd - rootStart);
+                        points.push({ x: rRoot * Math.cos(a), y: rRoot * Math.sin(a), r: rRoot, a });
+                    }
+                }
+            } else {
+                // INTERNAL RING GEAR PROFILE (Teeth point inward from rRoot down to rOuter)
+                const rStart = Math.max(rOuter, rBase);
+                const halfFlank = [];
+
+                for (let i = 0; i <= flankSamples; i++) {
+                    const t = i / flankSamples;
+                    // Moving from outer trough (rRoot) inward to tooth tip (rOuter)
+                    const r = rRoot - t * (rRoot - rOuter);
+                    const rClamped = Math.max(r, rBase);
+                    const cosPhi = Math.min(1.0, rBase / rClamped);
+                    const phi = Math.acos(cosPhi);
+                    const invPhi = involuteAngle(phi);
+                    // Space width / tooth thickness inverted for internal ring gear
+                    const ang = Math.max(0.002, (pitchAngle / 2 - thetaBaseHalf) + invPhi);
+                    halfFlank.push({ r, ang });
+                }
+
+                const tipHalfAngle = halfFlank[halfFlank.length - 1].ang;
+                const rootHalfAngle = halfFlank[0].ang;
+
+                for (let tIdx = 0; tIdx < z; tIdx++) {
+                    const centerAngle = tIdx * pitchAngle;
+
+                    // 1. Left Flank (from outer root inward to inner tip)
+                    for (let i = 0; i < halfFlank.length; i++) {
+                        const pt = halfFlank[i];
+                        const a = centerAngle - pt.ang;
+                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
+                    }
+
+                    // 2. Inner Tip Land Arc
+                    for (let i = 1; i < tipSamples; i++) {
+                        const frac = i / tipSamples;
+                        const a = centerAngle - tipHalfAngle + frac * (2 * tipHalfAngle);
+                        points.push({ x: rOuter * Math.cos(a), y: rOuter * Math.sin(a), r: rOuter, a });
+                    }
+
+                    // 3. Right Flank (from inner tip outward to outer root)
+                    for (let i = halfFlank.length - 1; i >= 0; i--) {
+                        const pt = halfFlank[i];
+                        const a = centerAngle + pt.ang;
+                        points.push({ x: pt.r * Math.cos(a), y: pt.r * Math.sin(a), r: pt.r, a });
+                    }
+
+                    // 4. Root Arc between inward teeth
+                    const rootStart = centerAngle + rootHalfAngle;
+                    const rootEnd = (tIdx + 1) * pitchAngle - rootHalfAngle;
+                    for (let i = 1; i <= rootSamples; i++) {
+                        const frac = i / (rootSamples + 1);
+                        const a = rootStart + frac * (rootEnd - rootStart);
+                        points.push({ x: rRoot * Math.cos(a), y: rRoot * Math.sin(a), r: rRoot, a });
+                    }
+                }
+            }
+
+            return points;
+        }
+
+        /**
+         * Evaluates the exact radius of the inner bore (including ISO keyway, D-shaft, Hex, Square)
+         * at any polar angle theta, or outer ring radius for internal gears.
+         */
+        function evaluateBorePointAtAngle(theta, maxAllowedRadius) {
+            const boreType = state.boreType;
+            const rBore = Math.min(state.boreDia / 2, maxAllowedRadius);
+
+            if (boreType === 'none' || rBore <= 0.5) {
+                // Tiny 0.001mm pinhole only if needed, or handled via solid cap
+                return { x: 0, y: 0, r: 0 };
+            }
+
+            // Normalize angle to [-PI, PI] so angle 0 is along +X axis (where we place the keyway/D-flat)
+            let a = ((theta + Math.PI) % (2 * Math.PI));
+            if (a < 0) a += 2 * Math.PI;
+            a -= Math.PI;
+
+            if (boreType === 'round') {
+                return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
+            }
+
+            if (boreType === 'keyway') {
+                // Keyway centered at angle = 0 (+X axis)
+                const halfKeyW = Math.min(state.keyWidth / 2, rBore * 0.75);
+                const keyDepth = Math.min(state.keyDepth, maxAllowedRadius - rBore);
+                const keyOuterX = Math.sqrt(Math.max(0.01, rBore * rBore - halfKeyW * halfKeyW)) + keyDepth;
+                const keyHalfAngle = Math.asin(halfKeyW / rBore);
+
+                if (Math.abs(a) <= keyHalfAngle) {
+                    // Project ray onto the vertical line x = keyOuterX, clamped to y in [-halfKeyW, +halfKeyW]
+                    const tanA = Math.tan(a);
+                    const yProj = keyOuterX * tanA;
+                    if (Math.abs(yProj) <= halfKeyW) {
+                        return { x: keyOuterX, y: yProj };
+                    }
+                }
+                return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
+            }
+
+            if (boreType === 'dshaft') {
+                // Flat cut on +X side
+                const flatFactor = 1.0 - (state.dFlatPercent / 100) * 2;
+                const flatX = rBore * Math.max(0.25, flatFactor);
+                const flatAngle = Math.acos(flatX / rBore);
+                if (Math.abs(a) <= flatAngle) {
+                    const rFlat = flatX / Math.cos(a);
+                    return { x: rFlat * Math.cos(theta), y: rFlat * Math.sin(theta) };
+                }
+                return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
+            }
+
+            if (boreType === 'hex') {
+                // Regular 6-sided polygon where boreDia is Across-Flats (inscribed diameter)
+                const sector = Math.PI / 3;
+                const localA = ((theta % sector) + sector) % sector - (sector / 2);
+                const rHex = rBore / Math.cos(localA);
+                return { x: rHex * Math.cos(theta), y: rHex * Math.sin(theta) };
+            }
+
+            if (boreType === 'square') {
+                // Regular 4-sided square where boreDia is Across-Flats
+                const sector = Math.PI / 2;
+                const localA = ((theta + Math.PI / 4) % sector + sector) % sector - (sector / 2);
+                const rSq = rBore / Math.cos(localA);
+                return { x: rSq * Math.cos(theta), y: rSq * Math.sin(theta) };
+            }
+
+            return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
+        }
+
+        // ============================================================================
+        // 4. WATERTIGHT 2-MANIFOLD 3D EXTRUSION & HUB/WEB MESH ENGINE
+        // ============================================================================
+        function buildWatertightGearGeometry() {
+            const dims = computeGearDimensions();
+            const outerToothLoop = buildGearToothLoop2D(dims, state.meshQuality);
+            const N = outerToothLoop.length; // Total angular vertices per cross-section loop
+
+            const b = state.faceWidth;
+            const halfB = b / 2;
+
+            // Axial slice count for helical/herringbone twist
+            let axialSlices = 2;
+            if (state.gearType === 'helical') {
+                axialSlices = state.meshQuality === 'ultra' ? 42 : (state.meshQuality === 'high' ? 28 : 14);
+            } else if (state.gearType === 'herringbone') {
+                // Even number of slices so z = 0 apex is guaranteed to have a crisp vertex ring
+                axialSlices = state.meshQuality === 'ultra' ? 48 : (state.meshQuality === 'high' ? 32 : 16);
+            }
+
+            // Total twist rate: d(theta)/dz = handedness * tan(beta) / rPitch
+            const betaRad = (state.gearType === 'spur' || state.helixAngle === 0)
+                ? 0
+                : (state.helixAngle * Math.PI) / 180;
+            const twistRate = state.handedness * Math.tan(betaRad) / dims.rPitch;
+
+            const positions = [];
+            const pushTri = (p1, p2, p3) => {
+                positions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z);
+            };
+            const pushQuad = (bl, br, tr, tl) => {
+                // Two counter-clockwise triangles forming a quad
+                pushTri(bl, br, tr);
+                pushTri(bl, tr, tl);
+            };
+
+            const isInternal = dims.isInternal;
+            const hasBore = isInternal || (state.boreType !== 'none' && state.boreDia > 0.5);
+
+            // Maximum safe bore radius so bore never breaches root circle
+            const maxSafeBoreR = Math.max(1.5, dims.rRoot - 1.5 * dims.m);
+
+            // Build 3D rings for every axial slice z_k
+            const toothRings3D = [];
+            const boreRings3D = [];
+
+            for (let k = 0; k <= axialSlices; k++) {
+                const frac = k / axialSlices;
+                const zPos = -halfB + frac * b;
+
+                // Compute twist angle at height zPos
+                let twistAngle = 0;
+                if (state.gearType === 'helical') {
+                    twistAngle = zPos * twistRate;
+                } else if (state.gearType === 'herringbone') {
+                    // Symmetric V-chevron meeting at zPos = 0
+                    twistAngle = (halfB - Math.abs(zPos)) * twistRate;
+                }
+
+                const cosT = Math.cos(twistAngle);
+                const sinT = Math.sin(twistAngle);
+
+                const tRing = [];
+                const bRing = [];
+
+                for (let i = 0; i < N; i++) {
+                    const pt = outerToothLoop[i];
+                    // Rotate tooth point by twistAngle
+                    const rx = pt.x * cosT - pt.y * sinT;
+                    const ry = pt.x * sinT + pt.y * cosT;
+                    tRing.push({ x: rx, y: ry, z: zPos });
+
+                    if (isInternal) {
+                        // For internal ring gear, the outer boundary is a smooth cylinder of radius rRoot + ringWall
+                        const rOuterShell = dims.rRoot + state.ringWall;
+                        const ang = Math.atan2(ry, rx);
+                        bRing.push({
+                            x: rOuterShell * Math.cos(ang),
+                            y: rOuterShell * Math.sin(ang),
+                            z: zPos
+                        });
+                    } else if (hasBore) {
+                        // Stationary bore aligned with each tooth vertex angle to prevent self-intersecting top/bottom caps
+                        const rotAngle = pt.a + twistAngle;
+                        const bPt = evaluateBorePointAtAngle(rotAngle, maxSafeBoreR);
+                        bRing.push({ x: bPt.x, y: bPt.y, z: zPos });
+                    }
+                }
+
+                toothRings3D.push(tRing);
+                boreRings3D.push(bRing);
+            }
+
+            // 1. Stitch Tooth Flank Walls across all axial slices
+            for (let k = 0; k < axialSlices; k++) {
+                const ringA = toothRings3D[k];
+                const ringB = toothRings3D[k + 1];
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    if (!isInternal) {
+                        // Outward-facing normal for external gear teeth
+                        pushQuad(ringA[i], ringA[next], ringB[next], ringB[i]);
+                    } else {
+                        // Inward-facing normal for internal gear teeth
+                        pushQuad(ringA[next], ringA[i], ringB[i], ringB[next]);
+                    }
+                }
+            }
+
+            // 2. Stitch Inner Bore Wall (or Outer Ring Wall for Internal Gear)
+            if (hasBore) {
+                for (let k = 0; k < axialSlices; k++) {
+                    const bRingA = boreRings3D[k];
+                    const bRingB = boreRings3D[k + 1];
+                    for (let i = 0; i < N; i++) {
+                        const next = (i + 1) % N;
+                        if (!isInternal) {
+                            // Inward-facing normal for shaft bore
+                            pushQuad(bRingA[next], bRingA[i], bRingB[i], bRingB[next]);
+                        } else {
+                            // Outward-facing normal for outer cylindrical shell of ring gear
+                            pushQuad(bRingA[i], bRingA[next], bRingB[next], bRingB[i]);
+                        }
+                    }
+                }
+            }
+
+            // 3. Top & Bottom End Caps (Including Optional Protruding Hub & Recessed Webbing)
+            if (isInternal) {
+                // Internal Ring Gear: Annular top and bottom caps between inward teeth (toothRings3D) and outer shell (boreRings3D)
+                const botTooth = toothRings3D[0];
+                const botOuter = boreRings3D[0];
+                const topTooth = toothRings3D[axialSlices];
+                const topOuter = boreRings3D[axialSlices];
+
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    // Top cap (+Z normal): from inner tooth to outer shell
+                    pushQuad(topTooth[i], topOuter[i], topOuter[next], topTooth[next]);
+                    // Bottom cap (-Z normal)
+                    pushQuad(botOuter[i], botTooth[i], botTooth[next], botOuter[next]);
+                }
+            } else if (!hasBore) {
+                // Solid gear without bore: Triangle fan to center (0,0, +/-halfB)
+                const botTooth = toothRings3D[0];
+                const topTooth = toothRings3D[axialSlices];
+                const centerBot = { x: 0, y: 0, z: -halfB };
+                const centerTop = { x: 0, y: 0, z: halfB };
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    pushTri(centerTop, topTooth[i], topTooth[next]);
+                    pushTri(centerBot, botTooth[next], botTooth[i]);
+                }
+            } else {
+                // External Gear with Bore + Optional Hub + Optional Recessed Web
+                const rBoreActual = Math.min(state.boreDia / 2, maxSafeBoreR);
+                const rRimInner = Math.max(rBoreActual + 2.0, dims.rRoot - 1.2 * dims.m);
+
+                // Determine Hub radius & height
+                const canFitHub = state.hasHub && (rRimInner > rBoreActual + 1.0);
+                const rHub = canFitHub
+                    ? Math.min(Math.max(state.hubDia / 2, rBoreActual + 1.5), dims.rRoot - 0.5 * dims.m)
+                    : rBoreActual;
+                const hubLen = canFitHub ? state.hubLen : 0;
+
+                // Determine Web Recess
+                const canFitRecess = state.hasRecess && (rRimInner > rHub + 1.5) && (b > 4.0);
+                const recessDepth = canFitRecess ? Math.min(state.recessDepth, halfB - 1.2) : 0;
+
+                const topTooth = toothRings3D[axialSlices];
+                const botTooth = toothRings3D[0];
+                const topBoreBase = boreRings3D[axialSlices];
+                const botBoreBase = boreRings3D[0];
+
+                // Helper to create concentric circular ring aligned with topTooth/botTooth angles
+                const makeConcentricRing = (refRing, radius, zVal) => {
+                    return refRing.map(pt => {
+                        const a = Math.atan2(pt.y, pt.x);
+                        return { x: radius * Math.cos(a), y: radius * Math.sin(a), z: zVal };
+                    });
+                };
+
+                // --- TOP FACE (+Z) ---
+                // If hub is active, the bore must extend up to halfB + hubLen!
+                // Wait: earlier we stitched the bore up to topBoreBase (z = +halfB).
+                // If hubLen > 0, let's extend the bore from z = +halfB up to z = +halfB + hubLen so it's 100% manifold.
+                let finalTopBoreRing = topBoreBase;
+                if (canFitHub && hubLen > 0) {
+                    const hubTopBoreRing = topBoreBase.map(pt => ({ x: pt.x, y: pt.y, z: halfB + hubLen }));
+                    for (let i = 0; i < N; i++) {
+                        const next = (i + 1) % N;
+                        pushQuad(topBoreBase[next], topBoreBase[i], hubTopBoreRing[i], hubTopBoreRing[next]);
+                    }
+                    finalTopBoreRing = hubTopBoreRing;
+                }
+
+                // Construct stepped radial profile on Top (+Z) from finalTopBoreRing outward to topTooth
+                const ringHubTop     = canFitHub ? makeConcentricRing(topTooth, rHub, halfB + hubLen) : null;
+                const ringHubBaseTop = makeConcentricRing(topTooth, rHub, halfB - recessDepth);
+                const ringRimFloor   = makeConcentricRing(topTooth, rRimInner, halfB - recessDepth);
+                const ringRimTop     = makeConcentricRing(topTooth, rRimInner, halfB);
+
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    if (canFitHub && hubLen > 0) {
+                        // 1. Hub Top Annulus (from bore to rHub at z = halfB + hubLen)
+                        pushQuad(finalTopBoreRing[i], ringHubTop[i], ringHubTop[next], finalTopBoreRing[next]);
+                        // 2. Hub Outer Cylinder Wall (dropping from halfB + hubLen down to halfB - recessDepth)
+                        pushQuad(ringHubTop[i], ringHubBaseTop[i], ringHubBaseTop[next], ringHubTop[next]);
+                    } else {
+                        // No hub: connect bore at z = halfB to rHub at z = halfB - recessDepth
+                        if (recessDepth > 0) {
+                            const ringBoreLip = makeConcentricRing(topTooth, rHub, halfB);
+                            pushQuad(finalTopBoreRing[i], ringBoreLip[i], ringBoreLip[next], finalTopBoreRing[next]);
+                            pushQuad(ringBoreLip[i], ringHubBaseTop[i], ringHubBaseTop[next], ringBoreLip[next]);
+                        } else {
+                            pushQuad(finalTopBoreRing[i], ringHubBaseTop[i], ringHubBaseTop[next], finalTopBoreRing[next]);
+                        }
+                    }
+
+                    // 3. Web Floor (from rHub to rRimInner at z = halfB - recessDepth)
+                    pushQuad(ringHubBaseTop[i], ringRimFloor[i], ringRimFloor[next], ringHubBaseTop[next]);
+
+                    // 4. Inner Rim Vertical Step (from z = halfB - recessDepth up to z = halfB)
+                    if (recessDepth > 0) {
+                        pushQuad(ringRimFloor[i], ringRimTop[i], ringRimTop[next], ringRimFloor[next]);
+                    }
+
+                    // 5. Outer Gear Rim Cap (from rRimInner out to topTooth at z = halfB)
+                    pushQuad(ringRimTop[i], topTooth[i], topTooth[next], ringRimTop[next]);
+                }
+
+                // --- BOTTOM FACE (-Z) ---
+                const botHubBossRing  = makeConcentricRing(botTooth, rHub, -halfB);
+                const botWebFloorInner = makeConcentricRing(botTooth, rHub, -halfB + recessDepth);
+                const botWebFloorOuter = makeConcentricRing(botTooth, rRimInner, -halfB + recessDepth);
+                const botRimInnerRing  = makeConcentricRing(botTooth, rRimInner, -halfB);
+
+                for (let i = 0; i < N; i++) {
+                    const next = (i + 1) % N;
+                    // 1. Bottom Hub Boss Annulus (z = -halfB)
+                    pushQuad(botHubBossRing[i], botBoreBase[i], botBoreBase[next], botHubBossRing[next]);
+
+                    // 2. Bottom Web Recess Step
+                    if (recessDepth > 0) {
+                        pushQuad(botWebFloorInner[i], botHubBossRing[i], botHubBossRing[next], botWebFloorInner[next]);
+                    }
+
+                    // 3. Bottom Web Floor
+                    pushQuad(botWebFloorOuter[i], botWebFloorInner[i], botWebFloorInner[next], botWebFloorOuter[next]);
+
+                    // 4. Bottom Rim Vertical Step
+                    if (recessDepth > 0) {
+                        pushQuad(botRimInnerRing[i], botWebFloorOuter[i], botWebFloorOuter[next], botRimInnerRing[next]);
+                    }
+
+                    // 5. Bottom Tooth Rim Cap
+                    pushQuad(botTooth[i], botRimInnerRing[i], botRimInnerRing[next], botTooth[next]);
+                }
+            }
+
+            const bufferGeo = new THREE.BufferGeometry();
+            bufferGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            bufferGeo.computeVertexNormals();
+
+            return { geometry: bufferGeo, dims, triCount: positions.length / 9 };
+        }
+
+        // ============================================================================
+        // 5. UPDATE 3D VIEWPORT, 2D TOOTH INSPECTOR & ENGINEERING READOUTS
+        // ============================================================================
+        function rebuildGearModel() {
+            const { geometry, dims, triCount } = buildWatertightGearGeometry();
+
+            if (currentGeometry) currentGeometry.dispose();
+            currentGeometry = geometry;
+
+            if (!gearMesh) {
+                const mat = new THREE.MeshStandardMaterial({
+                    color: 0x38bdf8,
+                    metalness: 0.58,
+                    roughness: 0.32,
+                    wireframe: state.wireframe,
+                    flatShading: true
+                });
+                gearMesh = new THREE.Mesh(geometry, mat);
+                scene.add(gearMesh);
+            } else {
+                gearMesh.geometry = geometry;
+                gearMesh.material.wireframe = state.wireframe;
+            }
+
+            // Update translucent Reference Pitch Cylinder
+            updatePitchCylinder(dims);
+
+            // Update Poly Count Badge
+            document.getElementById('polyCountBadge').textContent = `${triCount.toLocaleString()} tris`;
+
+            // Update Engineering Metrology Readout
+            updateEngineeringReadouts(dims);
+
+            // Update 2D Single Tooth Involute Inspector Canvas
+            draw2DToothInspector(dims);
+        }
+
+        function updatePitchCylinder(dims) {
+            if (pitchCylinderMesh) {
+                scene.remove(pitchCylinderMesh);
+                pitchCylinderMesh.geometry.dispose();
+                pitchCylinderMesh = null;
+            }
+            if (!state.showPitchCylinder) return;
+
+            const cylGeo = new THREE.CylinderGeometry(dims.rPitch, dims.rPitch, state.faceWidth + 2, 64, 1, true);
+            cylGeo.rotateX(Math.PI / 2); // Align cylinder axis with Z
+            const cylMat = new THREE.MeshBasicMaterial({
+                color: 0x0ea5e9,
+                transparent: true,
+                opacity: 0.16,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+            pitchCylinderMesh = new THREE.Mesh(cylGeo, cylMat);
+            scene.add(pitchCylinderMesh);
+        }
+
+        function updateEngineeringReadouts(dims) {
+            document.getElementById('moduleBadge').textContent = `m = ${dims.m.toFixed(2)} mm`;
+            document.getElementById('read_pitchDia').textContent = `${dims.d.toFixed(2)} mm`;
+            document.getElementById('read_outerDia').textContent = `${dims.da.toFixed(2)} mm`;
+            document.getElementById('read_rootDia').textContent = `${dims.df.toFixed(2)} mm`;
+            document.getElementById('read_baseDia').textContent = `${dims.db.toFixed(2)} mm`;
+            document.getElementById('read_circPitch').textContent = `${dims.circPitch.toFixed(2)} mm`;
+            document.getElementById('read_toothThick').textContent = `${dims.sPitch.toFixed(2)} mm`;
+
+            // Undercut warning banner
+            const warnEl = document.getElementById('undercutWarning');
+            if (dims.hasUndercutRisk) {
+                warnEl.classList.remove('hidden');
+            } else {
+                warnEl.classList.add('hidden');
+            }
+
+            // Dynamic STL Filename Preview
+            const typeLabel = state.gearType.charAt(0).toUpperCase() + state.gearType.slice(1);
+            const shiftStr = state.profileShift !== 0 ? `_x${state.profileShift > 0 ? '+' : ''}${state.profileShift}` : '';
+            const fname = `ISO_${typeLabel}_Gear_m${state.module}_z${state.teeth}${shiftStr}.stl`;
+            document.getElementById('filenamePreview').textContent = fname;
+        }
+
+        /**
+         * Renders a high-contrast 2D CAD engineering diagram of a single gear tooth
+         * showing the Involute Curve, Pitch Circle, Base Circle, Addendum, and Dedendum.
+         */
+        function draw2DToothInspector(dims) {
+            const canvas = document.getElementById('tooth2dCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const { rPitch, rBase, rOuter, rRoot, z, sPitch, alpha } = dims;
+            const minR = Math.min(rRoot, rOuter, rBase) - dims.m * 0.6;
+            const maxR = Math.max(rRoot, rOuter) + dims.m * 0.6;
+            const toothHeight = Math.max(1.0, maxR - minR);
+
+            // Scale so one full tooth fits comfortably in the 220x150 viewport
+            const scale = (h * 0.76) / toothHeight;
+            const cx = w / 2;
+            // Center of gear is far below canvas
+            const cy = h * 0.88 + minR * scale;
+
+            const drawRefArc = (r, color, dashed = true) => {
+                ctx.save();
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.2;
+                if (dashed) ctx.setLineDash([4, 3]);
+                const span = Math.min(Math.PI / 3, (w * 0.65) / (r * scale));
+                ctx.arc(cx, cy, r * scale, -Math.PI / 2 - span, -Math.PI / 2 + span);
+                ctx.stroke();
+                ctx.restore();
+            };
+
+            // Draw Root, Base, Pitch, and Outer Reference Circles
+            drawRefArc(rRoot, '#475569', true);
+            drawRefArc(rBase, '#f59e0b', true);
+            drawRefArc(rPitch, '#38bdf8', true);
+            drawRefArc(rOuter, '#64748b', true);
+
+            // Generate single tooth profile centered at -PI/2 (pointing straight up)
+            const invAlpha0 = involuteAngle(alpha);
+            const thetaBaseHalf = (sPitch / (2 * rPitch)) + invAlpha0;
+            const rStart = Math.max(Math.min(rRoot, rOuter), rBase);
+            const samples = 24;
+
+            const leftPts = [];
+            const rightPts = [];
+
+            const rLow = Math.min(rRoot, rOuter);
+            const rHigh = Math.max(rRoot, rOuter);
+
+            if (rLow < rBase) {
+                leftPts.push({ r: rLow, ang: thetaBaseHalf * 1.03 });
+                rightPts.push({ r: rLow, ang: thetaBaseHalf * 1.03 });
+            }
+
+            for (let i = 0; i <= samples; i++) {
+                const t = i / samples;
+                const r = Math.max(rLow, rBase) + t * (rHigh - Math.max(rLow, rBase));
+                const cosPhi = Math.min(1.0, rBase / r);
+                const phi = Math.acos(cosPhi);
+                const invPhi = involuteAngle(phi);
+                const ang = Math.max(0.002, thetaBaseHalf - invPhi);
+                leftPts.push({ r, ang });
+                rightPts.push({ r, ang });
+            }
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.18)';
+            ctx.lineWidth = 2.0;
+
+            // Root lead-in left
+            const rootSpan = thetaBaseHalf * 1.45;
+            ctx.moveTo(
+                cx + rLow * scale * Math.cos(-Math.PI / 2 - rootSpan),
+                cy + rLow * scale * Math.sin(-Math.PI / 2 - rootSpan)
+            );
+
+            // Left flank ascending
+            for (let i = 0; i < leftPts.length; i++) {
+                const p = leftPts[i];
+                const a = -Math.PI / 2 - p.ang;
+                ctx.lineTo(cx + p.r * scale * Math.cos(a), cy + p.r * scale * Math.sin(a));
+            }
+
+            // Right flank descending
+            for (let i = rightPts.length - 1; i >= 0; i--) {
+                const p = rightPts[i];
+                const a = -Math.PI / 2 + p.ang;
+                ctx.lineTo(cx + p.r * scale * Math.cos(a), cy + p.r * scale * Math.sin(a));
+            }
+
+            // Root lead-out right
+            ctx.lineTo(
+                cx + rLow * scale * Math.cos(-Math.PI / 2 + rootSpan),
+                cy + rLow * scale * Math.sin(-Math.PI / 2 + rootSpan)
+            );
+
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // ============================================================================
+        // 6. BINARY & ASCII .STL EXPORT ENGINE
+        // ============================================================================
+        function exportSTL() {
+            if (!currentGeometry) return;
+
+            const format = document.getElementById('stlFormat').value;
+            const posAttr = currentGeometry.getAttribute('position');
+            const numTriangles = posAttr.count / 3;
+
+            const typeLabel = state.gearType.charAt(0).toUpperCase() + state.gearType.slice(1);
+            const shiftStr = state.profileShift !== 0 ? `_x${state.profileShift > 0 ? '+' : ''}${state.profileShift}` : '';
+            const fileName = `ISO_${typeLabel}_Gear_m${state.module}_z${state.teeth}${shiftStr}.stl`;
+
+            let blob;
+            if (format === 'binary') {
+                // 80-byte header + 4-byte uint32 count + (50 bytes * numTriangles)
+                const bufferLen = 84 + numTriangles * 50;
+                const arrayBuffer = new ArrayBuffer(bufferLen);
+                const view = new DataView(arrayBuffer);
+
+                // Write 80-byte ASCII header
+                const headerStr = `ISO 53 Parametric ${typeLabel} Gear m=${state.module} z=${state.teeth} alpha=${state.pressureAngle}`;
+                for (let i = 0; i < 80; i++) {
+                    view.setUint8(i, i < headerStr.length ? headerStr.charCodeAt(i) : 32);
+                }
+
+                // Number of triangles (little-endian uint32)
+                view.setUint32(80, numTriangles, true);
+
+                let offset = 84;
+                const vA = new THREE.Vector3();
+                const vB = new THREE.Vector3();
+                const vC = new THREE.Vector3();
+                const cb = new THREE.Vector3();
+                const ab = new THREE.Vector3();
+
+                for (let i = 0; i < numTriangles; i++) {
+                    const idx = i * 3;
+                    vA.fromBufferAttribute(posAttr, idx);
+                    vB.fromBufferAttribute(posAttr, idx + 1);
+                    vC.fromBufferAttribute(posAttr, idx + 2);
+
+                    // Compute facet normal
+                    cb.subVectors(vC, vB);
+                    ab.subVectors(vA, vB);
+                    cb.cross(ab).normalize();
+
+                    // Normal (3x float32)
+                    view.setFloat32(offset, cb.x, true); offset += 4;
+                    view.setFloat32(offset, cb.y, true); offset += 4;
+                    view.setFloat32(offset, cb.z, true); offset += 4;
+
+                    // Vertex 1
+                    view.setFloat32(offset, vA.x, true); offset += 4;
+                    view.setFloat32(offset, vA.y, true); offset += 4;
+                    view.setFloat32(offset, vA.z, true); offset += 4;
+
+                    // Vertex 2
+                    view.setFloat32(offset, vB.x, true); offset += 4;
+                    view.setFloat32(offset, vB.y, true); offset += 4;
+                    view.setFloat32(offset, vB.z, true); offset += 4;
+
+                    // Vertex 3
+                    view.setFloat32(offset, vC.x, true); offset += 4;
+                    view.setFloat32(offset, vC.y, true); offset += 4;
+                    view.setFloat32(offset, vC.z, true); offset += 4;
+
+                    // 2-byte attribute byte count
+                    view.setUint16(offset, 0, true); offset += 2;
+                }
+
+                blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
+            } else {
+                // ASCII STL Format
+                const chunks = [`solid ISO_${typeLabel}_Gear\n`];
+                const vA = new THREE.Vector3();
+                const vB = new THREE.Vector3();
+                const vC = new THREE.Vector3();
+                const cb = new THREE.Vector3();
+                const ab = new THREE.Vector3();
+
+                for (let i = 0; i < numTriangles; i++) {
+                    const idx = i * 3;
+                    vA.fromBufferAttribute(posAttr, idx);
+                    vB.fromBufferAttribute(posAttr, idx + 1);
+                    vC.fromBufferAttribute(posAttr, idx + 2);
+
+                    cb.subVectors(vC, vB);
+                    ab.subVectors(vA, vB);
+                    cb.cross(ab).normalize();
+
+                    chunks.push(
+                        `  facet normal ${cb.x.toExponential(4)} ${cb.y.toExponential(4)} ${cb.z.toExponential(4)}\n` +
+                        `    outer loop\n` +
+                        `      vertex ${vA.x.toExponential(5)} ${vA.y.toExponential(5)} ${vA.z.toExponential(5)}\n` +
+                        `      vertex ${vB.x.toExponential(5)} ${vB.y.toExponential(5)} ${vB.z.toExponential(5)}\n` +
+                        `      vertex ${vC.x.toExponential(5)} ${vC.y.toExponential(5)} ${vC.z.toExponential(5)}\n` +
+                        `    endloop\n` +
+                        `  endfacet\n`
+                    );
+                }
+                chunks.push(`endsolid ISO_${typeLabel}_Gear\n`);
+                blob = new Blob(chunks, { type: 'text/plain' });
+            }
+
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+
+            showToast(`Exported ${fileName} (${numTriangles.toLocaleString()} watertight triangles)`);
+        }
+
+        function showToast(msg) {
+            const banner = document.getElementById('toastBanner');
+            document.getElementById('toastMessage').textContent = msg;
+            banner.classList.remove('hidden');
+            setTimeout(() => banner.classList.add('hidden'), 3600);
+        }
+
+        // ============================================================================
+        // 7. UI EVENT BINDINGS, PRESETS & INTERACTIVE CONTROLS
+        // ============================================================================
+        function bindDualInput(paramKey, rngId, numId) {
+            const rng = document.getElementById(rngId);
+            const num = document.getElementById(numId);
+            if (!rng || !num) return;
+
+            rng.addEventListener('input', () => {
+                const val = parseFloat(rng.value);
+                num.value = val;
+                state[paramKey] = val;
+                rebuildGearModel();
+            });
+
+            num.addEventListener('input', () => {
+                let val = parseFloat(num.value);
+                if (isNaN(val)) return;
+                val = Math.max(parseFloat(num.min), Math.min(parseFloat(num.max), val));
+                rng.value = val;
+                state[paramKey] = val;
+                rebuildGearModel();
+            });
+        }
+
+        function setParam(paramKey, val) {
+            state[paramKey] = val;
+            const rng = document.getElementById(`rng_${paramKey}`);
+            const num = document.getElementById(`num_${paramKey}`);
+            if (rng) rng.value = val;
+            if (num) num.value = val;
+            rebuildGearModel();
+        }
+
+        function setStandardModule() {
+            // Find closest ISO 54 module
+            let closest = ISO_MODULES[0];
+            let minDiff = Math.abs(state.module - closest);
+            for (const m of ISO_MODULES) {
+                const d = Math.abs(state.module - m);
+                if (d < minDiff) {
+                    minDiff = d;
+                    closest = m;
+                }
+            }
+            setParam('module', closest);
+            showToast(`Snapped to ISO 54 Standard Module m = ${closest} mm`);
+        }
+
+        function autoFixUndercut() {
+            const dims = computeGearDimensions();
+            const safeX = Math.ceil(dims.xMinRecommended * 20) / 20;
+            setParam('profileShift', Math.min(0.6, Math.max(0.05, safeX)));
+            showToast(`Applied Profile Shift x = +${state.profileShift} to eliminate undercut`);
+        }
+
+        function setGearType(type) {
+            state.gearType = type;
+
+            // Update tab styles
+            document.querySelectorAll('.gear-tab').forEach(btn => {
+                if (btn.dataset.type === type) {
+                    btn.className = 'gear-tab flex flex-col items-center justify-center p-2 rounded-lg border text-xs font-semibold transition bg-sky-500/20 text-sky-300 border-sky-500/40 shadow-sm';
+                } else {
+                    btn.className = 'gear-tab flex flex-col items-center justify-center p-2 rounded-lg border border-slate-800 bg-slate-900/60 text-slate-400 hover:text-slate-200 text-xs font-medium transition';
+                }
+            });
+
+            // Show/hide Helix controls
+            const helixEl = document.getElementById('helixControls');
+            if (type === 'helical' || type === 'herringbone') {
+                helixEl.classList.remove('hidden');
+                if (state.helixAngle === 0) setParam('helixAngle', 20);
+            } else {
+                helixEl.classList.add('hidden');
+            }
+
+            // Show/hide Internal Ring Wall vs External Bore section
+            const ringWallEl = document.getElementById('ringWallControls');
+            const boreSectionEl = document.getElementById('boreSection');
+            if (type === 'internal') {
+                ringWallEl.classList.remove('hidden');
+                boreSectionEl.classList.add('hidden');
+            } else {
+                ringWallEl.classList.add('hidden');
+                boreSectionEl.classList.remove('hidden');
+            }
+
+            rebuildGearModel();
+        }
+
+        function setHandedness(dir) {
+            state.handedness = dir;
+            const rh = document.getElementById('handRightBtn');
+            const lh = document.getElementById('handLeftBtn');
+            if (dir === 1) {
+                rh.className = 'px-2.5 py-1 rounded-md text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30';
+                lh.className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200';
+            } else {
+                lh.className = 'px-2.5 py-1 rounded-md text-xs font-medium bg-sky-500/20 text-sky-300 border border-sky-500/30';
+                rh.className = 'px-2.5 py-1 rounded-md text-xs font-medium text-slate-400 hover:text-slate-200';
+            }
+            rebuildGearModel();
+        }
+
+        function onBoreTypeChange(boreType) {
+            state.boreType = boreType;
+            document.getElementById('boreDiameterControl').classList.toggle('hidden', boreType === 'none');
+            document.getElementById('keywayControls').classList.toggle('hidden', boreType !== 'keyway');
+            document.getElementById('dShaftControls').classList.toggle('hidden', boreType !== 'dshaft');
+            rebuildGearModel();
+        }
+
+        function applyAutoKeyway() {
+            const d = state.boreDia;
+            for (const [maxDia, kw, kd] of DIN_6885_KEYWAYS) {
+                if (d <= maxDia) {
+                    state.keyWidth = kw;
+                    state.keyDepth = kd;
+                    document.getElementById('num_keyWidth').value = kw;
+                    document.getElementById('num_keyDepth').value = kd;
+                    break;
+                }
+            }
+            rebuildGearModel();
+            showToast(`Applied DIN 6885 Keyway: ${state.keyWidth}×${state.keyDepth} mm for Ø${d} mm shaft`);
+        }
+
+        function toggleHub(checked) {
+            state.hasHub = checked;
+            document.getElementById('hubSliders').classList.toggle('hidden', !checked);
+            rebuildGearModel();
+        }
+
+        function toggleRecess(checked) {
+            state.hasRecess = checked;
+            document.getElementById('recessSliders').classList.toggle('hidden', !checked);
+            rebuildGearModel();
+        }
+
+        function setMeshQuality(q) {
+            state.meshQuality = q;
+            ['draft', 'high', 'ultra'].forEach(k => {
+                const btn = document.getElementById(`qual_${k}`);
+                if (k === q) {
+                    btn.className = 'qual-btn py-1.5 rounded border border-sky-500/40 bg-sky-500/20 text-xs font-medium text-sky-300';
+                } else {
+                    btn.className = 'qual-btn py-1.5 rounded border border-slate-700 text-xs font-medium text-slate-400 hover:text-white';
+                }
+            });
+            rebuildGearModel();
+        }
+
+        function applyPreset(presetName) {
+            if (presetName === 'standard') {
+                setGearType('spur');
+                setParam('module', 2.5);
+                setParam('teeth', 24);
+                setParam('pressureAngle', 20);
+                setParam('profileShift', 0);
+                setParam('faceWidth', 14);
+                setParam('boreDia', 12);
+                document.getElementById('chk_hub').checked = true;
+                toggleHub(true);
+                document.getElementById('chk_recess').checked = true;
+                toggleRecess(true);
+            } else if (presetName === 'helical') {
+                setGearType('helical');
+                setParam('module', 2.0);
+                setParam('teeth', 30);
+                setParam('helixAngle', 22);
+                setParam('faceWidth', 18);
+                setParam('profileShift', 0.1);
+                document.getElementById('chk_hub').checked = true;
+                toggleHub(true);
+            } else if (presetName === 'herringbone') {
+                setGearType('herringbone');
+                setParam('module', 3.0);
+                setParam('teeth', 20);
+                setParam('helixAngle', 28);
+                setParam('faceWidth', 24);
+                setParam('profileShift', 0.15);
+                document.getElementById('chk_hub').checked = false;
+                toggleHub(false);
+                document.getElementById('chk_recess').checked = true;
+                toggleRecess(true);
+            } else if (presetName === 'ring') {
+                setGearType('internal');
+                setParam('module', 2.0);
+                setParam('teeth', 48);
+                setParam('faceWidth', 15);
+                setParam('ringWall', 10);
+                setParam('profileShift', 0.0);
+            }
+            resetCamera();
+        }
+
+        // Viewport Toolbar Actions
+        function resetCamera() {
+            const dims = computeGearDimensions();
+            const dist = Math.max(85, dims.da * 1.65);
+            camera.position.set(0, -dist, dist * 0.82);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        function setCameraTop() {
+            const dims = computeGearDimensions();
+            const dist = Math.max(95, dims.da * 1.9);
+            camera.position.set(0, -0.01, dist);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        function toggleWireframe() {
+            state.wireframe = !state.wireframe;
+            if (gearMesh) gearMesh.material.wireframe = state.wireframe;
+            const btn = document.getElementById('btnWireframe');
+            btn.classList.toggle('bg-purple-500/20', state.wireframe);
+            btn.classList.toggle('text-purple-300', state.wireframe);
+            btn.classList.toggle('border', state.wireframe);
+            btn.classList.toggle('border-purple-500/40', state.wireframe);
+        }
+
+        function toggleAutoRotate() {
+            state.autoRotate = !state.autoRotate;
+            const btn = document.getElementById('btnAutoRotate');
+            btn.classList.toggle('bg-amber-500/20', state.autoRotate);
+            btn.classList.toggle('text-amber-300', state.autoRotate);
+            btn.classList.toggle('border', state.autoRotate);
+            btn.classList.toggle('border-amber-500/40', state.autoRotate);
+        }
+
+        function togglePitchCylinder() {
+            state.showPitchCylinder = !state.showPitchCylinder;
+            const btn = document.getElementById('btnPitchCylinder');
+            btn.classList.toggle('bg-sky-500/20', state.showPitchCylinder);
+            btn.classList.toggle('text-sky-300', state.showPitchCylinder);
+            btn.classList.toggle('border-sky-500/30', state.showPitchCylinder);
+            rebuildGearModel();
+        }
+
+        // ============================================================================
+        // 8. BOOTSTRAP APPLICATION ON LOAD
+        // ============================================================================
+        window.onload = function () {
+            lucide.createIcons();
+            initThreeViewport();
+
+            // Bind all synchronized slider + number pairs
+            bindDualInput('module', 'rng_module', 'num_module');
+            bindDualInput('teeth', 'rng_teeth', 'num_teeth');
+            bindDualInput('pressureAngle', 'rng_pressureAngle', 'num_pressureAngle');
+            bindDualInput('profileShift', 'rng_profileShift', 'num_profileShift');
+            bindDualInput('faceWidth', 'rng_faceWidth', 'num_faceWidth');
+            bindDualInput('helixAngle', 'rng_helixAngle', 'num_helixAngle');
+            bindDualInput('ringWall', 'rng_ringWall', 'num_ringWall');
+            bindDualInput('backlash', 'rng_backlash', 'num_backlash');
+            bindDualInput('boreDia', 'rng_boreDia', 'num_boreDia');
+            bindDualInput('hubDia', 'rng_hubDia', 'num_hubDia');
+            bindDualInput('hubLen', 'rng_hubLen', 'num_hubLen');
+            bindDualInput('recessDepth', 'rng_recessDepth', 'num_recessDepth');
+
+            // Bind Keyway & D-Shaft inputs
+            document.getElementById('num_keyWidth').addEventListener('input', (e) => {
+                state.keyWidth = Math.max(0.5, parseFloat(e.target.value) || 2);
+                rebuildGearModel();
+            });
+            document.getElementById('num_keyDepth').addEventListener('input', (e) => {
+                state.keyDepth = Math.max(0.2, parseFloat(e.target.value) || 1);
+                rebuildGearModel();
+            });
+            document.getElementById('rng_dFlat').addEventListener('input', (e) => {
+                state.dFlatPercent = parseFloat(e.target.value);
+                document.getElementById('dFlatVal').textContent = `${state.dFlatPercent}%`;
+                rebuildGearModel();
+            });
+
+            // Initialize default gear type & render
+            setGearType('spur');
+        };
+    </script>
+</body>
+</html>
