@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISO-CAD Gear Studio v3 | Parametric Assembly, Worm, Bevel, Rack, STEP AP214 & STL Generator</title>
+    <title>ISO-CAD Gear Studio v3 | Parametric Assembly, Worm, Bevel, Rack & STL Generator</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js Core & OrbitControls -->
@@ -107,14 +107,14 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>ISO Mesh Valid
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 hidden md:block">Spur, Helical, Herringbone, Bevel, Rack-Pinion, Ring & ISO 3975 Worm Drives + STEP AP214 & .STL</p>
+                <p class="text-[11px] text-slate-400 hidden md:block">Spur, Helical, Herringbone, Bevel, Rack-Pinion, Ring & ISO 3975 Worm Drives + Watertight .STL</p>
             </div>
         </div>
 
         <!-- Export Suite Controls -->
-        <div class="flex items-center space-x-1.5 sm:space-x-2">
+        <div class="flex items-center space-x-2">
             <!-- Quick Presets -->
-            <div class="hidden 2xl:flex items-center space-x-1 bg-slate-800/90 p-1 rounded-lg border border-slate-700/70 text-[11px]">
+            <div class="hidden xl:flex items-center space-x-1 bg-slate-800/90 p-1 rounded-lg border border-slate-700/70 text-[11px]">
                 <span class="px-1.5 text-slate-400 font-medium">Load Pair:</span>
                 <button onclick="applyPreset('spurPair')" class="px-2 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Spur 1:2</button>
                 <button onclick="applyPreset('helicalPair')" class="px-2 py-1 rounded hover:bg-slate-700 text-slate-200 transition">Helical</button>
@@ -124,26 +124,27 @@
                 <button onclick="applyPreset('planetary')" class="px-2 py-1 rounded hover:bg-slate-700 text-purple-300 transition">Ring Pair</button>
             </div>
 
-            <select id="exportTarget" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 font-medium focus:outline-none focus:border-sky-500">
-                <option value="separateAB">Separate A & B Files (2× Files)</option>
-                <option value="A">Part A Only (Pinion / Worm)</option>
-                <option value="B">Part B Only (Gear / Rack / Wheel)</option>
-                <option value="both">Combined Assembly (1× File)</option>
+            <select id="exportTarget" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded-lg px-2.5 py-1.5 font-medium focus:outline-none focus:border-sky-500">
+                <option value="A">Target: Gear / Worm A</option>
+                <option value="B">Target: Gear B / Rack / Wheel</option>
+                <option value="both_separate" selected>Target: Separate A & B Files</option>
+                <option value="both">Target: Combined Assembly</option>
             </select>
 
-            <button onclick="exportSTEP214()" title="Export ISO 10303-214 (STEP AP214) Solid CAD Files" class="flex items-center space-x-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-semibold text-xs px-3 py-2 rounded-lg shadow-lg shadow-emerald-500/20 border border-emerald-400/30 transition active:scale-95">
-                <i data-lucide="file-code-2" class="w-4 h-4"></i>
-                <span>Export .STP (AP214)</span>
+            <select id="stlFormat" class="hidden sm:block bg-slate-800 text-xs text-slate-300 border border-slate-700 rounded-lg px-2 py-1.5 font-mono focus:outline-none focus:border-sky-500">
+                <option value="step214" selected>STEP AP214 (.stp)</option>
+                <option value="binary">STL (Binary)</option>
+                <option value="ascii">STL (ASCII)</option>
+            </select>
+
+            <button onclick="exportCAD()" class="flex items-center space-x-1.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-xs px-3.5 py-2 rounded-lg shadow-lg shadow-sky-500/20 border border-sky-400/30 transition active:scale-95" title="Export selected format (.STP AP214 or .STL)">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span>Export CAD</span>
             </button>
 
-            <select id="stlFormat" class="hidden md:block bg-slate-800 text-xs text-slate-300 border border-slate-700 rounded-lg px-2 py-1.5 font-mono focus:outline-none focus:border-sky-500">
-                <option value="binary">Bin STL</option>
-                <option value="ascii">ASCII</option>
-            </select>
-
-            <button onclick="exportSTL()" title="Export Watertight Mesh (.STL)" class="flex items-center space-x-1.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold text-xs px-3 py-2 rounded-lg shadow-lg shadow-sky-500/20 border border-sky-400/30 transition active:scale-95">
-                <i data-lucide="download" class="w-4 h-4"></i>
-                <span class="hidden sm:inline">Export</span><span>.STL</span>
+            <button onclick="exportSeparateSTEP214Pair()" class="hidden md:flex items-center space-x-1.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-semibold text-xs px-3 py-2 rounded-lg shadow-lg shadow-orange-500/20 border border-amber-400/30 transition active:scale-95" title="Download Gear A and Gear B as two separate ISO 10303-214 (.stp) CAD files">
+                <i data-lucide="file-Spreadsheet" class="w-4 h-4"></i>
+                <span>A+B .STP214</span>
             </button>
         </div>
     </header>
@@ -2761,267 +2762,296 @@
         }
 
         /**
-         * Builds an ISO 10303-214 (STEP AP214 - Core Data for Automotive Mechanical Design Processes)
-         * Manifold Solid B-Rep CAD string with topological vertex & directed-edge sharing and RGB color styling.
+         * Builds an ISO 10303-214 (STEP AP214 - Automotive Mechanical Design Process)
+         * Manifold B-Rep Solid CAD file from a watertight Three.js mesh.
+         * Deduplicates vertices and topological half-edges so CAD kernels (SolidWorks,
+         * Fusion 360, FreeCAD, Onshape, Rhino, Inventor) import a closed MANIFOLD_SOLID_BREP
+         * with AP214 RGB color styling.
          */
-        function generateSTEP214String(partItems, docName) {
-            const lines = [];
-            let id = 1;
-            const alloc = (entityStr) => {
-                const cur = id++;
-                lines.push(`#${cur}=${entityStr};`);
-                return cur;
+        function generateSTEP214String(partName, mesh, useWorldTransform, rgbColor) {
+            mesh.updateMatrixWorld(true);
+            const matWorld = mesh.matrixWorld;
+            const posAttr = mesh.geometry.getAttribute('position');
+            const triCount = posAttr.count / 3;
+
+            let idCounter = 10;
+            const nextId = () => idCounter++;
+            const entities = [];
+            const addEntity = (id, str) => {
+                entities.push(`#${id}=${str};`);
+                return id;
             };
 
-            const fmt = (n) => {
-                const v = Math.abs(n) < 1e-9 ? 0 : n;
-                let s = v.toFixed(6).replace(/\.?0+$/, '');
-                if (!s.includes('.')) s += '.';
-                return s;
+            const nowIso = new Date().toISOString().split('.')[0];
+
+            // 1. AP214 Application Context & Product Definition Header Entities
+            const appCtxId = addEntity(nextId(), `APPLICATION_CONTEXT('automotive_design')`);
+            addEntity(nextId(), `APPLICATION_PROTOCOL_DEFINITION('draft international standard','automotive_design',1998,#${appCtxId})`);
+            const prodCtxId = addEntity(nextId(), `PRODUCT_CONTEXT('',#${appCtxId},'mechanical')`);
+            const prodId = addEntity(nextId(), `PRODUCT('${partName}','${partName}','ISO-CAD Gear Studio AP214 Part',(#${prodCtxId}))`);
+            const pdfId = addEntity(nextId(), `PRODUCT_DEFINITION_FORMATION('1','Standard Version',#${prodId})`);
+            const pdCtxId = addEntity(nextId(), `PRODUCT_DEFINITION_CONTEXT('part definition',#${appCtxId},'design')`);
+            const pdId = addEntity(nextId(), `PRODUCT_DEFINITION('design','',#${pdfId},#${pdCtxId})`);
+            const pdsId = addEntity(nextId(), `PRODUCT_DEFINITION_SHAPE('','Shape for ${partName}',#${pdId})`);
+
+            // 2. Geometric & Millimeter/Radian Unit Context
+            const lenUnitId = nextId();
+            entities.push(`#${lenUnitId}=(LENGTH_UNIT()NAMED_UNIT(*)SI_UNIT(.MILLI.,.METRE.));`);
+            const angUnitId = nextId();
+            entities.push(`#${angUnitId}=(NAMED_UNIT(*)PLANE_ANGLE_UNIT()SI_UNIT($,.RADIAN.));`);
+            const solidAngUnitId = nextId();
+            entities.push(`#${solidAngUnitId}=(NAMED_UNIT(*)SI_UNIT($,.STERADIAN.)SOLID_ANGLE_UNIT());`);
+            const uncertId = addEntity(nextId(), `UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.0E-05),#${lenUnitId},'distance_accuracy_value','confusion accuracy')`);
+            const geomCtxId = nextId();
+            entities.push(`#${geomCtxId}=(GEOMETRIC_REPRESENTATION_CONTEXT(3)GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#${uncertId}))GLOBAL_UNIT_ASSIGNED_CONTEXT((#${lenUnitId},#${angUnitId},#${solidAngUnitId}))REPRESENTATION_CONTEXT('Context3D','3D Context with MILLIMETRE and RADIAN'));`);
+
+            // World Axis Placement
+            const originPtId = addEntity(nextId(), `CARTESIAN_POINT('Origin',(0.0,0.0,0.0))`);
+            const dirZId = addEntity(nextId(), `DIRECTION('AxisZ',(0.0,0.0,1.0))`);
+            const dirXId = addEntity(nextId(), `DIRECTION('AxisX',(1.0,0.0,0.0))`);
+            const worldAxisId = addEntity(nextId(), `AXIS2_PLACEMENT_3D('WorldAxes',#${originPtId},#${dirZId},#${dirXId})`);
+
+            // 3. Deduplicate Vertices & Topological Edges for a Compact, True Closed Shell
+            const vertMap = new Map();
+            const vertCoords = []; // [{x, y, z, vptId}]
+            const getOrCreateVertex = (vec) => {
+                const kx = Math.round(vec.x * 1e4);
+                const ky = Math.round(vec.y * 1e4);
+                const kz = Math.round(vec.z * 1e4);
+                const key = `${kx}_${ky}_${kz}`;
+                let idx = vertMap.get(key);
+                if (idx !== undefined) return idx;
+
+                const x = (kx / 1e4);
+                const y = (ky / 1e4);
+                const z = (kz / 1e4);
+                const cpId = addEntity(nextId(), `CARTESIAN_POINT('',(${x.toFixed(5)},${y.toFixed(5)},${z.toFixed(5)}))`);
+                const vptId = addEntity(nextId(), `VERTEX_POINT('',#${cpId})`);
+                idx = vertCoords.length;
+                vertCoords.push({ x, y, z, cpId, vptId });
+                vertMap.set(key, idx);
+                return idx;
             };
 
-            // 1. Application Context & AP214 Schema Definition
-            const appCtx = alloc(`APPLICATION_CONTEXT('core data for automotive mechanical design processes')`);
-            alloc(`APPLICATION_PROTOCOL_DEFINITION('international standard','automotive_design',2000,#${appCtx})`);
-            const prodCtx = alloc(`PRODUCT_CONTEXT('',#${appCtx},'mechanical')`);
-            const prod = alloc(`PRODUCT('${docName}','${docName}','ISO-CAD Parametric Gear Solid',(#${prodCtx}))`);
-            const pds = alloc(`PRODUCT_DEFINITION_FORMATION_WITH_SPECIFIED_SOURCE('','',#${prod},.NOT_KNOWN.)`);
-            const pdCtx = alloc(`PRODUCT_DEFINITION_CONTEXT('part definition',#${appCtx},'design')`);
-            const pd = alloc(`PRODUCT_DEFINITION('design','',#${pds},#${pdCtx})`);
-            const pdsShape = alloc(`PRODUCT_DEFINITION_SHAPE('','',#${pd})`);
+            // Edge cache keyed by minIdx_maxIdx -> edgeCurveId (defined from minIdx -> maxIdx)
+            const edgeMap = new Map();
+            const getOrCreateEdgeCurve = (i1, i2) => {
+                const minI = Math.min(i1, i2);
+                const maxI = Math.max(i1, i2);
+                const key = `${minI}_${maxI}`;
+                let edgeCurveId = edgeMap.get(key);
+                if (edgeCurveId !== undefined) {
+                    return { edgeCurveId, sense: i1 === minI ? '.T.' : '.F.' };
+                }
+                const vMin = vertCoords[minI];
+                const vMax = vertCoords[maxI];
+                let dx = vMax.x - vMin.x;
+                let dy = vMax.y - vMin.y;
+                let dz = vMax.z - vMin.z;
+                const len = Math.hypot(dx, dy, dz) || 1.0;
+                dx /= len; dy /= len; dz /= len;
 
-            // 2. Geometric Context & Millimeter / Radian SI Units
-            const lenUnit = alloc(`(LENGTH_UNIT()NAMED_UNIT(*)SI_UNIT(.MILLI.,.METRE.))`);
-            const angUnit = alloc(`(NAMED_UNIT(*)PLANE_ANGLE_UNIT()SI_UNIT($,.RADIAN.))`);
-            const solidAngUnit = alloc(`(NAMED_UNIT(*)SI_UNIT($,.STERADIAN.)SOLID_ANGLE_UNIT())`);
-            const uncert = alloc(`UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-05),#${lenUnit},'distance_accuracy_value','confusion accuracy')`);
-            const geomCtx = alloc(`(GEOMETRIC_REPRESENTATION_CONTEXT(3)GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((#${uncert}))GLOBAL_UNIT_ASSIGNED_CONTEXT((#${lenUnit},#${angUnit},#${solidAngUnit}))REPRESENTATION_CONTEXT('Context3D','3D Context with MILLIMETRE and RADIAN'))`);
-
-            const originPt = alloc(`CARTESIAN_POINT('',(0.,0.,0.))`);
-            const dirZ = alloc(`DIRECTION('',(0.,0.,1.))`);
-            const dirX = alloc(`DIRECTION('',(1.,0.,0.))`);
-            const worldAxis = alloc(`AXIS2_PLACEMENT_3D('',#${originPt},#${dirZ},#${dirX})`);
-
-            const solidIds = [];
-            const styledItemIds = [];
+                const dirId = addEntity(nextId(), `DIRECTION('',(${dx.toFixed(6)},${dy.toFixed(6)},${dz.toFixed(6)}))`);
+                const vecId = addEntity(nextId(), `VECTOR('',#${dirId},1.0)`);
+                const lineId = addEntity(nextId(), `LINE('',#${vMin.cpId},#${vecId})`);
+                edgeCurveId = addEntity(nextId(), `EDGE_CURVE('',#${vMin.vptId},#${vMax.vptId},#${lineId},.T.)`);
+                edgeMap.set(key, edgeCurveId);
+                return { edgeCurveId, sense: i1 === minI ? '.T.' : '.F.' };
+            };
 
             const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
-            const cb = new THREE.Vector3(), ab = new THREE.Vector3(), edgeVec = new THREE.Vector3();
+            const e1 = new THREE.Vector3(), e2 = new THREE.Vector3(), norm = new THREE.Vector3();
+            const faceIds = [];
 
-            // 3. Build MANIFOLD_SOLID_BREP for each exported gear part with topological vertex/edge welding
-            partItems.forEach((item) => {
-                const { mesh, worldTransform, partName, rgb } = item;
-                mesh.updateMatrixWorld(true);
-                const matWorld = mesh.matrixWorld;
-                const pos = mesh.geometry.getAttribute('position');
-                const triCount = pos.count / 3;
+            for (let t = 0; t < triCount; t++) {
+                const baseIdx = t * 3;
+                vA.fromBufferAttribute(posAttr, baseIdx);
+                vB.fromBufferAttribute(posAttr, baseIdx + 1);
+                vC.fromBufferAttribute(posAttr, baseIdx + 2);
 
-                const vertexMap = new Map();
-                const edgeMap = new Map();
-                const faceIds = [];
-
-                const getVertexPoint = (vec) => {
-                    const kx = Math.round(vec.x * 1e4);
-                    const ky = Math.round(vec.y * 1e4);
-                    const kz = Math.round(vec.z * 1e4);
-                    const key = `${kx}_${ky}_${kz}`;
-                    let vEntry = vertexMap.get(key);
-                    if (!vEntry) {
-                        const cpId = alloc(`CARTESIAN_POINT('',(${fmt(vec.x)},${fmt(vec.y)},${fmt(vec.z)}))`);
-                        const vpId = alloc(`VERTEX_POINT('',#${cpId})`);
-                        vEntry = { cpId, vpId, x: vec.x, y: vec.y, z: vec.z };
-                        vertexMap.set(key, vEntry);
-                    }
-                    return vEntry;
-                };
-
-                const getOrientedEdge = (vStart, vEnd) => {
-                    const fwdKey = `${vStart.vpId}_${vEnd.vpId}`;
-                    const revKey = `${vEnd.vpId}_${vStart.vpId}`;
-                    let eCurveId = edgeMap.get(fwdKey);
-                    if (eCurveId) {
-                        return alloc(`ORIENTED_EDGE('',*,*,#${eCurveId},.T.)`);
-                    }
-                    eCurveId = edgeMap.get(revKey);
-                    if (eCurveId) {
-                        return alloc(`ORIENTED_EDGE('',*,*,#${eCurveId},.F.)`);
-                    }
-                    edgeVec.set(vEnd.x - vStart.x, vEnd.y - vStart.y, vEnd.z - vStart.z).normalize();
-                    const dirId = alloc(`DIRECTION('',(${fmt(edgeVec.x)},${fmt(edgeVec.y)},${fmt(edgeVec.z)}))`);
-                    const vecId = alloc(`VECTOR('',#${dirId},1.)`);
-                    const lineId = alloc(`LINE('',#${vStart.cpId},#${vecId})`);
-                    eCurveId = alloc(`EDGE_CURVE('',#${vStart.vpId},#${vEnd.vpId},#${lineId},.T.)`);
-                    edgeMap.set(fwdKey, eCurveId);
-                    return alloc(`ORIENTED_EDGE('',*,*,#${eCurveId},.T.)`);
-                };
-
-                for (let i = 0; i < triCount; i++) {
-                    const idx = i * 3;
-                    vA.fromBufferAttribute(pos, idx);
-                    vB.fromBufferAttribute(pos, idx + 1);
-                    vC.fromBufferAttribute(pos, idx + 2);
-                    if (worldTransform) {
-                        vA.applyMatrix4(matWorld);
-                        vB.applyMatrix4(matWorld);
-                        vC.applyMatrix4(matWorld);
-                    }
-
-                    const vertA = getVertexPoint(vA);
-                    const vertB = getVertexPoint(vB);
-                    const vertC = getVertexPoint(vC);
-
-                    if (vertA.vpId === vertB.vpId || vertB.vpId === vertC.vpId || vertC.vpId === vertA.vpId) {
-                        continue;
-                    }
-
-                    cb.subVectors(vC, vB);
-                    ab.subVectors(vA, vB);
-                    cb.cross(ab);
-                    if (cb.lengthSq() < 1e-12) continue;
-                    cb.normalize();
-
-                    edgeVec.subVectors(vB, vA).normalize();
-
-                    const normId = alloc(`DIRECTION('',(${fmt(cb.x)},${fmt(cb.y)},${fmt(cb.z)}))`);
-                    const refDirId = alloc(`DIRECTION('',(${fmt(edgeVec.x)},${fmt(edgeVec.y)},${fmt(edgeVec.z)}))`);
-                    const ax2Id = alloc(`AXIS2_PLACEMENT_3D('',#${vertA.cpId},#${normId},#${refDirId})`);
-                    const planeId = alloc(`PLANE('',#${ax2Id})`);
-
-                    const oe1 = getOrientedEdge(vertA, vertB);
-                    const oe2 = getOrientedEdge(vertB, vertC);
-                    const oe3 = getOrientedEdge(vertC, vertA);
-
-                    const eloopId = alloc(`EDGE_LOOP('',(#${oe1},#${oe2},#${oe3}))`);
-                    const fboundId = alloc(`FACE_OUTER_BOUND('',#${eloopId},.T.)`);
-                    const advFaceId = alloc(`ADVANCED_FACE('',(#${fboundId}),#${planeId},.T.)`);
-                    faceIds.push(`#${advFaceId}`);
+                if (useWorldTransform) {
+                    vA.applyMatrix4(matWorld);
+                    vB.applyMatrix4(matWorld);
+                    vC.applyMatrix4(matWorld);
                 }
 
-                const shellId = alloc(`CLOSED_SHELL('${partName}_Shell',(${faceIds.join(',')}))`);
-                const brepId = alloc(`MANIFOLD_SOLID_BREP('${partName}',#${shellId})`);
-                solidIds.push(`#${brepId}`);
+                const iA = getOrCreateVertex(vA);
+                const iB = getOrCreateVertex(vB);
+                const iC = getOrCreateVertex(vC);
 
-                // AP214 Mechanical Design Color Presentation
-                const colId = alloc(`COLOUR_RGB('${partName}_Color',${fmt(rgb[0])},${fmt(rgb[1])},${fmt(rgb[2])})`);
-                const facColId = alloc(`FILL_AREA_STYLE_COLOUR('',#${colId})`);
-                const fasId = alloc(`FILL_AREA_STYLE('',(#${facColId}))`);
-                const ssfId = alloc(`SURFACE_SIDE_STYLE('',(#${fasId}))`);
-                const ssId = alloc(`SURFACE_STYLE_USAGE(.BOTH.,#${ssfId})`);
-                const psaId = alloc(`PRESENTATION_STYLE_ASSIGNMENT((#${ssId}))`);
-                const styledId = alloc(`STYLED_ITEM('',(#${psaId}),#${brepId})`);
-                styledItemIds.push(`#${styledId}`);
-            });
+                // Skip degenerate zero-area triangles
+                if (iA === iB || iB === iC || iC === iA) continue;
 
-            const shapeRepId = alloc(`ADVANCED_BREP_SHAPE_REPRESENTATION('${docName}',(#${worldAxis},${solidIds.join(',')}),#${geomCtx})`);
-            alloc(`SHAPE_DEFINITION_REPRESENTATION(#${pdsShape},#${shapeRepId})`);
-            alloc(`MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(${styledItemIds.join(',')}),#${geomCtx})`);
+                e1.subVectors(vB, vA);
+                e2.subVectors(vC, vA);
+                norm.crossVectors(e1, e2);
+                const nLen = norm.length();
+                if (nLen < 1e-8) continue;
+                norm.divideScalar(nLen);
+                e1.normalize();
 
-            const isoDate = new Date().toISOString().split('.')[0];
+                const edgeAB = getOrCreateEdgeCurve(iA, iB);
+                const edgeBC = getOrCreateEdgeCurve(iB, iC);
+                const edgeCA = getOrCreateEdgeCurve(iC, iA);
+
+                const oe1 = addEntity(nextId(), `ORIENTED_EDGE('',*,*,#${edgeAB.edgeCurveId},${edgeAB.sense})`);
+                const oe2 = addEntity(nextId(), `ORIENTED_EDGE('',*,*,#${edgeBC.edgeCurveId},${edgeBC.sense})`);
+                const oe3 = addEntity(nextId(), `ORIENTED_EDGE('',*,*,#${edgeCA.edgeCurveId},${edgeCA.sense})`);
+
+                const loopId = addEntity(nextId(), `EDGE_LOOP('',(#${oe1},#${oe2},#${oe3}))`);
+                const boundId = addEntity(nextId(), `FACE_OUTER_BOUND('',#${loopId},.T.)`);
+
+                const normDirId = addEntity(nextId(), `DIRECTION('',(${norm.x.toFixed(6)},${norm.y.toFixed(6)},${norm.z.toFixed(6)}))`);
+                const refDirId = addEntity(nextId(), `DIRECTION('',(${e1.x.toFixed(6)},${e1.y.toFixed(6)},${e1.z.toFixed(6)}))`);
+                const ax2Id = addEntity(nextId(), `AXIS2_PLACEMENT_3D('',#${vertCoords[iA].cpId},#${normDirId},#${refDirId})`);
+                const planeId = addEntity(nextId(), `PLANE('',#${ax2Id})`);
+
+                const advFaceId = addEntity(nextId(), `ADVANCED_FACE('',(#${boundId}),#${planeId},.T.)`);
+                faceIds.push(`#${advFaceId}`);
+            }
+
+            // 4. Assemble CLOSED_SHELL, MANIFOLD_SOLID_BREP & ADVANCED_BREP_SHAPE_REPRESENTATION
+            const closedShellId = addEntity(nextId(), `CLOSED_SHELL('${partName}_Shell',(${faceIds.join(',')}))`);
+            const brepId = addEntity(nextId(), `MANIFOLD_SOLID_BREP('${partName}',#${closedShellId})`);
+            const shapeRepId = addEntity(nextId(), `ADVANCED_BREP_SHAPE_REPRESENTATION('${partName}',(#${brepId},#${worldAxisId}),#${geomCtxId})`);
+            addEntity(nextId(), `SHAPE_DEFINITION_REPRESENTATION(#${pdsId},#${shapeRepId})`);
+
+            // 5. STEP AP214 Surface Color Styling (MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION)
+            const [r, g, b] = rgbColor || [0.22, 0.74, 0.97];
+            const colRgbId = addEntity(nextId(), `COLOUR_RGB('',${r.toFixed(3)},${g.toFixed(3)},${b.toFixed(3)})`);
+            const fillColorId = addEntity(nextId(), `FILL_AREA_STYLE_COLOUR('',#${colRgbId})`);
+            const fillStyleId = addEntity(nextId(), `FILL_AREA_STYLE('',(#${fillColorId}))`);
+            const surfFillId = addEntity(nextId(), `SURFACE_STYLE_FILL_AREA(#${fillStyleId})`);
+            const surfSideId = addEntity(nextId(), `SURFACE_SIDE_STYLE('',(#${surfFillId}))`);
+            const surfUsageId = addEntity(nextId(), `SURFACE_STYLE_USAGE(.BOTH.,#${surfSideId})`);
+            const presStyleId = addEntity(nextId(), `PRESENTATION_STYLE_ASSIGNMENT((#${surfUsageId}))`);
+            const styledItemId = addEntity(nextId(), `STYLED_ITEM('color',(#${presStyleId}),#${brepId})`);
+            addEntity(nextId(), `MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(#${styledItemId}),#${geomCtxId})`);
+
             return [
                 `ISO-10303-21;`,
                 `HEADER;`,
-                `FILE_DESCRIPTION(('STEP AP214 Solid Gear Model generated by ISO-CAD Gear Studio v3'),'2;1');`,
-                `FILE_NAME('${docName}.stp','${isoDate}',('ISO-CAD Gear Studio'),('Engineering CAD Suite'),'ISO-CAD v3.0','ISO-CAD STEP AP214 Kernel','');`,
+                `FILE_DESCRIPTION(('ISO 10303-214 Automotive Mechanical Design STEP CAD','Part: ${partName}','Watertight Manifold B-Rep Solid'),'2;1');`,
+                `FILE_NAME('${partName}.stp','${nowIso}',('ISO-CAD Gear Studio v3'),('Engineering CAD Suite'),'ISO-CAD STEP AP214 Generator','ISO-CAD Studio v3','');`,
                 `FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));`,
                 `ENDSEC;`,
                 `DATA;`,
-                ...lines,
+                ...entities,
                 `ENDSEC;`,
                 `END-ISO-10303-21;\n`
             ].join('\n');
         }
 
-        function triggerBlobDownload(blob, fileName) {
+        function triggerFileDownload(blob, fileName) {
             const a = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            a.href = url;
+            a.href = URL.createObjectURL(blob);
             a.download = fileName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 5000);
+            setTimeout(() => URL.revokeObjectURL(a.href), 5000);
         }
 
-        function exportSTEP214() {
-            const target = document.getElementById('exportTarget').value;
+        function exportSingleSTEP214(partKey, useWorldCoords = false) {
             const archLabel = state.architecture.toUpperCase();
+            if (partKey === 'A' && meshA) {
+                const zA = state.gearA.teeth;
+                const partName = `ISO_${archLabel}_PartA_m${state.module}_z${zA}`;
+                const stpContent = generateSTEP214String(partName, meshA, useWorldCoords, [0.220, 0.741, 0.973]);
+                const blob = new Blob([stpContent], { type: 'application/step' });
+                triggerFileDownload(blob, `${partName}.stp`);
+                return `${partName}.stp`;
+            }
+            if (partKey === 'B' && meshB) {
+                const zB = state.gearB.teeth;
+                const partName = `ISO_${archLabel}_PartB_m${state.module}_z${zB}`;
+                const stpContent = generateSTEP214String(partName, meshB, useWorldCoords, [0.984, 0.573, 0.235]);
+                const blob = new Blob([stpContent], { type: 'application/step' });
+                triggerFileDownload(blob, `${partName}.stp`);
+                return `${partName}.stp`;
+            }
+            return null;
+        }
 
-            const partNameA = state.architecture === 'worm'
-                ? `ISO_WORM_SCREW_A_m${state.module}_z${state.gearA.teeth}`
-                : `ISO_${archLabel}_PINION_A_m${state.module}_z${state.gearA.teeth}`;
+        function exportSeparateSTEP214Pair() {
+            const fileA = exportSingleSTEP214('A', false);
+            if (state.assemblyMode && meshB) {
+                setTimeout(() => {
+                    const fileB = exportSingleSTEP214('B', false);
+                    showToast(`Exported separate STEP AP214 files: ${fileA} & ${fileB}`);
+                }, 320);
+            } else if (fileA) {
+                showToast(`Exported STEP AP214 file: ${fileA}`);
+            }
+        }
 
-            const partNameB = state.architecture === 'rack'
-                ? `ISO_RACK_B_m${state.module}_z${state.gearB.teeth}`
-                : (state.architecture === 'worm'
-                    ? `ISO_WORM_WHEEL_B_m${state.module}_z${state.gearB.teeth}`
-                    : `ISO_${archLabel}_GEAR_B_m${state.module}_z${state.gearB.teeth}`);
+        function exportCAD() {
+            const target = document.getElementById('exportTarget').value;
+            const format = document.getElementById('stlFormat').value;
 
-            // Color palettes in normalized RGB [0..1] for AP214
-            const rgbA = [0.22, 0.74, 0.97]; // Sky Blue (#38bdf8)
-            const rgbB = [0.98, 0.57, 0.24]; // Engineering Orange (#fb923c)
-
-            if (target === 'separateAB') {
-                let exportedCount = 0;
-                if (meshA) {
-                    const stpA = generateSTEP214String(
-                        [{ mesh: meshA, worldTransform: false, partName: partNameA, rgb: rgbA }],
-                        partNameA
-                    );
-                    triggerBlobDownload(new Blob([stpA], { type: 'application/step' }), `${partNameA}_AP214.stp`);
-                    exportedCount++;
+            if (format === 'step214') {
+                if (target === 'A') {
+                    const fA = exportSingleSTEP214('A', false);
+                    if (fA) showToast(`Exported ISO 10303-214 CAD: ${fA}`);
+                } else if (target === 'B') {
+                    const fB = exportSingleSTEP214('B', false);
+                    if (fB) showToast(`Exported ISO 10303-214 CAD: ${fB}`);
+                } else if (target === 'both_separate') {
+                    exportSeparateSTEP214Pair();
+                } else if (target === 'both') {
+                    // Export both A and B positioned in assembly world coordinates as separate AP214 files
+                    const fA = exportSingleSTEP214('A', true);
+                    if (state.assemblyMode && meshB) {
+                        setTimeout(() => {
+                            const fB = exportSingleSTEP214('B', true);
+                            showToast(`Exported Assembly-Positioned STEP AP214 Pair: ${fA} & ${fB}`);
+                        }, 320);
+                    }
                 }
-                if (meshB && state.assemblyMode) {
-                    setTimeout(() => {
-                        const stpB = generateSTEP214String(
-                            [{ mesh: meshB, worldTransform: false, partName: partNameB, rgb: rgbB }],
-                            partNameB
-                        );
-                        triggerBlobDownload(new Blob([stpB], { type: 'application/step' }), `${partNameB}_AP214.stp`);
-                    }, 320);
-                    exportedCount++;
-                }
-                showToast(`Exported ${exportedCount} separate ISO 10303-214 (.stp) CAD files (A & B)`);
                 return;
             }
 
-            if (target === 'A' && meshA) {
-                const stpA = generateSTEP214String(
-                    [{ mesh: meshA, worldTransform: false, partName: partNameA, rgb: rgbA }],
-                    partNameA
-                );
-                triggerBlobDownload(new Blob([stpA], { type: 'application/step' }), `${partNameA}_AP214.stp`);
-                showToast(`Exported ${partNameA}_AP214.stp (STEP AP214)`);
-            } else if (target === 'B' && meshB) {
-                const stpB = generateSTEP214String(
-                    [{ mesh: meshB, worldTransform: false, partName: partNameB, rgb: rgbB }],
-                    partNameB
-                );
-                triggerBlobDownload(new Blob([stpB], { type: 'application/step' }), `${partNameB}_AP214.stp`);
-                showToast(`Exported ${partNameB}_AP214.stp (STEP AP214)`);
-            } else if (target === 'both') {
-                const items = [];
-                if (meshA) items.push({ mesh: meshA, worldTransform: true, partName: partNameA, rgb: rgbA });
-                if (meshB && state.assemblyMode) items.push({ mesh: meshB, worldTransform: true, partName: partNameB, rgb: rgbB });
-                const assyName = `ISO_${archLabel}_ASSEMBLY_AB_m${state.module}`;
-                const stpAssy = generateSTEP214String(items, assyName);
-                triggerBlobDownload(new Blob([stpAssy], { type: 'application/step' }), `${assyName}_AP214.stp`);
-                showToast(`Exported Combined Assembly ${assyName}_AP214.stp`);
+            if (target === 'both_separate') {
+                exportSTLByTarget('A', format);
+                if (state.assemblyMode && meshB) {
+                    setTimeout(() => exportSTLByTarget('B', format), 320);
+                }
+                return;
             }
+
+            exportSTLByTarget(target, format);
         }
 
-        function createSTLBlobForItems(meshesToExport, format, fileName) {
+        function exportSTLByTarget(target, format) {
+            const meshesToExport = [];
+            if (target === 'A' && meshA) {
+                meshesToExport.push({ mesh: meshA, worldTransform: false });
+            } else if (target === 'B' && meshB) {
+                meshesToExport.push({ mesh: meshB, worldTransform: false });
+            } else if (target === 'both') {
+                if (meshA) meshesToExport.push({ mesh: meshA, worldTransform: true });
+                if (meshB && state.assemblyMode) meshesToExport.push({ mesh: meshB, worldTransform: true });
+            }
+
+            if (meshesToExport.length === 0) return;
+
+            // Collect world or local triangles
             let totalTris = 0;
             meshesToExport.forEach(item => {
                 totalTris += item.mesh.geometry.getAttribute('position').count / 3;
             });
 
+            const archLabel = state.architecture.toUpperCase();
+            const fileName = `ISO_${archLabel}_${target === 'both' ? 'Assembly' : 'Gear_' + target}_m${state.module}.stl`;
+
+            let blob;
             const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
             const cb = new THREE.Vector3(), ab = new THREE.Vector3();
 
             if (format === 'binary') {
                 const buffer = new ArrayBuffer(84 + totalTris * 50);
                 const view = new DataView(buffer);
-                const header = `ISO-CAD Studio v3 ${fileName}`;
+                const header = `ISO-CAD Studio v3 ${archLabel} Export m=${state.module}`;
                 for (let i = 0; i < 80; i++) {
                     view.setUint8(i, i < header.length ? header.charCodeAt(i) : 32);
                 }
@@ -3052,4 +3082,84 @@
                         view.setFloat32(offset, cb.y, true); offset += 4;
                         view.setFloat32(offset, cb.z, true); offset += 4;
                         view.setFloat32(offset, vA.x, true); offset += 4;
-                        view.setFloat
+                        view.setFloat32(offset, vA.y, true); offset += 4;
+                        view.setFloat32(offset, vA.z, true); offset += 4;
+                        view.setFloat32(offset, vB.x, true); offset += 4;
+                        view.setFloat32(offset, vB.y, true); offset += 4;
+                        view.setFloat32(offset, vB.z, true); offset += 4;
+                        view.setFloat32(offset, vC.x, true); offset += 4;
+                        view.setFloat32(offset, vC.y, true); offset += 4;
+                        view.setFloat32(offset, vC.z, true); offset += 4;
+                        view.setUint16(offset, 0, true); offset += 2;
+                    }
+                });
+                blob = new Blob([buffer], { type: 'application/octet-stream' });
+            } else {
+                const lines = [`solid ${fileName}\n`];
+                meshesToExport.forEach(({ mesh, worldTransform }) => {
+                    mesh.updateMatrixWorld(true);
+                    const matWorld = mesh.matrixWorld;
+                    const pos = mesh.geometry.getAttribute('position');
+                    const count = pos.count / 3;
+                    for (let i = 0; i < count; i++) {
+                        const idx = i * 3;
+                        vA.fromBufferAttribute(pos, idx);
+                        vB.fromBufferAttribute(pos, idx + 1);
+                        vC.fromBufferAttribute(pos, idx + 2);
+                        if (worldTransform) {
+                            vA.applyMatrix4(matWorld);
+                            vB.applyMatrix4(matWorld);
+                            vC.applyMatrix4(matWorld);
+                        }
+                        cb.subVectors(vC, vB);
+                        ab.subVectors(vA, vB);
+                        cb.cross(ab).normalize();
+                        lines.push(
+                            `  facet normal ${cb.x.toExponential(4)} ${cb.y.toExponential(4)} ${cb.z.toExponential(4)}\n` +
+                            `    outer loop\n` +
+                            `      vertex ${vA.x.toExponential(5)} ${vA.y.toExponential(5)} ${vA.z.toExponential(5)}\n` +
+                            `      vertex ${vB.x.toExponential(5)} ${vB.y.toExponential(5)} ${vB.z.toExponential(5)}\n` +
+                            `      vertex ${vC.x.toExponential(5)} ${vC.y.toExponential(5)} ${vC.z.toExponential(5)}\n` +
+                            `    endloop\n  endfacet\n`
+                        );
+                    }
+                });
+                lines.push(`endsolid ${fileName}\n`);
+                blob = new Blob(lines, { type: 'text/plain' });
+            }
+
+            triggerFileDownload(blob, fileName);
+            showToast(`Exported ${fileName} (${totalTris.toLocaleString()} triangles)`);
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toastBanner');
+            document.getElementById('toastMessage').textContent = msg;
+            el.classList.remove('hidden');
+            setTimeout(() => el.classList.add('hidden'), 3400);
+        }
+
+        function bindSharedDualInput(key, rngId, numId) {
+            const rng = document.getElementById(rngId);
+            const num = document.getElementById(numId);
+            if (!rng || !num) return;
+            rng.addEventListener('input', () => setSharedParam(key, rng.value));
+            num.addEventListener('input', () => setSharedParam(key, num.value));
+        }
+
+        window.onload = function () {
+            lucide.createIcons();
+            initThreeViewport();
+
+            bindSharedDualInput('module', 'rng_module', 'num_module');
+            bindSharedDualInput('pressureAngle', 'rng_pressureAngle', 'num_pressureAngle');
+            bindSharedDualInput('faceWidth', 'rng_faceWidth', 'num_faceWidth');
+            bindSharedDualInput('shaftAngle', 'rng_shaftAngle', 'num_shaftAngle');
+            bindSharedDualInput('backlash', 'rng_backlash', 'num_backlash');
+            bindSharedDualInput('centerDistDelta', 'rng_centerDistDelta', 'num_centerDistDelta');
+
+            setArchitecture('spur');
+        };
+    </script>
+</body>
+</html>
