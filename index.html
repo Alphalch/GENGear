@@ -243,11 +243,11 @@
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-zinc-300 font-medium">Normal Module (<span class="font-mono text-[#5ce1e6]">m<sub>n</sub></span>)</label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_module" min="0.5" max="10" step="0.1" value="2.5" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_module" min="0.5" max="10" step="0.05" value="2.5" oninput="setSharedParam('module', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                     <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                 </div>
                             </div>
-                            <input type="range" id="rng_module" min="0.5" max="10" step="0.05" value="2.5" class="w-full">
+                            <input type="range" id="rng_module" min="0.5" max="10" step="0.05" value="2.5" oninput="setSharedParam('module', this.value)" class="w-full">
                         </div>
 
                         <!-- Pressure Angle (alpha) -->
@@ -260,11 +260,11 @@
                                     <button onclick="setSharedParam('pressureAngle', 25)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#22262c] text-zinc-300 font-mono">25°</button>
                                 </label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_pressureAngle" min="12" max="30" step="0.5" value="20" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_pressureAngle" min="12" max="30" step="0.5" value="20" oninput="setSharedParam('pressureAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                     <span class="text-zinc-500 font-mono text-[11px]">deg</span>
                                 </div>
                             </div>
-                            <input type="range" id="rng_pressureAngle" min="12" max="30" step="0.5" value="20" class="w-full">
+                            <input type="range" id="rng_pressureAngle" min="12" max="30" step="0.5" value="20" oninput="setSharedParam('pressureAngle', this.value)" class="w-full">
                         </div>
 
                         <!-- Quick Tooth Count Summary Pair (z_A and z_B) -->
@@ -312,11 +312,11 @@
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-zinc-300 font-medium">Face Width (<span class="font-mono text-[#5ce1e6]">b</span>)</label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_faceWidth" min="3" max="60" step="0.5" value="14" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_faceWidth" min="3" max="60" step="0.5" value="14" oninput="setSharedParam('faceWidth', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                     <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                 </div>
                             </div>
-                            <input type="range" id="rng_faceWidth" min="3" max="60" step="0.5" value="14" class="w-full">
+                            <input type="range" id="rng_faceWidth" min="3" max="60" step="0.5" value="14" oninput="setSharedParam('faceWidth', this.value)" class="w-full">
                         </div>
 
                         <!-- Bevel Shaft Angle Sigma -->
@@ -327,11 +327,11 @@
                                     <button onclick="setSharedParam('shaftAngle', 90)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 font-mono">90°</button>
                                 </label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_shaftAngle" min="45" max="135" step="1" value="90" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_shaftAngle" min="45" max="135" step="1" value="90" oninput="setSharedParam('shaftAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                     <span class="text-zinc-500 font-mono text-[11px]">deg</span>
                                 </div>
                             </div>
-                            <input type="range" id="rng_shaftAngle" min="45" max="135" step="1" value="90" class="w-full">
+                            <input type="range" id="rng_shaftAngle" min="45" max="135" step="1" value="90" oninput="setSharedParam('shaftAngle', this.value)" class="w-full">
                         </div>
 
                         <!-- Backlash & Center Distance Shift Override -->
@@ -340,11 +340,11 @@
                                 <div class="flex justify-between text-xs mb-1">
                                     <label class="text-zinc-300 font-medium">Backlash (<span class="font-mono text-[#5ce1e6]">j<sub>n</sub></span>)</label>
                                     <div class="flex items-center space-x-1">
-                                        <input type="number" id="num_backlash" min="0" max="0.6" step="0.02" value="0.08" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                        <input type="number" id="num_backlash" min="0" max="0.6" step="0.01" value="0.08" oninput="setSharedParam('backlash', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                         <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                     </div>
                                 </div>
-                                <input type="range" id="rng_backlash" min="0" max="0.6" step="0.01" value="0.08" class="w-full">
+                                <input type="range" id="rng_backlash" min="0" max="0.6" step="0.01" value="0.08" oninput="setSharedParam('backlash', this.value)" class="w-full">
                             </div>
 
                             <!-- Center Distance Delta -->
@@ -355,11 +355,11 @@
                                         <button onclick="setSharedParam('centerDistDelta', 0)" class="text-[10px] bg-[#22262c] px-1.5 rounded text-zinc-300 font-mono">0</button>
                                     </label>
                                     <div class="flex items-center space-x-1">
-                                        <input type="number" id="num_centerDistDelta" min="-3" max="25" step="0.1" value="0" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                        <input type="number" id="num_centerDistDelta" min="-3" max="25" step="0.05" value="0" oninput="setSharedParam('centerDistDelta', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
                                         <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                     </div>
                                 </div>
-                                <input type="range" id="rng_centerDistDelta" min="-2" max="20" step="0.05" value="0" class="w-full">
+                                <input type="range" id="rng_centerDistDelta" min="-2" max="20" step="0.05" value="0" oninput="setSharedParam('centerDistDelta', this.value)" class="w-full">
                             </div>
                         </div>
                     </div>
@@ -824,17 +824,31 @@
                     <span id="stressStateBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/40">SAFE (SF 2.8)</span>
                 </div>
 
+                <!-- Tangential Tooth Load Force (Ft) Slider — Primary Auto-Coupled with Pitch Diameter -->
                 <div>
                     <div class="flex justify-between text-xs mb-1">
-                        <label class="text-zinc-300 font-medium">Applied Driver Torque (<span class="font-mono text-[#5ce1e6]">T<sub>A</sub></span>)</label>
+                        <label class="text-zinc-300 font-medium">Tangential Tooth Load (<span class="font-mono text-[#5ce1e6]">F<sub>t</sub></span>)</label>
                         <div class="flex items-center space-x-1">
-                            <input type="number" id="num_appliedTorque" min="0.5" max="1500" step="0.5" value="25" oninput="updateAppliedTorque(this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                            <input type="number" id="num_appliedForce" min="10" max="50000" step="10" value="1111" oninput="updateAppliedForce(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                            <span class="text-zinc-500 font-mono text-[11px]">N</span>
+                        </div>
+                    </div>
+                    <input type="range" id="rng_appliedForce" min="10" max="10000" step="10" value="1111" oninput="updateAppliedForce(this.value)" class="w-full">
+                </div>
+
+                <!-- Auto-Calculated Driver Torque (TA = Ft * d_pA / 2) -->
+                <div class="pt-1 border-t border-[#252930]/60">
+                    <div class="flex justify-between text-xs mb-1">
+                        <label class="text-zinc-400 font-medium">Driver Torque (<span class="font-mono text-[#ff99c8]">T<sub>A</sub> = F<sub>t</sub>·r<sub>pA</sub></span>)</label>
+                        <div class="flex items-center space-x-1">
+                            <input type="number" id="num_appliedTorque" min="0.5" max="1500" step="0.5" value="25.0" oninput="updateAppliedTorque(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
                             <span class="text-zinc-500 font-mono text-[11px]">N·m</span>
                         </div>
                     </div>
-                    <input type="range" id="rng_appliedTorque" min="0.5" max="500" step="0.5" value="25" oninput="updateAppliedTorque(this.value)" class="w-full">
-                    <div class="flex justify-between text-[10px] font-mono text-zinc-400 mt-1">
-                        <span>Tangential Load F<sub>t</sub>: <strong id="read_currentFt" class="text-zinc-200">1111 N</strong></span>
+                    <input type="range" id="rng_appliedTorque" min="0.5" max="500" step="0.5" value="25" oninput="updateAppliedTorque(this.value)" class="w-full slider-pink">
+                    <div class="flex justify-between text-[10px] font-mono text-zinc-400 mt-1.5 bg-[#111316] px-2 py-1 rounded border border-[#23272f]">
+                        <span>Pitch Ø<sub>A</sub>: <strong id="read_forcePitchDia" class="text-[#5ce1e6]">45.0 mm</strong></span>
+                        <span>Normal F<sub>n</sub>: <strong id="read_currentFn" class="text-zinc-200">1182 N</strong></span>
                         <span>Radial F<sub>r</sub>: <strong id="read_currentFr" class="text-zinc-200">404 N</strong></span>
                     </div>
                 </div>
@@ -938,9 +952,9 @@
                     </div>
                 </div>
 
-                <button onclick="exportSeparateSTEP214Pair()" class="w-full py-2.5 px-4 rounded-lg bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#5ce1e6]/15 transition active:scale-98 flex items-center justify-center gap-2">
-                    <i data-lucide="download-cloud" class="w-4 h-4"></i>
-                    <span>Export Validated A+B (.STP214)</span>
+                <button id="btnBottomStartSim" onclick="runLoadAndKinematicSimulation()" class="w-full py-2.5 px-4 rounded-lg bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#5ce1e6]/15 transition active:scale-98 flex items-center justify-center gap-2">
+                    <i data-lucide="play" class="w-4 h-4" id="bottomSimIcon"></i>
+                    <span id="bottomSimText">Start Simulation</span>
                 </button>
             </div>
 
@@ -1018,7 +1032,9 @@
             showPitchSurfaces: true,
             materialA: 'steel1045',
             materialB: 'steel1045',
+            appliedForceN: 1111.0,
             appliedTorqueNm: 25.0,
+            loadInputMode: 'force',
             isPlaying: true,
             rpm: 18,
             direction: 1,
@@ -2269,11 +2285,43 @@
             document.getElementById('read_matShearLim').textContent = `${Math.min(matA.tauShaftLim, matB.tauShaftLim)} MPa`;
         }
 
+        function updateAppliedForce(val) {
+            const f = Math.max(1, Math.min(50000, parseFloat(val) || 10));
+            state.appliedForceN = f;
+            state.loadInputMode = 'force';
+            const rpA = cachedMetrics ? Math.max(2, cachedMetrics.rpA) : 22.5;
+            state.appliedTorqueNm = (f * rpA) / 1000;
+
+            const numF = document.getElementById('num_appliedForce');
+            const rngF = document.getElementById('rng_appliedForce');
+            if (numF && document.activeElement !== numF) numF.value = Math.round(f);
+            if (rngF) rngF.value = Math.min(10000, f);
+
+            const numT = document.getElementById('num_appliedTorque');
+            const rngT = document.getElementById('rng_appliedTorque');
+            if (numT) numT.value = state.appliedTorqueNm.toFixed(1);
+            if (rngT) rngT.value = Math.min(500, state.appliedTorqueNm);
+
+            if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
+        }
+
         function updateAppliedTorque(val) {
             const t = Math.max(0.1, Math.min(2500, parseFloat(val) || 1.0));
             state.appliedTorqueNm = t;
-            document.getElementById('num_appliedTorque').value = t.toFixed(1);
-            document.getElementById('rng_appliedTorque').value = Math.min(500, t);
+            state.loadInputMode = 'torque';
+            const rpA = cachedMetrics ? Math.max(2, cachedMetrics.rpA) : 22.5;
+            state.appliedForceN = (t * 1000) / rpA;
+
+            const numT = document.getElementById('num_appliedTorque');
+            const rngT = document.getElementById('rng_appliedTorque');
+            if (numT && document.activeElement !== numT) numT.value = t.toFixed(1);
+            if (rngT) rngT.value = Math.min(500, t);
+
+            const numF = document.getElementById('num_appliedForce');
+            const rngF = document.getElementById('rng_appliedForce');
+            if (numF) numF.value = Math.round(state.appliedForceN);
+            if (rngF) rngF.value = Math.min(10000, state.appliedForceN);
+
             if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
         }
 
@@ -2281,6 +2329,21 @@
             const matA = MATERIAL_DB[state.materialA];
             const matB = state.assemblyMode ? MATERIAL_DB[state.materialB] : matA;
             const m = metrics.mA, b = state.faceWidth, rpA = metrics.rpA, rpB = metrics.rpB;
+
+            // Automatically recalculate Force (Ft) or Torque (TA) from current pitch radius rpA = d_pA / 2
+            if (state.loadInputMode === 'torque') {
+                state.appliedForceN = (state.appliedTorqueNm * 1000) / Math.max(2, rpA);
+                const numF = document.getElementById('num_appliedForce');
+                const rngF = document.getElementById('rng_appliedForce');
+                if (numF && document.activeElement !== numF) numF.value = Math.round(state.appliedForceN);
+                if (rngF) rngF.value = Math.min(10000, state.appliedForceN);
+            } else {
+                state.appliedTorqueNm = (state.appliedForceN * Math.max(2, rpA)) / 1000;
+                const numT = document.getElementById('num_appliedTorque');
+                const rngT = document.getElementById('rng_appliedTorque');
+                if (numT && document.activeElement !== numT) numT.value = state.appliedTorqueNm.toFixed(1);
+                if (rngT) rngT.value = Math.min(500, state.appliedTorqueNm);
+            }
 
             const vPitchMs = (((state.rpm * 2 * Math.PI) / 60) * rpA) / 1000;
             const Kv = 1.0 + 0.04 * vPitchMs;
@@ -2309,7 +2372,7 @@
 
             function calcShaftAndRimMaxFt(gearCfg, rp, rf, mat) {
                 if (gearCfg.boreType === 'none' || gearCfg.boreDia <= 1) return { maxFt: 999999 };
-                const dShaft = gearCfg.boreDia, rShaft = dShaft / 2;
+                const dShaft = gearCfg.boreDia;
                 const Tmax_torsion = (Math.PI / 16) * Math.pow(dShaft, 3) * mat.tauShaftLim;
                 return { maxFt: Tmax_torsion / Math.max(2, rp) };
             }
@@ -2319,11 +2382,16 @@
             const maxFt_shaft = Math.min(shaftResA.maxFt, shaftResB.maxFt);
             const maxFt_overall = Math.min(maxFt_bend, maxFt_contact, maxFt_shaft);
 
+            let governingMode = `Tooth Root Bending (${bendWeakPart})`;
+            if (maxFt_overall === maxFt_contact) governingMode = 'Flank Surface Pitting';
+            else if (maxFt_overall === maxFt_shaft) governingMode = 'Shaft / Keyway Shear';
+
             const maxTorqueA_Nm = (maxFt_overall * rpA) / 1000;
             const maxTorqueB_Nm = (maxFt_overall * rpB) / 1000;
 
-            const currentFt = (state.appliedTorqueNm * 1000) / Math.max(2, rpA);
+            const currentFt = state.appliedForceN;
             const currentFr = currentFt * Math.tan(metrics.alphaTA);
+            const currentFn = currentFt / Math.max(0.2, Math.cos(metrics.alphaTA));
             const currSigmaBend = currentFt * Math.max(bendFactorA, state.assemblyMode ? bendFactorB : 0);
             const allowBend = maxFt_bendA <= maxFt_bendB ? matA.sigmaBendingLim : matB.sigmaBendingLim;
             const pctBend = Math.round((currSigmaBend / allowBend) * 100);
@@ -2331,48 +2399,102 @@
             const currSigmaContact = ZE * ZH * Math.sqrt((currentFt * Kv * uTerm) / (b * d1Eff));
             const pctContact = Math.round((currSigmaContact / contactAllow) * 100);
 
-            const allowShaftTau = matA.tauShaftLim;
+            const allowShaftTau = Math.min(matA.tauShaftLim, state.assemblyMode ? matB.tauShaftLim : Infinity);
             const currTauShaft = (currentFt / Math.max(1, maxFt_shaft)) * allowShaftTau;
             const pctShaft = Math.round((currTauShaft / allowShaftTau) * 100);
 
             const safetyFactor = maxFt_overall / Math.max(1, currentFt);
-            cachedFailureSummary = { maxFt_overall, maxTorqueA_Nm, maxTorqueB_Nm, governingMode: `Tooth Root Bending (${bendWeakPart})`, safetyFactor };
+            cachedFailureSummary = { maxFt_overall, maxTorqueA_Nm, maxTorqueB_Nm, governingMode, safetyFactor };
 
-            document.getElementById('read_currentFt').textContent = `${Math.round(currentFt).toLocaleString()} N`;
+            const pitchDiaEl = document.getElementById('read_forcePitchDia');
+            if (pitchDiaEl) pitchDiaEl.textContent = `${(rpA * 2).toFixed(1)} mm`;
+            const fnEl = document.getElementById('read_currentFn');
+            if (fnEl) fnEl.textContent = `${Math.round(currentFn).toLocaleString()} N`;
             document.getElementById('read_currentFr').textContent = `${Math.round(currentFr).toLocaleString()} N`;
 
             const updateBar = (barId, lblId, currVal, limVal, pct) => {
                 const bar = document.getElementById(barId), lbl = document.getElementById(lblId);
                 lbl.textContent = `${Math.round(currVal)} / ${Math.round(limVal)} MPa (${pct}%)`;
                 bar.style.width = `${Math.min(100, pct)}%`;
+                bar.className = `h-full transition-all duration-150 ${pct >= 100 ? 'bg-[#ff99c8]' : (pct >= 75 ? 'bg-amber-400' : 'bg-[#5ce1e6]')}`;
+                lbl.className = `font-bold ${pct >= 100 ? 'text-[#ff99c8]' : (pct >= 75 ? 'text-amber-300' : 'text-[#5ce1e6]')}`;
             };
             updateBar('bar_bending', 'lbl_barBending', currSigmaBend, allowBend, pctBend);
             updateBar('bar_contact', 'lbl_barContact', currSigmaContact, contactAllow, pctContact);
             updateBar('bar_shaft', 'lbl_barShaft', currTauShaft, allowShaftTau, pctShaft);
 
             const sfBadge = document.getElementById('stressStateBadge');
-            sfBadge.textContent = `SAFE (SF ${Math.min(99, safetyFactor).toFixed(1)})`;
+            if (safetyFactor < 1.0) {
+                sfBadge.textContent = `FAILURE (SF ${safetyFactor.toFixed(2)})`;
+                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/50';
+            } else if (safetyFactor < 1.4) {
+                sfBadge.textContent = `MARGINAL (SF ${safetyFactor.toFixed(2)})`;
+                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
+            } else {
+                sfBadge.textContent = `SAFE (SF ${Math.min(99, safetyFactor).toFixed(1)})`;
+                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/40';
+            }
 
             document.getElementById('spec_maxForce').textContent = `${Math.round(maxFt_overall).toLocaleString()} N`;
             document.getElementById('spec_maxTorque').textContent = `${maxTorqueA_Nm.toFixed(1)} / ${maxTorqueB_Nm.toFixed(0)} N·m`;
-            document.getElementById('spec_failMode').textContent = `Tooth Root Bending (${bendWeakPart})`;
+            document.getElementById('spec_failMode').textContent = governingMode;
             const maxPowerW = maxTorqueA_Nm * ((state.rpm * 2 * Math.PI) / 60);
             document.getElementById('spec_maxPower').textContent = `${maxPowerW.toFixed(1)} W`;
             document.getElementById('spec_rowBendForce').textContent = `${Math.round(maxFt_bend).toLocaleString()} N`;
             document.getElementById('spec_rowSurfForce').textContent = `${Math.round(maxFt_contact).toLocaleString()} N`;
+            document.getElementById('spec_rowShaftForce').textContent = `${Math.round(maxFt_shaft).toLocaleString()} N`;
             document.getElementById('spec_rowLewis').textContent = `${yFA.toFixed(3)} / ${yFB.toFixed(3)}`;
+
+            // Estimate Part A & Part B masses from pitch cylinder volume and material density
+            const volA_cm3 = (Math.PI * Math.pow(rpA / 10, 2) * (b / 10)) * 0.85;
+            const volB_cm3 = (Math.PI * Math.pow(rpB / 10, 2) * (b / 10)) * 0.85;
+            const massA_g = Math.max(2, Math.round(volA_cm3 * matA.density));
+            const massB_g = Math.max(5, Math.round(volB_cm3 * matB.density));
+            const massEl = document.getElementById('spec_massAB');
+            if (massEl) massEl.textContent = `Mass: ${massA_g}g / ${massB_g}g`;
+
+            const vMaxMs = Math.min(matA.maxPitchVel, matB.maxPitchVel);
+            const maxSafeRpm = Math.round((vMaxMs * 1000 * 60) / (2 * Math.PI * Math.max(2, rpA)));
+            const maxRpmEl = document.getElementById('spec_rowMaxRpm');
+            if (maxRpmEl) maxRpmEl.textContent = `${maxSafeRpm.toLocaleString()} RPM`;
         }
 
         function rampLoadToFailure() {
             if (!cachedFailureSummary) return;
-            updateAppliedTorque(parseFloat((cachedFailureSummary.maxTorqueA_Nm * 1.04).toFixed(1)));
-            showToast('Simulated Failure Limit');
+            updateAppliedForce(Math.round(cachedFailureSummary.maxFt_overall * 1.05));
+            showToast('Simulated Tooth/Shaft Failure Limit (105% Load)');
         }
 
         function setSafeRatedLoad() {
             if (!cachedFailureSummary) return;
-            updateAppliedTorque(Math.max(0.5, parseFloat((cachedFailureSummary.maxTorqueA_Nm / 1.5).toFixed(1))));
+            updateAppliedForce(Math.max(10, Math.round(cachedFailureSummary.maxFt_overall / 1.5)));
             showToast('Set Safe Operating Load (SF=1.5)');
+        }
+
+        function updateSimulationButtonsUI() {
+            const topText = document.getElementById('playPauseText');
+            const botText = document.getElementById('bottomSimText');
+            const botBtn = document.getElementById('btnBottomStartSim');
+            if (topText) topText.textContent = state.isPlaying ? 'Running (Pause)' : 'Paused (Play)';
+            if (botText) botText.textContent = state.isPlaying ? 'Pause Simulation' : 'Start Simulation';
+            if (botBtn) {
+                botBtn.className = state.isPlaying
+                    ? 'w-full py-2.5 px-4 rounded-lg bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#5ce1e6]/15 transition active:scale-98 flex items-center justify-center gap-2'
+                    : 'w-full py-2.5 px-4 rounded-lg bg-[#ff99c8] hover:bg-[#ff85bc] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#ff99c8]/15 transition active:scale-98 flex items-center justify-center gap-2';
+            }
+        }
+
+        function runLoadAndKinematicSimulation() {
+            if (!state.isPlaying) {
+                state.isPlaying = true;
+                if (state.rpm <= 0) updateRPM(18);
+                rebuildSceneModels();
+                showToast(`Simulation Running · Ft = ${Math.round(state.appliedForceN)} N (${state.appliedTorqueNm.toFixed(1)} N·m)`);
+            } else {
+                state.isPlaying = false;
+                showToast('Simulation Paused');
+            }
+            updateSimulationButtonsUI();
         }
 
         function toggleAssemblyMode(checked) {
@@ -2414,193 +2536,4 @@
             if (prop === 'boreType') target.boreType = val;
             else if (prop === 'hand') {
                 target.hand = parseInt(val);
-                document.getElementById(`btnHand${gearKey}_R`).className = target.hand === 1 ? 'px-2.5 py-1 rounded text-xs font-medium bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30' : 'px-2.5 py-1 rounded text-xs font-medium text-zinc-400';
-                document.getElementById(`btnHand${gearKey}_L`).className = target.hand === -1 ? 'px-2.5 py-1 rounded text-xs font-medium bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/30' : 'px-2.5 py-1 rounded text-xs font-medium text-zinc-400';
-            } else {
-                target[prop] = parseFloat(val);
-            }
-            rebuildSceneModels();
-        }
-
-        function unlockIndependentParams() {
-            state.gearB.mismatchUnlocked = !state.gearB.mismatchUnlocked;
-            document.getElementById('mismatchTesterBox').classList.toggle('hidden', !state.gearB.mismatchUnlocked);
-            rebuildSceneModels();
-        }
-
-        function autoKeyway(gearKey) {
-            const target = gearKey === 'A' ? state.gearA : state.gearB;
-            for (const [maxD, kw, kd] of DIN_6885_KEYWAYS) {
-                if (target.boreDia <= maxD) {
-                    target.keyWidth = kw; target.keyDepth = kd;
-                    if (gearKey === 'A') { document.getElementById('num_kwA').value = kw; document.getElementById('num_kdA').value = kd; }
-                    break;
-                }
-            }
-            rebuildSceneModels();
-            showToast('Applied DIN 6885 Keyway');
-        }
-
-        function snapStandardModule() { setSharedParam('module', 2.5); showToast('Snapped to ISO Module 2.5 mm'); }
-        function togglePlaySimulation() { state.isPlaying = !state.isPlaying; document.getElementById('playPauseText').textContent = state.isPlaying ? 'Running (Pause)' : 'Paused (Play)'; }
-        function reverseSimulationDir() { state.direction *= -1; }
-        function updateRPM(val) { state.rpm = parseFloat(val); document.getElementById('lbl_rpm').textContent = `${state.rpm} RPM`; }
-        function updateMeshPhase(val) { state.meshPhaseDeg = parseFloat(val) || 0; document.getElementById('lbl_phase').textContent = `${state.meshPhaseDeg.toFixed(1)}°`; }
-        function setMeshQuality(qual) { state.meshQuality = qual; rebuildSceneModels(); }
-        function resetCamera() { if (camera && controls) { camera.position.set(25, -155, 115); controls.target.set(0, 0, 0); controls.update(); } }
-        function setCameraTop() { if (camera && controls) { camera.position.set(0, -0.01, 195); controls.target.set(0, 0, 0); controls.update(); } }
-        function togglePitchOverlay() { state.showPitchSurfaces = !state.showPitchSurfaces; if (cachedMetrics) rebuildPitchOverlays(cachedMetrics); }
-        function toggleWireframe() { state.wireframe = !state.wireframe; if (meshA) meshA.material.wireframe = state.wireframe; if (meshB) meshB.material.wireframe = state.wireframe; }
-        function syncWormWheelHelix() {
-            const gammaDeg = (Math.atan(state.gearA.teeth / state.gearA.wormQuotient) * 180) / Math.PI;
-            state.gearB.helixAngle = parseFloat(gammaDeg.toFixed(2));
-            state.gearB.hand = state.gearA.hand;
-            rebuildSceneModels();
-        }
-
-        function setArchitecture(arch) {
-            state.architecture = arch;
-            document.querySelectorAll('.arch-btn').forEach(btn => {
-                if (btn.dataset.arch === arch) btn.className = 'arch-btn flex flex-col items-center justify-center py-1.5 px-1 rounded border text-[10px] font-mono font-bold transition bg-[#5ce1e6]/20 text-[#5ce1e6] border-[#5ce1e6]/50 shadow';
-                else btn.className = 'arch-btn flex flex-col items-center justify-center py-1.5 px-1 rounded border border-[#252930] bg-[#14171a] text-zinc-400 text-[10px] font-mono transition';
-            });
-            document.getElementById('wormTelemetryCard').classList.toggle('hidden', arch !== 'worm');
-            document.getElementById('wormSpecificBoxA').classList.toggle('hidden', arch !== 'worm');
-            document.getElementById('box_xA').classList.toggle('hidden', arch === 'worm');
-            document.getElementById('bevelSigmaControl').classList.toggle('hidden', arch !== 'bevel');
-            document.getElementById('rackSpecificControls').classList.toggle('hidden', arch !== 'rack');
-            document.getElementById('ringSpecificControls').classList.toggle('hidden', arch !== 'internal');
-            rebuildSceneModels();
-            resetCamera();
-        }
-
-        function switchSidebarTab(tabName) {
-            ['shared', 'gearA', 'gearB', 'diag'].forEach(t => {
-                document.getElementById(`panel_${t}`).classList.toggle('hidden', t !== tabName);
-                const btn = document.getElementById(`tabBtn_${t}`);
-                if (t === tabName) btn.className = 'py-2.5 border-b-2 border-[#5ce1e6] text-[#5ce1e6] bg-[#1b1f24] flex items-center justify-center gap-1';
-                else btn.className = 'py-2.5 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1';
-            });
-        }
-
-        function triggerFileDownload(blob, fileName) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = fileName;
-            document.body.appendChild(a); a.click();
-            document.body.removeChild(a);
-            setTimeout(() => URL.revokeObjectURL(url), 1500);
-        }
-
-        function exportSingleSTEP214(partKey, useWorldCoords = false) {
-            const targetMesh = partKey === 'A' ? meshA : meshB;
-            if (!targetMesh || !targetMesh.geometry) return null;
-            targetMesh.updateMatrixWorld(true);
-            const matWorld = targetMesh.matrixWorld;
-            const posAttr = targetMesh.geometry.getAttribute('position');
-            const triCount = posAttr.count / 3;
-            const fileName = `ISO_${state.architecture.toUpperCase()}_Part${partKey}.stp`;
-            const rgb = partKey === 'A' ? [0.3608, 0.8824, 0.9020] : [1.0, 0.6, 0.7843];
-
-            let id = 10;
-            const nextId = () => `#${id++}`;
-            const entities = [];
-            const addEnt = (str) => { const eid = nextId(); entities.push(`${eid}=${str};`); return eid; };
-            const vertMap = new Map();
-
-            const getVertexIds = (v) => {
-                const key = `${v.x.toFixed(4)},${v.y.toFixed(4)},${v.z.toFixed(4)}`;
-                let entry = vertMap.get(key);
-                if (!entry) {
-                    const cpId = addEnt(`CARTESIAN_POINT('',(${v.x.toFixed(5)},${v.y.toFixed(5)},${v.z.toFixed(5)}))`);
-                    const vpId = addEnt(`VERTEX_POINT('',${cpId})`);
-                    entry = { cpId, vpId };
-                    vertMap.set(key, entry);
-                }
-                return entry;
-            };
-
-            const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
-            const ab = new THREE.Vector3(), cb = new THREE.Vector3(), norm = new THREE.Vector3();
-            const faceIds = [];
-
-            for (let i = 0; i < triCount; i++) {
-                const idx = i * 3;
-                vA.fromBufferAttribute(posAttr, idx);
-                vB.fromBufferAttribute(posAttr, idx + 1);
-                vC.fromBufferAttribute(posAttr, idx + 2);
-                if (useWorldCoords) { vA.applyMatrix4(matWorld); vB.applyMatrix4(matWorld); vC.applyMatrix4(matWorld); }
-                ab.subVectors(vB, vA); cb.subVectors(vC, vA);
-                norm.crossVectors(ab, cb);
-                if (norm.lengthSq() < 1e-10) continue;
-                norm.normalize(); ab.normalize();
-
-                const pA = getVertexIds(vA), pB = getVertexIds(vB), pC = getVertexIds(vC);
-                const makeEdge = (vStart, vEnd, ptStart, ptEnd) => {
-                    const dirVec = new THREE.Vector3().subVectors(ptEnd, ptStart).normalize();
-                    const dirId = addEnt(`DIRECTION('',(${dirVec.x.toFixed(5)},${dirVec.y.toFixed(5)},${dirVec.z.toFixed(5)}))`);
-                    const vecId = addEnt(`VECTOR('',${dirId},1.0)`);
-                    const lineId = addEnt(`LINE('',${vStart.cpId},${vecId})`);
-                    const ecId = addEnt(`EDGE_CURVE('',${vStart.vpId},${vEnd.vpId},${lineId},.T.)`);
-                    return addEnt(`ORIENTED_EDGE('',*,*,${ecId},.T.)`);
-                };
-
-                const elId = addEnt(`EDGE_LOOP('',(${makeEdge(pA,pB,vA,vB)},${makeEdge(pB,pC,vB,vC)},${makeEdge(pC,pA,vC,vA)}))`);
-                const fobId = addEnt(`FACE_OUTER_BOUND('',${elId},.T.)`);
-                const nDirId = addEnt(`DIRECTION('',(${norm.x.toFixed(5)},${norm.y.toFixed(5)},${norm.z.toFixed(5)}))`);
-                const refDirId = addEnt(`DIRECTION('',(${ab.x.toFixed(5)},${ab.y.toFixed(5)},${ab.z.toFixed(5)}))`);
-                const axId = addEnt(`AXIS2_PLACEMENT_3D('',${pA.cpId},${nDirId},${refDirId})`);
-                const plId = addEnt(`PLANE('',${axId})`);
-                faceIds.push(addEnt(`ADVANCED_FACE('',(${fobId}),${plId},.T.)`));
-            }
-
-            const shellId = addEnt(`CLOSED_SHELL('${fileName}',(${faceIds.join(',')}))`);
-            addEnt(`MANIFOLD_SOLID_BREP('Part_${partKey}',${shellId})`);
-            const colId = addEnt(`COLOUR_RGB('',${rgb[0]},${rgb[1]},${rgb[2]})`);
-            addEnt(`FILL_AREA_STYLE_COLOUR('',${colId})`);
-
-            const stepText = [
-                `ISO-10303-21;`, `HEADER;`, `FILE_DESCRIPTION(('GENGEAR AP214'),'2;1');`,
-                `FILE_NAME('${fileName}','${new Date().toISOString().split('.')[0]}',('GENGEAR'),('CAD'),'GENGEAR','GENGEAR','');`,
-                `FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));`, `ENDSEC;`, `DATA;`,
-                entities.join('\n'), `ENDSEC;`, `END-ISO-10303-21;\n`
-            ].join('\n');
-
-            const blob = new Blob([stepText], { type: 'application/step' });
-            triggerFileDownload(blob, fileName);
-            return fileName;
-        }
-
-        function exportSeparateSTEP214Pair() {
-            const fA = exportSingleSTEP214('A', false);
-            if (state.assemblyMode && meshB) {
-                setTimeout(() => {
-                    const fB = exportSingleSTEP214('B', false);
-                    showToast(`Exported: ${fA} & ${fB}`);
-                }, 320);
-            }
-        }
-
-        function exportCAD() {
-            const target = document.getElementById('exportTarget').value;
-            if (target === 'A') exportSingleSTEP214('A', false);
-            else if (target === 'B') exportSingleSTEP214('B', false);
-            else exportSeparateSTEP214Pair();
-        }
-
-        function showToast(msg) {
-            const el = document.getElementById('toastBanner');
-            document.getElementById('toastMessage').textContent = msg;
-            el.classList.remove('hidden');
-            setTimeout(() => el.classList.add('hidden'), 3400);
-        }
-
-        window.onload = function () {
-            lucide.createIcons();
-            initThreeViewport();
-            updateMaterialButtonsUI();
-            setArchitecture('spur');
-        };
-    </script>
-</body>
-</html>
+                document.getElement
