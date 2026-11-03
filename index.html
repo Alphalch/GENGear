@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js Core & OrbitControls -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -29,10 +30,10 @@
                             panel: '#131518',
                             card: '#181b1f',
                             border: '#252930',
-                            aqua: '#5ce1e6',
-                            pink: '#ff99c8',
-                            gearA: '#5ce1e6',
-                            gearB: '#ff99c8'
+                            aqua: '#4deeea',
+                            pink: '#f4b6c2',
+                            gearA: '#4deeea',
+                            gearB: '#f4b6c2'
                         }
                     }
                 }
@@ -76,22 +77,18 @@
             width: 13px;
             height: 13px;
             border-radius: 50%;
-            background: #5ce1e6;
+            background: #4deeea;
             cursor: pointer;
             border: 2px solid #0c0d0f;
-            box-shadow: 0 0 8px rgba(92, 225, 230, 0.75);
+            box-shadow: 0 0 8px rgba(77, 238, 234, 0.75);
             transition: transform 0.1s ease;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.18);
         }
         .slider-pink::-webkit-slider-thumb {
-            background: #ff99c8 !important;
-            box-shadow: 0 0 6px rgba(255, 153, 200, 0.75) !important;
-        }
-        .slider-orange::-webkit-slider-thumb {
-            background: #ff99c8 !important;
-            box-shadow: 0 0 6px rgba(255, 153, 200, 0.75) !important;
+            background: #f4b6c2 !important;
+            box-shadow: 0 0 6px rgba(244, 182, 194, 0.75) !important;
         }
         .cad-grid-bg {
             background-color: #0e1013;
@@ -109,17 +106,17 @@
         <!-- Brand Title -->
         <div class="flex items-center space-x-3">
             <div class="flex items-center space-x-2.5">
-                <span class="w-3 h-3 rounded-full bg-[#5ce1e6] shadow-[0_0_12px_#5ce1e6]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#4deeea] shadow-[0_0_12px_#4deeea]"></span>
                 <h1 class="font-extrabold text-sm md:text-base tracking-wider uppercase text-zinc-100">GENGEAR</h1>
-                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-[#1b1f24] text-[#5ce1e6] border border-[#5ce1e6]/30">v3.5 FEA</span>
+                <span class="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-[#1b1f24] text-[#4deeea] border border-[#4deeea]/30">v3.5 FEA</span>
             </div>
         </div>
 
         <!-- Center Status Pill Banner -->
-        <div id="topStatusBanner" class="hidden md:flex items-center space-x-3 bg-[#15191d] border border-[#5ce1e6]/40 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner">
-            <span id="statusBannerDot" class="w-2.5 h-2.5 rounded-full bg-[#5ce1e6] shrink-0 shadow-[0_0_8px_#5ce1e6]"></span>
+        <div id="topStatusBanner" class="hidden md:flex items-center space-x-3 bg-[#15191d] border border-[#4deeea]/40 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner">
+            <span id="statusBannerDot" class="w-2.5 h-2.5 rounded-full bg-[#4deeea] shrink-0 shadow-[0_0_8px_#4deeea]"></span>
             <div class="text-left leading-tight">
-                <div id="statusBannerTitle" class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#5ce1e6]">READY · ISO MESH & LOAD NOMINAL</div>
+                <div id="statusBannerTitle" class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#4deeea]">READY · ISO MESH & LOAD NOMINAL</div>
                 <div id="statusBannerSub" class="text-[11px] text-zinc-400 truncate">Spur, Helical, Bevel, Rack, Ring & Worm + Structural Failure Simulator</div>
             </div>
         </div>
@@ -129,30 +126,30 @@
             <div class="hidden 2xl:flex items-center space-x-1 bg-[#171a1e] p-1 rounded border border-[#262a32] text-[11px] font-mono">
                 <button onclick="applyPreset('spurPair')" class="px-2 py-1 rounded hover:bg-[#22262c] text-zinc-300 transition">Spur</button>
                 <button onclick="applyPreset('helicalPair')" class="px-2 py-1 rounded hover:bg-[#22262c] text-zinc-300 transition">Helical</button>
-                <button onclick="applyPreset('bevel90')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#5ce1e6] transition">90° Bevel</button>
-                <button onclick="applyPreset('rackPinion')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#5ce1e6] transition">Rack</button>
-                <button onclick="applyPreset('wormDrive')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#ff99c8] transition">Worm 1:30</button>
+                <button onclick="applyPreset('bevel90')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#4deeea] transition">90° Bevel</button>
+                <button onclick="applyPreset('rackPinion')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#4deeea] transition">Rack</button>
+                <button onclick="applyPreset('wormDrive')" class="px-2 py-1 rounded hover:bg-[#22262c] text-[#f4b6c2] transition">Worm 1:30</button>
             </div>
 
-            <select id="exportTarget" class="bg-[#171a1e] text-xs text-zinc-200 border border-[#2a2e37] rounded px-2 py-1.5 font-mono focus:outline-none focus:border-[#5ce1e6]">
+            <select id="exportTarget" class="bg-[#171a1e] text-xs text-zinc-200 border border-[#2a2e37] rounded px-2 py-1.5 font-mono focus:outline-none focus:border-[#4deeea]">
                 <option value="A">Part A</option>
                 <option value="B">Part B</option>
                 <option value="both_separate" selected>A & B Separate</option>
                 <option value="both">Assembly</option>
             </select>
 
-            <select id="stlFormat" class="hidden sm:block bg-[#171a1e] text-xs text-zinc-300 border border-[#2a2e37] rounded px-2 py-1.5 font-mono focus:outline-none focus:border-[#5ce1e6]">
+            <select id="stlFormat" class="hidden sm:block bg-[#171a1e] text-xs text-zinc-300 border border-[#2a2e37] rounded px-2 py-1.5 font-mono focus:outline-none focus:border-[#4deeea]">
                 <option value="step214" selected>.STP214</option>
                 <option value="binary">.STL (Bin)</option>
                 <option value="ascii">.STL (ASCII)</option>
             </select>
 
             <button onclick="exportCAD()" class="flex items-center space-x-1 bg-[#1b2026] hover:bg-[#252b33] text-zinc-200 font-mono text-xs px-2.5 py-1.5 rounded border border-[#2e343e] transition">
-                <i data-lucide="download" class="w-3.5 h-3.5 text-[#5ce1e6]"></i>
+                <i data-lucide="download" class="w-3.5 h-3.5 text-[#4deeea]"></i>
                 <span>Export</span>
             </button>
 
-            <button onclick="exportSeparateSTEP214Pair()" class="hidden sm:flex items-center space-x-1 bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs px-3 py-1.5 rounded shadow transition active:scale-95" title="Download Gear A and Gear B as two separate ISO 10303-214 (.stp) CAD files">
+            <button onclick="exportSeparateSTEP214Pair()" class="hidden sm:flex items-center space-x-1 bg-[#4deeea] hover:bg-[#3cdad6] text-[#0c0d0f] font-mono font-bold text-xs px-3 py-1.5 rounded shadow transition active:scale-95" title="Download Gear A and Gear B as two separate ISO 10303-214 (.stp) CAD files">
                 <i data-lucide="layers" class="w-3.5 h-3.5"></i>
                 <span>A+B .STP</span>
             </button>
@@ -170,8 +167,8 @@
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">1. GEAR ARCHITECTURE</span>
                     <label class="inline-flex items-center space-x-1.5 text-xs cursor-pointer">
-                        <input type="checkbox" id="chk_assemblyMode" checked onchange="toggleAssemblyMode(this.checked)" class="rounded bg-zinc-900 border-zinc-700 text-[#5ce1e6] focus:ring-0">
-                        <span class="text-[11px] font-mono font-semibold text-[#5ce1e6]">A+B Pair</span>
+                        <input type="checkbox" id="chk_assemblyMode" checked onchange="toggleAssemblyMode(this.checked)" class="rounded bg-zinc-900 border-zinc-700 text-[#4deeea] focus:ring-0">
+                        <span class="text-[11px] font-mono font-semibold text-[#4deeea]">A+B Pair</span>
                     </label>
                 </div>
                 <div class="grid grid-cols-4 sm:grid-cols-7 gap-1" id="archButtons">
@@ -208,22 +205,22 @@
 
             <!-- 2. Sub-Navigation Tabs for Parameters & Diagnostics -->
             <div class="grid grid-cols-4 border-b border-[#242830] bg-[#14171a] text-[11px] font-mono font-semibold">
-                <button onclick="switchSidebarTab('shared')" id="tabBtn_shared" class="py-2.5 border-b-2 border-[#5ce1e6] text-[#5ce1e6] bg-[#1b1f24] flex items-center justify-center gap-1">
+                <button onclick="switchSidebarTab('shared')" id="tabBtn_shared" class="py-2.5 border-b-2 border-[#4deeea] text-[#4deeea] bg-[#1b1f24] flex items-center justify-center gap-1">
                     <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
                     <span>Shared</span>
                 </button>
                 <button onclick="switchSidebarTab('gearA')" id="tabBtn_gearA" class="py-2.5 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-[#5ce1e6]"></span>
+                    <span class="w-2 h-2 rounded-full bg-[#4deeea]"></span>
                     <span id="tabLabelGearA">Pinion A</span>
                 </button>
                 <button onclick="switchSidebarTab('gearB')" id="tabBtn_gearB" class="py-2.5 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1">
-                    <span class="w-2 h-2 rounded-full bg-[#ff99c8]"></span>
+                    <span class="w-2 h-2 rounded-full bg-[#f4b6c2]"></span>
                     <span id="tabLabelGearB">Gear B</span>
                 </button>
                 <button onclick="switchSidebarTab('diag')" id="tabBtn_diag" class="py-2.5 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1 relative">
                     <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
                     <span>QC</span>
-                    <span id="diagCountBadge" class="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#5ce1e6]/20 text-[#5ce1e6]">0</span>
+                    <span id="diagCountBadge" class="ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#4deeea]/20 text-[#4deeea]">0</span>
                 </button>
             </div>
 
@@ -235,15 +232,15 @@
                     <div class="bg-[#171a1e] border border-[#252930] rounded-lg p-3 space-y-3">
                         <div class="flex items-center justify-between border-b border-[#252930] pb-2">
                             <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-200">2. SHARED MESHING LAW</span>
-                            <button onclick="snapStandardModule()" class="text-[10px] bg-[#5ce1e6]/15 hover:bg-[#5ce1e6]/25 text-[#5ce1e6] border border-[#5ce1e6]/30 px-2 py-0.5 rounded font-mono">ISO 54 Snap</button>
+                            <button onclick="snapStandardModule()" class="text-[10px] bg-[#4deeea]/15 hover:bg-[#4deeea]/25 text-[#4deeea] border border-[#4deeea]/30 px-2 py-0.5 rounded font-mono">ISO 54 Snap</button>
                         </div>
 
                         <!-- Module (m) -->
                         <div>
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-zinc-300 font-medium">Normal Module (<span class="font-mono text-[#5ce1e6]">m<sub>n</sub></span>)</label>
+                                <label class="text-zinc-300 font-medium">Normal Module (<span class="font-mono text-[#4deeea]">m<sub>n</sub></span>)</label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_module" min="0.5" max="10" step="0.05" value="2.5" oninput="setSharedParam('module', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_module" min="0.5" max="10" step="0.1" value="2.5" oninput="setSharedParam('module', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                     <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                 </div>
                             </div>
@@ -254,13 +251,13 @@
                         <div>
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-zinc-300 font-medium flex items-center gap-1">
-                                    Pressure Angle (<span class="font-mono text-[#5ce1e6]">α<sub>n</sub></span>)
+                                    Pressure Angle (<span class="font-mono text-[#4deeea]">α<sub>n</sub></span>)
                                     <button onclick="setSharedParam('pressureAngle', 14.5)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#22262c] text-zinc-300 font-mono">14.5°</button>
-                                    <button onclick="setSharedParam('pressureAngle', 20)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 font-mono">20°</button>
+                                    <button onclick="setSharedParam('pressureAngle', 20)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 font-mono">20°</button>
                                     <button onclick="setSharedParam('pressureAngle', 25)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#22262c] text-zinc-300 font-mono">25°</button>
                                 </label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_pressureAngle" min="12" max="30" step="0.5" value="20" oninput="setSharedParam('pressureAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_pressureAngle" min="12" max="30" step="0.5" value="20" oninput="setSharedParam('pressureAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                     <span class="text-zinc-500 font-mono text-[11px]">deg</span>
                                 </div>
                             </div>
@@ -269,16 +266,16 @@
 
                         <!-- Quick Tooth Count Summary Pair (z_A and z_B) -->
                         <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-[#252930]">
-                            <div class="bg-[#111316] p-2 rounded border border-[#5ce1e6]/30">
+                            <div class="bg-[#111316] p-2 rounded border border-[#4deeea]/30">
                                 <div class="flex justify-between text-[11px] mb-1">
-                                    <span id="lbl_title_zA" class="text-[#5ce1e6] font-mono font-semibold">Pinion z<sub>A</sub></span>
+                                    <span id="lbl_title_zA" class="text-[#4deeea] font-mono font-semibold">Pinion z<sub>A</sub></span>
                                     <span id="lbl_zA" class="font-mono font-bold text-white">18</span>
                                 </div>
                                 <input type="range" id="rng_quick_zA" min="1" max="80" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
                             </div>
-                            <div class="bg-[#111316] p-2 rounded border border-[#ff99c8]/30">
+                            <div class="bg-[#111316] p-2 rounded border border-[#f4b6c2]/30">
                                 <div class="flex justify-between text-[11px] mb-1">
-                                    <span id="lbl_title_zB" class="text-[#ff99c8] font-mono font-semibold">Gear z<sub>B</sub></span>
+                                    <span id="lbl_title_zB" class="text-[#f4b6c2] font-mono font-semibold">Gear z<sub>B</sub></span>
                                     <span id="lbl_zB" class="font-mono font-bold text-white">36</span>
                                 </div>
                                 <input type="range" id="rng_quick_zB" min="6" max="120" step="1" value="36" oninput="updateTeeth('B', this.value)" class="w-full slider-pink">
@@ -286,15 +283,15 @@
                         </div>
 
                         <!-- Worm Telemetry Banner -->
-                        <div id="wormTelemetryCard" class="hidden p-2.5 rounded bg-[#111316] border border-[#5ce1e6]/30 space-y-1.5">
+                        <div id="wormTelemetryCard" class="hidden p-2.5 rounded bg-[#111316] border border-[#4deeea]/30 space-y-1.5">
                             <div class="flex items-center justify-between text-[11px]">
-                                <span class="text-[#5ce1e6] font-mono font-semibold">DIN 3975 Worm Drive</span>
-                                <span id="wormLockBadge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/40">Self-Locking</span>
+                                <span class="text-[#4deeea] font-mono font-semibold">DIN 3975 Worm Drive</span>
+                                <span id="wormLockBadge" class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/40">Self-Locking</span>
                             </div>
                             <div class="grid grid-cols-3 gap-1.5 text-[11px] font-mono pt-1">
                                 <div class="bg-[#171a1e] px-2 py-1 rounded border border-[#252930]">
                                     <div class="text-[9px] text-zinc-400">Lead γ</div>
-                                    <div id="wormReadGamma" class="text-[#5ce1e6] font-bold">5.71°</div>
+                                    <div id="wormReadGamma" class="text-[#4deeea] font-bold">5.71°</div>
                                 </div>
                                 <div class="bg-[#171a1e] px-2 py-1 rounded border border-[#252930]">
                                     <div class="text-[9px] text-zinc-400">Quot q</div>
@@ -302,7 +299,7 @@
                                 </div>
                                 <div class="bg-[#171a1e] px-2 py-1 rounded border border-[#252930]">
                                     <div class="text-[9px] text-zinc-400">Eff. η</div>
-                                    <div id="wormReadEff" class="text-[#5ce1e6] font-bold">70.2%</div>
+                                    <div id="wormReadEff" class="text-[#4deeea] font-bold">70.2%</div>
                                 </div>
                             </div>
                         </div>
@@ -310,9 +307,9 @@
                         <!-- Common Face Width (b) -->
                         <div>
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-zinc-300 font-medium">Face Width (<span class="font-mono text-[#5ce1e6]">b</span>)</label>
+                                <label class="text-zinc-300 font-medium">Face Width (<span class="font-mono text-[#4deeea]">b</span>)</label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_faceWidth" min="3" max="60" step="0.5" value="14" oninput="setSharedParam('faceWidth', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_faceWidth" min="3" max="60" step="0.5" value="14" oninput="setSharedParam('faceWidth', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                     <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                 </div>
                             </div>
@@ -322,12 +319,12 @@
                         <!-- Bevel Shaft Angle Sigma -->
                         <div id="bevelSigmaControl" class="hidden pt-2 border-t border-[#252930]">
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-[#5ce1e6] font-medium flex items-center gap-1.5">
+                                <label class="text-[#4deeea] font-medium flex items-center gap-1.5">
                                     Shaft Angle (<span class="font-mono">Σ</span>)
-                                    <button onclick="setSharedParam('shaftAngle', 90)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 font-mono">90°</button>
+                                    <button onclick="setSharedParam('shaftAngle', 90)" class="px-1.5 py-0.2 text-[10px] rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 font-mono">90°</button>
                                 </label>
                                 <div class="flex items-center space-x-1">
-                                    <input type="number" id="num_shaftAngle" min="45" max="135" step="1" value="90" oninput="setSharedParam('shaftAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_shaftAngle" min="45" max="135" step="1" value="90" oninput="setSharedParam('shaftAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                     <span class="text-zinc-500 font-mono text-[11px]">deg</span>
                                 </div>
                             </div>
@@ -338,9 +335,9 @@
                         <div class="pt-2 border-t border-[#252930] space-y-2.5">
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium">Backlash (<span class="font-mono text-[#5ce1e6]">j<sub>n</sub></span>)</label>
+                                    <label class="text-zinc-300 font-medium">Backlash (<span class="font-mono text-[#4deeea]">j<sub>n</sub></span>)</label>
                                     <div class="flex items-center space-x-1">
-                                        <input type="number" id="num_backlash" min="0" max="0.6" step="0.01" value="0.08" oninput="setSharedParam('backlash', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                        <input type="number" id="num_backlash" min="0" max="0.6" step="0.02" value="0.08" oninput="setSharedParam('backlash', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                         <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                     </div>
                                 </div>
@@ -351,11 +348,11 @@
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
                                     <label class="text-zinc-300 font-medium flex items-center gap-1">
-                                        Center Dist Offset (<span class="font-mono text-[#5ce1e6]">Δa</span>)
+                                        Center Dist Offset (<span class="font-mono text-[#4deeea]">Δa</span>)
                                         <button onclick="setSharedParam('centerDistDelta', 0)" class="text-[10px] bg-[#22262c] px-1.5 rounded text-zinc-300 font-mono">0</button>
                                     </label>
                                     <div class="flex items-center space-x-1">
-                                        <input type="number" id="num_centerDistDelta" min="-3" max="25" step="0.05" value="0" oninput="setSharedParam('centerDistDelta', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                        <input type="number" id="num_centerDistDelta" min="-3" max="25" step="0.1" value="0" oninput="setSharedParam('centerDistDelta', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                         <span class="text-zinc-500 font-mono text-[11px]">mm</span>
                                     </div>
                                 </div>
@@ -368,11 +365,11 @@
                     <div class="bg-[#171a1e] border border-[#252930] rounded-lg p-3 space-y-2.5">
                         <div class="flex items-center justify-between">
                             <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-200">3. KINEMATIC DRIVE</span>
-                            <span id="polyCountBadge" class="text-[10px] font-mono text-[#5ce1e6] bg-[#5ce1e6]/10 px-2 py-0.5 rounded border border-[#5ce1e6]/30">0 tris</span>
+                            <span id="polyCountBadge" class="text-[10px] font-mono text-[#4deeea] bg-[#4deeea]/10 px-2 py-0.5 rounded border border-[#4deeea]/30">0 tris</span>
                         </div>
 
                         <div class="flex items-center gap-2">
-                            <button id="btnPlayPause" onclick="togglePlaySimulation()" class="flex-1 py-1.5 px-3 rounded bg-[#5ce1e6]/20 border border-[#5ce1e6]/40 text-[#5ce1e6] font-mono font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-[#5ce1e6]/30 transition">
+                            <button id="btnPlayPause" onclick="togglePlaySimulation()" class="flex-1 py-1.5 px-3 rounded bg-[#4deeea]/20 border border-[#4deeea]/40 text-[#4deeea] font-mono font-semibold text-xs flex items-center justify-center gap-1.5 hover:bg-[#4deeea]/30 transition">
                                 <i data-lucide="pause" class="w-3.5 h-3.5" id="playPauseIcon"></i>
                                 <span id="playPauseText">Running (Pause)</span>
                             </button>
@@ -386,14 +383,14 @@
                             <div>
                                 <div class="flex justify-between text-[11px] mb-1">
                                     <span class="text-zinc-400">Pinion Speed</span>
-                                    <span id="lbl_rpm" class="font-mono text-[#5ce1e6]">18 RPM</span>
+                                    <span id="lbl_rpm" class="font-mono text-[#4deeea]">18 RPM</span>
                                 </div>
                                 <input type="range" id="rng_rpm" min="0" max="120" step="1" value="18" oninput="updateRPM(this.value)" class="w-full">
                             </div>
                             <div>
                                 <div class="flex justify-between text-[11px] mb-1">
                                     <span class="text-zinc-400">Mesh Phase</span>
-                                    <span id="lbl_phase" class="font-mono text-[#5ce1e6]">0.0°</span>
+                                    <span id="lbl_phase" class="font-mono text-[#4deeea]">0.0°</span>
                                 </div>
                                 <input type="range" id="rng_phase" min="-15" max="15" step="0.2" value="0" oninput="updateMeshPhase(this.value)" class="w-full">
                             </div>
@@ -403,7 +400,7 @@
                         <div class="pt-2 border-t border-[#252930]">
                             <div class="grid grid-cols-3 gap-1.5 font-mono">
                                 <button onclick="setMeshQuality('draft')" id="qual_draft" class="py-1 rounded border border-[#2b3038] text-[10px] text-zinc-400 hover:text-white">Draft</button>
-                                <button onclick="setMeshQuality('high')" id="qual_high" class="py-1 rounded border border-[#5ce1e6]/40 bg-[#5ce1e6]/20 text-[10px] text-[#5ce1e6]">High CAD</button>
+                                <button onclick="setMeshQuality('high')" id="qual_high" class="py-1 rounded border border-[#4deeea]/40 bg-[#4deeea]/20 text-[10px] text-[#4deeea]">High CAD</button>
                                 <button onclick="setMeshQuality('ultra')" id="qual_ultra" class="py-1 rounded border border-[#2b3038] text-[10px] text-zinc-400 hover:text-white">Ultra</button>
                             </div>
                         </div>
@@ -413,16 +410,16 @@
                     <div class="bg-[#171a1e] border border-[#252930] rounded-lg overflow-hidden">
                         <div class="px-3 py-2 border-b border-[#252930] flex items-center justify-between bg-[#131619]">
                             <span class="text-[11px] font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
-                                <i data-lucide="activity" class="w-3.5 h-3.5 text-[#5ce1e6]"></i>
+                                <i data-lucide="activity" class="w-3.5 h-3.5 text-[#4deeea]"></i>
                                 2D LINE OF ACTION MESH
                             </span>
-                            <span id="contactRatioBadge2D" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#5ce1e6]/15 text-[#5ce1e6] border border-[#5ce1e6]/30">εα = 1.62</span>
+                            <span id="contactRatioBadge2D" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#4deeea]/15 text-[#4deeea] border border-[#4deeea]/30">εα = 1.62</span>
                         </div>
                         <div class="p-2.5 flex flex-col items-center cad-grid-bg">
                             <canvas id="mesh2dCanvas" width="310" height="145" class="w-full h-[140px] rounded-md"></canvas>
                             <div class="w-full flex justify-between text-[11px] font-semibold px-1 pt-2 mt-1 border-t border-[#22262e] text-zinc-400">
-                                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#5ce1e6]"></span>Part A</span>
-                                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#ff99c8]"></span>Part B</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#4deeea]"></span>Part A</span>
+                                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#f4b6c2]"></span>Part B</span>
                                 <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-white"></span>Action Line</span>
                             </div>
                         </div>
@@ -431,17 +428,17 @@
 
                 <!-- TAB 2: GEAR A (DRIVER PINION / WORM SCREW) PARAMETERS -->
                 <div id="panel_gearA" class="hidden space-y-4">
-                    <div class="bg-[#171a1e] border border-[#5ce1e6]/30 rounded-xl p-3.5 space-y-3.5">
+                    <div class="bg-[#171a1e] border border-[#4deeea]/30 rounded-xl p-3.5 space-y-3.5">
                         <div class="flex items-center justify-between border-b border-[#252930] pb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#5ce1e6]" id="headerGearA">Driver Pinion A Geometry</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#4deeea]" id="headerGearA">Driver Pinion A Geometry</span>
                             <span class="text-[11px] font-mono text-zinc-400" id="badgeGearA">Spur Pinion</span>
                         </div>
 
                         <!-- Teeth z_A or Worm Starts z_1 -->
                         <div>
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-zinc-300 font-medium" id="lbl_param_zA">Number of Teeth (<span class="font-mono text-[#5ce1e6]">z<sub>A</sub></span>)</label>
-                                <input type="number" id="num_zA" min="1" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                <label class="text-zinc-300 font-medium" id="lbl_param_zA">Number of Teeth (<span class="font-mono text-[#4deeea]">z<sub>A</sub></span>)</label>
+                                <input type="number" id="num_zA" min="1" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                             </div>
                             <input type="range" id="rng_zA" min="1" max="100" step="1" value="18" oninput="updateTeeth('A', this.value)" class="w-full">
                         </div>
@@ -451,10 +448,10 @@
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
                                     <label class="text-zinc-300 font-medium flex items-center gap-1">
-                                        Diameter Quotient (<span class="font-mono text-[#5ce1e6]">q = d<sub>m1</sub>/m</span>)
+                                        Diameter Quotient (<span class="font-mono text-[#4deeea]">q = d<sub>m1</sub>/m</span>)
                                         <button onclick="setGearParam('A', 'wormQuotient', 10)" class="text-[10px] bg-[#22262c] px-1.5 rounded text-zinc-300">ISO 10</button>
                                     </label>
-                                    <input type="number" id="num_wormQ" min="6" max="18" step="0.5" value="10" oninput="setGearParam('A', 'wormQuotient', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_wormQ" min="6" max="18" step="0.5" value="10" oninput="setGearParam('A', 'wormQuotient', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                 </div>
                                 <input type="range" id="rng_wormQ" min="6" max="18" step="0.5" value="10" oninput="setGearParam('A', 'wormQuotient', this.value)" class="w-full">
                                 <p class="text-[10px] text-zinc-400 mt-0.5">Controls worm pitch diameter d<sub>m1</sub> = q·m and lead angle γ = arctan(z<sub>1</sub>/q).</p>
@@ -462,8 +459,8 @@
 
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium">Worm Screw Length (<span class="font-mono text-[#5ce1e6]">b<sub>1</sub></span> mm)</label>
-                                    <input type="number" id="num_wormLen" min="15" max="100" step="1" value="42" oninput="setGearParam('A', 'wormLength', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <label class="text-zinc-300 font-medium">Worm Screw Length (<span class="font-mono text-[#4deeea]">b<sub>1</sub></span> mm)</label>
+                                    <input type="number" id="num_wormLen" min="15" max="100" step="1" value="42" oninput="setGearParam('A', 'wormLength', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                 </div>
                                 <input type="range" id="rng_wormLen" min="15" max="100" step="1" value="42" oninput="setGearParam('A', 'wormLength', this.value)" class="w-full">
                             </div>
@@ -473,10 +470,10 @@
                         <div id="box_xA">
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-zinc-300 font-medium flex items-center gap-1">
-                                    Profile Shift Coeff (<span class="font-mono text-[#5ce1e6]">x<sub>A</sub></span>)
+                                    Profile Shift Coeff (<span class="font-mono text-[#4deeea]">x<sub>A</sub></span>)
                                     <button onclick="setGearParam('A', 'profileShift', 0)" class="text-[10px] bg-[#22262c] px-1.5 rounded text-zinc-300">0</button>
                                 </label>
-                                <input type="number" id="num_xA" min="-0.5" max="0.6" step="0.02" value="0.0" oninput="setGearParam('A', 'profileShift', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                <input type="number" id="num_xA" min="-0.5" max="0.6" step="0.02" value="0.0" oninput="setGearParam('A', 'profileShift', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                             </div>
                             <input type="range" id="rng_xA" min="-0.5" max="0.6" step="0.01" value="0.0" oninput="setGearParam('A', 'profileShift', this.value)" class="w-full">
                         </div>
@@ -485,15 +482,15 @@
                         <div id="helixBoxA" class="space-y-3 pt-2 border-t border-[#252930]">
                             <div id="helixAngleSliderBoxA">
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium">Helix Angle (<span class="font-mono text-[#5ce1e6]">β<sub>A</sub></span> deg)</label>
-                                    <input type="number" id="num_betaA" min="0" max="45" step="1" value="20" oninput="setGearParam('A', 'helixAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <label class="text-zinc-300 font-medium">Helix Angle (<span class="font-mono text-[#4deeea]">β<sub>A</sub></span> deg)</label>
+                                    <input type="number" id="num_betaA" min="0" max="45" step="1" value="20" oninput="setGearParam('A', 'helixAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                 </div>
                                 <input type="range" id="rng_betaA" min="0" max="45" step="1" value="20" oninput="setGearParam('A', 'helixAngle', this.value)" class="w-full">
                             </div>
                             <div class="flex items-center justify-between text-xs">
                                 <span class="text-zinc-300" id="lbl_handA">Helix / Thread Hand (A)</span>
                                 <div class="inline-flex rounded-lg bg-[#0f1114] p-0.5 border border-[#2a2f37]">
-                                    <button id="btnHandA_R" onclick="setGearParam('A', 'hand', 1)" class="px-2.5 py-1 rounded text-xs font-medium bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30">Right (RH)</button>
+                                    <button id="btnHandA_R" onclick="setGearParam('A', 'hand', 1)" class="px-2.5 py-1 rounded text-xs font-medium bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30">Right (RH)</button>
                                     <button id="btnHandA_L" onclick="setGearParam('A', 'hand', -1)" class="px-2.5 py-1 rounded text-xs font-medium text-zinc-400">Left (LH)</button>
                                 </div>
                             </div>
@@ -503,7 +500,7 @@
                         <div class="pt-2 border-t border-[#252930] space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-semibold text-zinc-300">Shaft Bore & DIN Keyway (A)</span>
-                                <button onclick="autoKeyway('A')" class="text-[10px] px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 font-mono">Auto DIN 6885</button>
+                                <button onclick="autoKeyway('A')" class="text-[10px] px-2 py-0.5 rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 font-mono">Auto DIN 6885</button>
                             </div>
                             <select id="sel_boreTypeA" onchange="setGearParam('A', 'boreType', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded-lg px-2.5 py-1.5 text-xs text-zinc-200">
                                 <option value="keyway" selected>Round + ISO/DIN Keyway</option>
@@ -515,8 +512,8 @@
 
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300">Bore Diameter (<span class="font-mono text-[#5ce1e6]">d<sub>bA</sub></span> mm)</label>
-                                    <input type="number" id="num_boreA" min="2" max="100" step="0.5" value="10" oninput="setGearParam('A', 'boreDia', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                                    <label class="text-zinc-300">Bore Diameter (<span class="font-mono text-[#4deeea]">d<sub>bA</sub></span> mm)</label>
+                                    <input type="number" id="num_boreA" min="2" max="100" step="0.5" value="10" oninput="setGearParam('A', 'boreDia', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                                 </div>
                                 <input type="range" id="rng_boreA" min="2" max="80" step="0.5" value="10" oninput="setGearParam('A', 'boreDia', this.value)" class="w-full">
                             </div>
@@ -524,11 +521,11 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[10px] text-zinc-400 mb-0.5">Key Width (mm)</label>
-                                    <input type="number" id="num_kwA" min="1" max="24" step="0.5" value="3.0" oninput="setGearParam('A', 'keyWidth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_kwA" min="1" max="24" step="0.5" value="3.0" oninput="setGearParam('A', 'keyWidth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#4deeea]">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] text-zinc-400 mb-0.5">Key Depth (mm)</label>
-                                    <input type="number" id="num_kdA" min="0.5" max="15" step="0.1" value="1.4" oninput="setGearParam('A', 'keyDepth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#5ce1e6]">
+                                    <input type="number" id="num_kdA" min="0.5" max="15" step="0.1" value="1.4" oninput="setGearParam('A', 'keyDepth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#4deeea]">
                                 </div>
                             </div>
                         </div>
@@ -537,23 +534,23 @@
 
                 <!-- TAB 3: GEAR B / RACK / RING PARAMETERS -->
                 <div id="panel_gearB" class="hidden space-y-4">
-                    <div class="bg-[#171a1e] border border-[#ff99c8]/30 rounded-xl p-3.5 space-y-3.5">
+                    <div class="bg-[#171a1e] border border-[#f4b6c2]/30 rounded-xl p-3.5 space-y-3.5">
                         <div class="flex items-center justify-between border-b border-[#252930] pb-2">
-                            <span class="text-xs font-bold uppercase tracking-wider text-[#ff99c8]" id="headerGearB">Driven Gear B Geometry</span>
+                            <span class="text-xs font-bold uppercase tracking-wider text-[#f4b6c2]" id="headerGearB">Driven Gear B Geometry</span>
                             <button onclick="unlockIndependentParams()" id="btnUnlockMismatch" class="text-[10px] bg-[#22262c] hover:bg-[#2c313a] text-zinc-300 border border-[#2e343e] px-2 py-0.5 rounded font-mono" title="Test mismatched module/pressure angle diagnostics">Test Mismatch</button>
                         </div>
 
                         <!-- Optional Mismatch Tester -->
-                        <div id="mismatchTesterBox" class="hidden p-2.5 rounded-lg bg-[#ff99c8]/10 border border-[#ff99c8]/40 space-y-2">
-                            <div class="text-[11px] font-semibold text-[#ff99c8]">Independent Gear B Override (Diagnostic Test)</div>
+                        <div id="mismatchTesterBox" class="hidden p-2.5 rounded-lg bg-[#f4b6c2]/10 border border-[#f4b6c2]/40 space-y-2">
+                            <div class="text-[11px] font-semibold text-[#f4b6c2]">Independent Gear B Override (Diagnostic Test)</div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[10px] text-zinc-400">Module m<sub>B</sub> (mm)</label>
-                                    <input type="number" id="num_moduleB" min="0.5" max="10" step="0.1" value="2.5" oninput="setGearParam('B', 'moduleOverride', this.value)" class="w-full bg-[#0f1114] border border-[#ff99c8]/40 rounded px-2 py-1 font-mono text-xs text-[#ff99c8]">
+                                    <input type="number" id="num_moduleB" min="0.5" max="10" step="0.1" value="2.5" oninput="setGearParam('B', 'moduleOverride', this.value)" class="w-full bg-[#0f1114] border border-[#f4b6c2]/40 rounded px-2 py-1 font-mono text-xs text-[#f4b6c2]">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] text-zinc-400">Angle α<sub>B</sub> (deg)</label>
-                                    <input type="number" id="num_alphaB" min="12" max="30" step="0.5" value="20" oninput="setGearParam('B', 'alphaOverride', this.value)" class="w-full bg-[#0f1114] border border-[#ff99c8]/40 rounded px-2 py-1 font-mono text-xs text-[#ff99c8]">
+                                    <input type="number" id="num_alphaB" min="12" max="30" step="0.5" value="20" oninput="setGearParam('B', 'alphaOverride', this.value)" class="w-full bg-[#0f1114] border border-[#f4b6c2]/40 rounded px-2 py-1 font-mono text-xs text-[#f4b6c2]">
                                 </div>
                             </div>
                         </div>
@@ -561,8 +558,8 @@
                         <!-- Teeth z_B -->
                         <div>
                             <div class="flex justify-between text-xs mb-1">
-                                <label class="text-zinc-300 font-medium" id="lbl_param_zB">Number of Teeth (<span class="font-mono text-[#ff99c8]">z<sub>B</sub></span>)</label>
-                                <input type="number" id="num_zB" min="6" max="140" step="1" value="36" oninput="updateTeeth('B', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                <label class="text-zinc-300 font-medium" id="lbl_param_zB">Number of Teeth (<span class="font-mono text-[#f4b6c2]">z<sub>B</sub></span>)</label>
+                                <input type="number" id="num_zB" min="6" max="140" step="1" value="36" oninput="updateTeeth('B', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                             </div>
                             <input type="range" id="rng_zB" min="6" max="140" step="1" value="36" oninput="updateTeeth('B', this.value)" class="w-full slider-pink">
                         </div>
@@ -571,10 +568,10 @@
                         <div id="box_xB">
                             <div class="flex justify-between text-xs mb-1">
                                 <label class="text-zinc-300 font-medium flex items-center gap-1">
-                                    Profile Shift Coeff (<span class="font-mono text-[#ff99c8]">x<sub>B</sub></span>)
+                                    Profile Shift Coeff (<span class="font-mono text-[#f4b6c2]">x<sub>B</sub></span>)
                                     <button onclick="setGearParam('B', 'profileShift', 0)" class="text-[10px] bg-[#22262c] px-1.5 rounded text-zinc-300">0</button>
                                 </label>
-                                <input type="number" id="num_xB" min="-0.5" max="0.6" step="0.02" value="0.0" oninput="setGearParam('B', 'profileShift', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                <input type="number" id="num_xB" min="-0.5" max="0.6" step="0.02" value="0.0" oninput="setGearParam('B', 'profileShift', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                             </div>
                             <input type="range" id="rng_xB" min="-0.5" max="0.6" step="0.01" value="0.0" oninput="setGearParam('B', 'profileShift', this.value)" class="w-full slider-pink">
                         </div>
@@ -583,8 +580,8 @@
                         <div id="helixBoxB" class="space-y-3 pt-2 border-t border-[#252930]">
                             <div id="helixAngleSliderBoxB">
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium" id="lbl_betaB">Helix Angle (<span class="font-mono text-[#ff99c8]">β<sub>B</sub></span> deg)</label>
-                                    <input type="number" id="num_betaB" min="0" max="45" step="0.5" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                    <label class="text-zinc-300 font-medium" id="lbl_betaB">Helix Angle (<span class="font-mono text-[#f4b6c2]">β<sub>B</sub></span> deg)</label>
+                                    <input type="number" id="num_betaB" min="0" max="45" step="0.5" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                                 </div>
                                 <input type="range" id="rng_betaB" min="0" max="45" step="0.5" value="20" oninput="setGearParam('B', 'helixAngle', this.value)" class="w-full slider-pink">
                             </div>
@@ -592,12 +589,12 @@
                                 <span class="text-zinc-300">Helix / Wheel Hand (Gear B)</span>
                                 <div class="inline-flex rounded-lg bg-[#0f1114] p-0.5 border border-[#2a2f37]">
                                     <button id="btnHandB_R" onclick="setGearParam('B', 'hand', 1)" class="px-2.5 py-1 rounded text-xs font-medium text-zinc-400">Right (RH)</button>
-                                    <button id="btnHandB_L" onclick="setGearParam('B', 'hand', -1)" class="px-2.5 py-1 rounded text-xs font-medium bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/30">Left (LH)</button>
+                                    <button id="btnHandB_L" onclick="setGearParam('B', 'hand', -1)" class="px-2.5 py-1 rounded text-xs font-medium bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/30">Left (LH)</button>
                                 </div>
                             </div>
                             <div id="wormWheelSyncNote" class="hidden flex items-center justify-between bg-[#0f1114] px-2.5 py-1.5 rounded border border-[#252930] text-[10px]">
                                 <span class="text-zinc-400">90° Crossed-Axis Law: β<sub>2</sub> = γ<sub>1</sub> & Same Hand</span>
-                                <button onclick="syncWormWheelHelix()" class="text-[#5ce1e6] hover:underline font-mono font-semibold">Sync to Worm</button>
+                                <button onclick="syncWormWheelHelix()" class="text-[#4deeea] hover:underline font-mono font-semibold">Sync to Worm</button>
                             </div>
                         </div>
 
@@ -605,8 +602,8 @@
                         <div id="rackSpecificControls" class="hidden space-y-3 pt-2 border-t border-[#252930]">
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium">Rack Base Backing Height (<span class="font-mono text-[#ff99c8]">h<sub>b</sub></span> mm)</label>
-                                    <input type="number" id="num_rackHeight" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'rackBaseHeight', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                    <label class="text-zinc-300 font-medium">Rack Base Backing Height (<span class="font-mono text-[#f4b6c2]">h<sub>b</sub></span> mm)</label>
+                                    <input type="number" id="num_rackHeight" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'rackBaseHeight', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                                 </div>
                                 <input type="range" id="rng_rackHeight" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'rackBaseHeight', this.value)" class="w-full slider-pink">
                             </div>
@@ -616,8 +613,8 @@
                         <div id="ringSpecificControls" class="hidden space-y-3 pt-2 border-t border-[#252930]">
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300 font-medium">Outer Ring Rim Thickness (<span class="font-mono text-[#ff99c8]">w<sub>r</sub></span> mm)</label>
-                                    <input type="number" id="num_ringWall" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'ringWall', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                    <label class="text-zinc-300 font-medium">Outer Ring Rim Thickness (<span class="font-mono text-[#f4b6c2]">w<sub>r</sub></span> mm)</label>
+                                    <input type="number" id="num_ringWall" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'ringWall', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                                 </div>
                                 <input type="range" id="rng_ringWall" min="4" max="45" step="0.5" value="10" oninput="setGearParam('B', 'ringWall', this.value)" class="w-full slider-pink">
                             </div>
@@ -627,7 +624,7 @@
                         <div id="boreBoxB" class="pt-2 border-t border-[#252930] space-y-3">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-semibold text-zinc-300">Shaft Bore & DIN Keyway (B)</span>
-                                <button onclick="autoKeyway('B')" class="text-[10px] px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 font-mono">Auto DIN 6885</button>
+                                <button onclick="autoKeyway('B')" class="text-[10px] px-2 py-0.5 rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 font-mono">Auto DIN 6885</button>
                             </div>
                             <select id="sel_boreTypeB" onchange="setGearParam('B', 'boreType', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded-lg px-2.5 py-1.5 text-xs text-zinc-200">
                                 <option value="keyway" selected>Round + ISO/DIN Keyway</option>
@@ -639,10 +636,21 @@
 
                             <div>
                                 <div class="flex justify-between text-xs mb-1">
-                                    <label class="text-zinc-300">Bore Diameter (<span class="font-mono text-[#ff99c8]">d<sub>bB</sub></span> mm)</label>
-                                    <input type="number" id="num_boreB" min="2" max="100" step="0.5" value="14" oninput="setGearParam('B', 'boreDia', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                                    <label class="text-zinc-300">Bore Diameter (<span class="font-mono text-[#f4b6c2]">d<sub>bB</sub></span> mm)</label>
+                                    <input type="number" id="num_boreB" min="2" max="100" step="0.5" value="14" oninput="setGearParam('B', 'boreDia', this.value)" class="w-16 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                                 </div>
                                 <input type="range" id="rng_boreB" min="2" max="80" step="0.5" value="14" oninput="setGearParam('B', 'boreDia', this.value)" class="w-full slider-pink">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] text-zinc-400 mb-0.5">Key Width B (mm)</label>
+                                    <input type="number" id="num_kwB" min="1" max="28" step="0.5" value="5.0" oninput="setGearParam('B', 'keyWidth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#f4b6c2]">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-zinc-400 mb-0.5">Key Depth B (mm)</label>
+                                    <input type="number" id="num_kdB" min="0.5" max="16" step="0.1" value="2.3" oninput="setGearParam('B', 'keyDepth', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 font-mono text-xs text-[#f4b6c2]">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -655,7 +663,7 @@
                             <h3 class="text-xs font-bold uppercase tracking-wider text-white">ISO 21771 / DIN 3960 Advisor</h3>
                             <p class="text-[11px] text-zinc-400">Real-time kinematic interference & tooth strength analysis</p>
                         </div>
-                        <button onclick="fixAllIssues()" id="btnFixAll" class="hidden px-2.5 py-1.5 rounded-lg bg-[#ff99c8] hover:bg-[#ff80be] text-[#0c0d0f] font-bold text-xs shadow transition">
+                        <button onclick="fixAllIssues()" id="btnFixAll" class="hidden px-2.5 py-1.5 rounded-lg bg-[#f4b6c2] hover:bg-[#e09fae] text-[#0c0d0f] font-bold text-xs shadow transition">
                             Auto-Fix All
                         </button>
                     </div>
@@ -675,39 +683,39 @@
                 <!-- Top-Left Floating Viewport Controls -->
                 <div class="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-1.5 bg-[#14171a]/95 backdrop-blur-md p-1.5 rounded-lg border border-[#262b33] shadow-xl font-mono">
                     <button onclick="resetCamera()" class="flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] text-zinc-200 hover:bg-[#1f242b] transition">
-                        <i data-lucide="focus" class="w-3.5 h-3.5 text-[#5ce1e6]"></i>
+                        <i data-lucide="focus" class="w-3.5 h-3.5 text-[#4deeea]"></i>
                         <span>Fit</span>
                     </button>
                     <button onclick="setCameraTop()" class="flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] text-zinc-200 hover:bg-[#1f242b] transition">
-                        <i data-lucide="compass" class="w-3.5 h-3.5 text-[#5ce1e6]"></i>
+                        <i data-lucide="compass" class="w-3.5 h-3.5 text-[#4deeea]"></i>
                         <span>Top XY</span>
                     </button>
-                    <button id="btnPitchOverlay" onclick="togglePitchOverlay()" class="flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/30 transition">
+                    <button id="btnPitchOverlay" onclick="togglePitchOverlay()" class="flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 transition">
                         <i data-lucide="circle-dot" class="w-3.5 h-3.5"></i>
                         <span>Pitch</span>
                     </button>
                     <button id="btnWireframe" onclick="toggleWireframe()" class="flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] text-zinc-300 hover:bg-[#1f242b] transition">
-                        <i data-lucide="box" class="w-3.5 h-3.5 text-[#ff99c8]"></i>
+                        <i data-lucide="box" class="w-3.5 h-3.5 text-[#f4b6c2]"></i>
                         <span>Wire</span>
                     </button>
                 </div>
 
                 <!-- Floating Live Alert Banner -->
-                <div id="viewportAlertStrip" class="hidden absolute bottom-3 right-3 z-10 max-w-sm bg-[#14171a]/95 backdrop-blur-md border border-[#ff99c8]/60 rounded-lg p-2.5 shadow-2xl flex items-center justify-between gap-3">
+                <div id="viewportAlertStrip" class="hidden absolute bottom-3 right-3 z-10 max-w-sm bg-[#14171a]/95 backdrop-blur-md border border-[#f4b6c2]/60 rounded-lg p-2.5 shadow-2xl flex items-center justify-between gap-3">
                     <div class="flex items-center space-x-2">
-                        <i data-lucide="alert-triangle" class="w-4 h-4 text-[#ff99c8] shrink-0"></i>
+                        <i data-lucide="alert-triangle" class="w-4 h-4 text-[#f4b6c2] shrink-0"></i>
                         <div class="text-xs">
                             <span id="viewportAlertText" class="text-zinc-200 font-mono text-[11px]">Undercut detected on Pinion A</span>
                         </div>
                     </div>
-                    <button onclick="switchSidebarTab('diag')" class="px-2 py-1 rounded bg-[#ff99c8]/20 hover:bg-[#ff99c8]/30 text-[#ff99c8] border border-[#ff99c8]/40 text-[10px] font-mono font-bold shrink-0">
+                    <button onclick="switchSidebarTab('diag')" class="px-2 py-1 rounded bg-[#f4b6c2]/20 hover:bg-[#f4b6c2]/30 text-[#f4b6c2] border border-[#f4b6c2]/40 text-[10px] font-mono font-bold shrink-0">
                         Inspect
                     </button>
                 </div>
 
                 <!-- Export Toast Notification -->
-                <div id="toastBanner" class="hidden absolute top-14 left-1/2 -translate-x-1/2 z-30 bg-[#14181c] border border-[#5ce1e6]/50 text-[#5ce1e6] px-4 py-2 rounded-lg shadow-2xl text-xs font-mono flex items-center space-x-2">
-                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#5ce1e6]"></i>
+                <div id="toastBanner" class="hidden absolute top-14 left-1/2 -translate-x-1/2 z-30 bg-[#14181c] border border-[#4deeea]/50 text-[#4deeea] px-4 py-2 rounded-lg shadow-2xl text-xs font-mono flex items-center space-x-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 text-[#4deeea]"></i>
                     <span id="toastMessage">Watertight STL exported!</span>
                 </div>
             </div>
@@ -721,7 +729,7 @@
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase">Center Dist (a)</div>
-                        <div id="read_centerDist" class="text-xs font-mono font-bold text-[#5ce1e6]">67.50 mm</div>
+                        <div id="read_centerDist" class="text-xs font-mono font-bold text-[#4deeea]">67.50 mm</div>
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase">Pitch Ø A / B</div>
@@ -733,7 +741,7 @@
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase">Contact Ratio (ε<sub>α</sub>)</div>
-                        <div id="read_epsAlpha" class="text-xs font-mono font-bold text-[#5ce1e6]">1.62</div>
+                        <div id="read_epsAlpha" class="text-xs font-mono font-bold text-[#4deeea]">1.62</div>
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase" id="lbl_metric_epsBeta">Overlap Ratio (ε<sub>β</sub>)</div>
@@ -741,7 +749,7 @@
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase" id="lbl_metric_vel">Pitch Line Vel</div>
-                        <div id="read_pitchVel" class="text-xs font-mono font-semibold text-[#ff99c8]">42.4 mm/s</div>
+                        <div id="read_pitchVel" class="text-xs font-mono font-semibold text-[#f4b6c2]">42.4 mm/s</div>
                     </div>
                     <div class="bg-[#16191d] border border-[#23272f] rounded px-2.5 py-1">
                         <div class="text-[9px] font-mono text-zinc-400 uppercase" id="lbl_metric_gcd">Hunting GCD</div>
@@ -758,7 +766,7 @@
             <div class="bg-[#171a1e] border border-[#252930] rounded-lg p-3 space-y-3">
                 <div class="flex items-center justify-between border-b border-[#252930] pb-2">
                     <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300">4. MATERIAL SELECTION</span>
-                    <span id="matTagBadge" class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#5ce1e6]/15 text-[#5ce1e6] border border-[#5ce1e6]/30">ISO 6336 FEA</span>
+                    <span id="matTagBadge" class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-[#4deeea]/15 text-[#4deeea] border border-[#4deeea]/30">ISO 6336 FEA</span>
                 </div>
 
                 <div class="grid grid-cols-2 gap-1.5 font-mono text-[11px]">
@@ -782,8 +790,8 @@
 
                 <div class="grid grid-cols-2 gap-2 pt-1">
                     <div>
-                        <label class="block text-[10px] font-mono text-[#5ce1e6] mb-1">Part A Material</label>
-                        <select id="sel_matA" onchange="setIndividualMaterial('A', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 text-[11px] font-mono text-zinc-200 focus:outline-none focus:border-[#5ce1e6]">
+                        <label class="block text-[10px] font-mono text-[#4deeea] mb-1">Part A Material</label>
+                        <select id="sel_matA" onchange="setIndividualMaterial('A', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 text-[11px] font-mono text-zinc-200 focus:outline-none focus:border-[#4deeea]">
                             <option value="al6063">Aluminium 6063-T6</option>
                             <option value="steel1045" selected>Med-Carbon Steel</option>
                             <option value="cf_stacked">Stacked CF Plates</option>
@@ -791,8 +799,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[10px] font-mono text-[#ff99c8] mb-1">Part B Material</label>
-                        <select id="sel_matB" onchange="setIndividualMaterial('B', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 text-[11px] font-mono text-zinc-200 focus:outline-none focus:border-[#ff99c8]">
+                        <label class="block text-[10px] font-mono text-[#f4b6c2] mb-1">Part B Material</label>
+                        <select id="sel_matB" onchange="setIndividualMaterial('B', this.value)" class="w-full bg-[#0f1114] border border-[#2a2f37] rounded px-2 py-1 text-[11px] font-mono text-zinc-200 focus:outline-none focus:border-[#f4b6c2]">
                             <option value="al6063">Aluminium 6063-T6</option>
                             <option value="steel1045" selected>Med-Carbon Steel</option>
                             <option value="cf_stacked">Stacked CF Plates</option>
@@ -821,35 +829,35 @@
             <div class="bg-[#171a1e] border border-[#252930] rounded-lg p-3 space-y-3">
                 <div class="flex items-center justify-between border-b border-[#252930] pb-2">
                     <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300">5. FORCE & FAILURE SIMULATOR</span>
-                    <span id="stressStateBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/40">SAFE (SF 2.8)</span>
+                    <span id="stressStateBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/40">SAFE (SF 2.8)</span>
                 </div>
 
-                <!-- Tangential Tooth Load Force (Ft) Slider — Primary Auto-Coupled with Pitch Diameter -->
+                <!-- Tangential Tooth Load Ft (Primary Force Slider) -->
                 <div>
                     <div class="flex justify-between text-xs mb-1">
-                        <label class="text-zinc-300 font-medium">Tangential Tooth Load (<span class="font-mono text-[#5ce1e6]">F<sub>t</sub></span>)</label>
+                        <label class="text-zinc-300 font-medium">Tangential Tooth Load (<span class="font-mono text-[#4deeea]">F<sub>t</sub></span>)</label>
                         <div class="flex items-center space-x-1">
-                            <input type="number" id="num_appliedForce" min="10" max="50000" step="10" value="1111" oninput="updateAppliedForce(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#5ce1e6]">
+                            <input type="number" id="num_appliedForce" min="1" max="50000" step="10" value="1111" oninput="updateAppliedForce(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#4deeea]">
                             <span class="text-zinc-500 font-mono text-[11px]">N</span>
                         </div>
                     </div>
                     <input type="range" id="rng_appliedForce" min="10" max="10000" step="10" value="1111" oninput="updateAppliedForce(this.value)" class="w-full">
                 </div>
 
-                <!-- Auto-Calculated Driver Torque (TA = Ft * d_pA / 2) -->
+                <!-- Auto-Coupled Driver Torque TA = Ft * (dA / 2) -->
                 <div class="pt-1 border-t border-[#252930]/60">
                     <div class="flex justify-between text-xs mb-1">
-                        <label class="text-zinc-400 font-medium">Driver Torque (<span class="font-mono text-[#ff99c8]">T<sub>A</sub> = F<sub>t</sub>·r<sub>pA</sub></span>)</label>
+                        <label class="text-zinc-400 font-medium">Coupled Torque (<span class="font-mono text-[#f4b6c2]">T<sub>A</sub> = F<sub>t</sub>·r<sub>pA</sub></span>)</label>
                         <div class="flex items-center space-x-1">
-                            <input type="number" id="num_appliedTorque" min="0.5" max="1500" step="0.5" value="25.0" oninput="updateAppliedTorque(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#ff99c8]">
+                            <input type="number" id="num_appliedTorque" min="0.5" max="2500" step="0.5" value="25.0" oninput="updateAppliedTorque(this.value)" class="w-20 bg-[#0f1114] border border-[#2a2f37] rounded px-1.5 py-0.5 text-right font-mono text-xs text-[#f4b6c2]">
                             <span class="text-zinc-500 font-mono text-[11px]">N·m</span>
                         </div>
                     </div>
-                    <input type="range" id="rng_appliedTorque" min="0.5" max="500" step="0.5" value="25" oninput="updateAppliedTorque(this.value)" class="w-full slider-pink">
+                    <input type="range" id="rng_appliedTorque" min="0.5" max="500" step="0.5" value="25.0" oninput="updateAppliedTorque(this.value)" class="w-full slider-pink">
                     <div class="flex justify-between text-[10px] font-mono text-zinc-400 mt-1.5 bg-[#111316] px-2 py-1 rounded border border-[#23272f]">
-                        <span>Pitch Ø<sub>A</sub>: <strong id="read_forcePitchDia" class="text-[#5ce1e6]">45.0 mm</strong></span>
-                        <span>Normal F<sub>n</sub>: <strong id="read_currentFn" class="text-zinc-200">1182 N</strong></span>
+                        <span>Pitch Ø<sub>A</sub>: <strong id="read_forcePitchDia" class="text-[#4deeea]">45.0 mm</strong></span>
                         <span>Radial F<sub>r</sub>: <strong id="read_currentFr" class="text-zinc-200">404 N</strong></span>
+                        <span>Normal F<sub>n</sub>: <strong id="read_currentFn" class="text-zinc-200">1182 N</strong></span>
                     </div>
                 </div>
 
@@ -857,40 +865,40 @@
                     <div>
                         <div class="flex justify-between mb-0.5">
                             <span class="text-zinc-400">1. Tooth Root Bending (σ<sub>F</sub>)</span>
-                            <span id="lbl_barBending" class="text-[#5ce1e6] font-bold">112 / 380 MPa (29%)</span>
+                            <span id="lbl_barBending" class="text-[#4deeea] font-bold">112 / 380 MPa (29%)</span>
                         </div>
                         <div class="w-full h-1.5 bg-[#0f1114] rounded overflow-hidden border border-[#252930]">
-                            <div id="bar_bending" class="h-full bg-[#5ce1e6] transition-all duration-150" style="width: 29%"></div>
+                            <div id="bar_bending" class="h-full bg-[#4deeea] transition-all duration-150" style="width: 29%"></div>
                         </div>
                     </div>
 
                     <div>
                         <div class="flex justify-between mb-0.5">
                             <span class="text-zinc-400" id="lbl_contactTitle">2. Hertzian Flank Contact (σ<sub>H</sub>)</span>
-                            <span id="lbl_barContact" class="text-[#5ce1e6] font-bold">410 / 950 MPa (43%)</span>
+                            <span id="lbl_barContact" class="text-[#4deeea] font-bold">410 / 950 MPa (43%)</span>
                         </div>
                         <div class="w-full h-1.5 bg-[#0f1114] rounded overflow-hidden border border-[#252930]">
-                            <div id="bar_contact" class="h-full bg-[#5ce1e6] transition-all duration-150" style="width: 43%"></div>
+                            <div id="bar_contact" class="h-full bg-[#4deeea] transition-all duration-150" style="width: 43%"></div>
                         </div>
                     </div>
 
                     <div>
                         <div class="flex justify-between mb-0.5">
                             <span class="text-zinc-400">3. Shaft / Bore Keyway Shear (τ)</span>
-                            <span id="lbl_barShaft" class="text-[#5ce1e6] font-bold">95 / 310 MPa (31%)</span>
+                            <span id="lbl_barShaft" class="text-[#4deeea] font-bold">95 / 310 MPa (31%)</span>
                         </div>
                         <div class="w-full h-1.5 bg-[#0f1114] rounded overflow-hidden border border-[#252930]">
-                            <div id="bar_shaft" class="h-full bg-[#5ce1e6] transition-all duration-150" style="width: 31%"></div>
+                            <div id="bar_shaft" class="h-full bg-[#4deeea] transition-all duration-150" style="width: 31%"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button onclick="rampLoadToFailure()" class="py-1.5 px-2 rounded bg-[#ff99c8]/20 hover:bg-[#ff99c8]/30 text-[#ff99c8] border border-[#ff99c8]/40 font-mono font-bold text-[11px] flex items-center justify-center gap-1 transition active:scale-95">
+                    <button onclick="rampLoadToFailure()" class="py-1.5 px-2 rounded bg-[#f4b6c2]/20 hover:bg-[#f4b6c2]/30 text-[#f4b6c2] border border-[#f4b6c2]/40 font-mono font-bold text-[11px] flex items-center justify-center gap-1 transition active:scale-95">
                         <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                         <span>Test Failure Limit</span>
                     </button>
-                    <button onclick="setSafeRatedLoad()" class="py-1.5 px-2 rounded bg-[#5ce1e6]/20 hover:bg-[#5ce1e6]/30 text-[#5ce1e6] border border-[#5ce1e6]/40 font-mono font-bold text-[11px] flex items-center justify-center gap-1 transition active:scale-95">
+                    <button onclick="setSafeRatedLoad()" class="py-1.5 px-2 rounded bg-[#4deeea]/20 hover:bg-[#4deeea]/30 text-[#4deeea] border border-[#4deeea]/40 font-mono font-bold text-[11px] flex items-center justify-center gap-1 transition active:scale-95">
                         <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
                         <span>Set Safe (SF=1.5)</span>
                     </button>
@@ -902,13 +910,13 @@
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between border-b border-[#252930] pb-2">
                         <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-300">6. GEAR SPEC & OPERATING LIMITS</span>
-                        <span class="text-[10px] font-mono text-[#5ce1e6]">SUMMARY</span>
+                        <span class="text-[10px] font-mono text-[#4deeea]">SUMMARY</span>
                     </div>
 
                     <div class="grid grid-cols-2 gap-2 font-mono">
                         <div class="bg-[#111316] border border-[#242830] rounded p-2">
                             <div class="text-[9px] text-zinc-400 uppercase">MAX TOOTH FORCE (F<sub>t,max</sub>)</div>
-                            <div id="spec_maxForce" class="text-sm font-bold text-[#5ce1e6] mt-0.5">3,420 N</div>
+                            <div id="spec_maxForce" class="text-sm font-bold text-[#4deeea] mt-0.5">3,420 N</div>
                             <div id="spec_maxForceSub" class="text-[9px] text-zinc-500">Before Tooth/Rim Yield</div>
                         </div>
                         <div class="bg-[#111316] border border-[#242830] rounded p-2">
@@ -918,12 +926,12 @@
                         </div>
                         <div class="bg-[#111316] border border-[#242830] rounded p-2">
                             <div class="text-[9px] text-zinc-400 uppercase">GOVERNING FAILURE</div>
-                            <div id="spec_failMode" class="text-xs font-bold text-[#ff99c8] mt-0.5 truncate">Tooth Root Bending (A)</div>
+                            <div id="spec_failMode" class="text-xs font-bold text-[#f4b6c2] mt-0.5 truncate">Tooth Root Bending (A)</div>
                             <div id="spec_failPart" class="text-[9px] text-zinc-500">Critical Weakest Link</div>
                         </div>
                         <div class="bg-[#111316] border border-[#242830] rounded p-2">
                             <div class="text-[9px] text-zinc-400 uppercase">MAX POWER @ RPM</div>
-                            <div id="spec_maxPower" class="text-sm font-bold text-[#5ce1e6] mt-0.5">145.1 W</div>
+                            <div id="spec_maxPower" class="text-sm font-bold text-[#4deeea] mt-0.5">145.1 W</div>
                             <div id="spec_massAB" class="text-[9px] text-zinc-500">Mass: 142g / 568g</div>
                         </div>
                     </div>
@@ -943,7 +951,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-zinc-400">Lewis Form Factor (Y<sub>FA</sub> / Y<sub>FB</sub>)</span>
-                            <span id="spec_rowLewis" class="text-[#5ce1e6]">0.308 / 0.377</span>
+                            <span id="spec_rowLewis" class="text-[#4deeea]">0.308 / 0.377</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-zinc-400">Max Safe Speed (v<sub>max</sub>)</span>
@@ -952,7 +960,7 @@
                     </div>
                 </div>
 
-                <button id="btnBottomStartSim" onclick="runLoadAndKinematicSimulation()" class="w-full py-2.5 px-4 rounded-lg bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#5ce1e6]/15 transition active:scale-98 flex items-center justify-center gap-2">
+                <button id="btnBottomRightSim" onclick="runFullSimulation()" class="w-full py-2.5 px-4 rounded-lg bg-[#4deeea] hover:bg-[#3cdad6] text-[#0c0d0f] font-mono font-extrabold text-xs tracking-wide shadow-lg shadow-[#4deeea]/20 transition active:scale-98 flex items-center justify-center gap-2">
                     <i data-lucide="play" class="w-4 h-4" id="bottomSimIcon"></i>
                     <span id="bottomSimText">Start Simulation</span>
                 </button>
@@ -1034,7 +1042,7 @@
             materialB: 'steel1045',
             appliedForceN: 1111.0,
             appliedTorqueNm: 25.0,
-            loadInputMode: 'force',
+            forceControlMode: 'force',
             isPlaying: true,
             rpm: 18,
             direction: 1,
@@ -1085,6 +1093,18 @@
         let cachedMetrics = null;
         let cachedFailureSummary = null;
 
+        function safeSetVal(id, val) {
+            const el = document.getElementById(id);
+            if (el && document.activeElement !== el) {
+                el.value = val;
+            }
+        }
+
+        function safeSetText(id, txt) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = txt;
+        }
+
         function initThreeViewport() {
             const container = document.getElementById('viewportContainer');
             const w = container.clientWidth || 900;
@@ -1111,15 +1131,15 @@
             keyLight.position.set(140, -160, 200);
             scene.add(keyLight);
 
-            const fillLight = new THREE.DirectionalLight(0x5ce1e6, 0.55);
+            const fillLight = new THREE.DirectionalLight(0x4deeea, 0.55);
             fillLight.position.set(-160, 120, 90);
             scene.add(fillLight);
 
-            const warmLight = new THREE.DirectionalLight(0xff99c8, 0.42);
+            const warmLight = new THREE.DirectionalLight(0xf4b6c2, 0.42);
             warmLight.position.set(80, 160, -100);
             scene.add(warmLight);
 
-            const grid = new THREE.GridHelper(320, 32, 0x5ce1e6, 0x1c2026);
+            const grid = new THREE.GridHelper(320, 32, 0x4deeea, 0x1c2026);
             grid.rotation.x = Math.PI / 2;
             grid.position.z = -25;
             scene.add(grid);
@@ -1138,9 +1158,11 @@
         function onViewportResize() {
             const container = document.getElementById('viewportContainer');
             if (!container || !renderer) return;
-            camera.aspect = container.clientWidth / container.clientHeight;
+            const w = Math.max(100, container.clientWidth);
+            const h = Math.max(100, container.clientHeight);
+            camera.aspect = w / h;
             camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setSize(w, h);
         }
 
         function involute(alphaRad) {
@@ -1160,20 +1182,20 @@
 
         function computeSystemMetrics() {
             const arch = state.architecture;
-            const mA = state.module;
-            const mB = state.gearB.mismatchUnlocked ? state.gearB.moduleOverride : state.module;
-            const alphaDegA = state.pressureAngle;
-            const alphaDegB = state.gearB.mismatchUnlocked ? state.gearB.alphaOverride : state.pressureAngle;
+            const mA = Math.max(0.2, state.module);
+            const mB = state.gearB.mismatchUnlocked ? Math.max(0.2, state.gearB.moduleOverride) : mA;
+            const alphaDegA = Math.max(10, Math.min(35, state.pressureAngle));
+            const alphaDegB = state.gearB.mismatchUnlocked ? Math.max(10, Math.min(35, state.gearB.alphaOverride)) : alphaDegA;
 
             const alphaA = (alphaDegA * Math.PI) / 180;
             const alphaB = (alphaDegB * Math.PI) / 180;
 
-            const zA = state.gearA.teeth;
-            const zB = state.gearB.teeth;
+            const zA = Math.max(1, state.gearA.teeth);
+            const zB = Math.max(4, state.gearB.teeth);
             const xA = arch === 'worm' ? 0 : state.gearA.profileShift;
-            const xB = state.gearB.profileShift;
+            const xB = arch === 'rack' ? 0 : state.gearB.profileShift;
 
-            const qWorm = state.gearA.wormQuotient || 10.0;
+            const qWorm = Math.max(4, state.gearA.wormQuotient || 10.0);
             const wormLeadAngleRad = Math.atan(zA / qWorm);
             const wormLeadAngleDeg = (wormLeadAngleRad * 180) / Math.PI;
             const muWorm = 0.05;
@@ -1187,11 +1209,11 @@
             const betaA = ((isHelicalFamily ? state.gearA.helixAngle : 0) * Math.PI) / 180;
             const betaB = ((isHelicalFamily ? state.gearB.helixAngle : 0) * Math.PI) / 180;
 
-            const mtA = arch === 'worm' ? mA : mA / Math.cos(betaA);
-            const mtB = arch === 'worm' ? mB : mB / Math.cos(betaB);
+            const mtA = arch === 'worm' ? mA : mA / Math.max(0.2, Math.cos(betaA));
+            const mtB = arch === 'worm' ? mB : mB / Math.max(0.2, Math.cos(betaB));
 
-            const alphaTA = arch === 'worm' ? alphaA : Math.atan(Math.tan(alphaA) / Math.cos(betaA));
-            const alphaTB = arch === 'worm' ? alphaB : Math.atan(Math.tan(alphaB) / Math.cos(betaB));
+            const alphaTA = arch === 'worm' ? alphaA : Math.atan(Math.tan(alphaA) / Math.max(0.2, Math.cos(betaA)));
+            const alphaTB = arch === 'worm' ? alphaB : Math.atan(Math.tan(alphaB) / Math.max(0.2, Math.cos(betaB)));
 
             const rpA = arch === 'worm' ? (qWorm * mA) / 2 : (mtA * zA) / 2;
             const rpB = (mtB * zB) / 2;
@@ -1222,11 +1244,11 @@
             if (arch === 'bevel') {
                 gammaA = Math.atan2(Math.sin(sigmaRad), (zB / zA) + Math.cos(sigmaRad));
                 gammaB = sigmaRad - gammaA;
-                coneDistR = rpA / Math.sin(gammaA);
+                coneDistR = rpA / Math.max(0.05, Math.sin(gammaA));
             }
 
-            const zvA = arch === 'bevel' ? zA / Math.max(0.2, Math.cos(gammaA)) : zA / Math.pow(Math.cos(betaA), 3);
-            const zvB = arch === 'bevel' ? zB / Math.max(0.2, Math.cos(gammaB)) : zB / Math.pow(Math.cos(betaB), 3);
+            const zvA = arch === 'bevel' ? zA / Math.max(0.2, Math.cos(gammaA)) : zA / Math.pow(Math.max(0.2, Math.cos(betaA)), 3);
+            const zvB = arch === 'bevel' ? zB / Math.max(0.2, Math.cos(gammaB)) : zB / Math.pow(Math.max(0.2, Math.cos(betaB)), 3);
             const sin2Alpha = Math.pow(Math.sin(alphaA), 2);
             const xMinA = 1.0 - (zvA * sin2Alpha) / 2;
             const xMinB = 1.0 - (zvB * sin2Alpha) / 2;
@@ -1271,7 +1293,7 @@
         }
 
         function evaluateBoreAtAngle(theta, gearCfg, maxSafeBoreR) {
-            const rBore = Math.min(gearCfg.boreDia / 2, maxSafeBoreR);
+            const rBore = Math.max(0.8, Math.min(gearCfg.boreDia / 2, maxSafeBoreR));
             const bType = gearCfg.boreType;
             let a = ((theta % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
             if (a > Math.PI) a -= 2 * Math.PI;
@@ -1283,7 +1305,7 @@
                 const halfKeyAngle = Math.asin(Math.min(0.92, (gearCfg.keyWidth / 2) / rBore));
                 if (Math.abs(a) <= halfKeyAngle) {
                     const y = rBore * Math.sin(a);
-                    const x = rBore * Math.cos(halfKeyAngle) + Math.min(gearCfg.keyDepth, maxSafeBoreR - rBore + 1.5);
+                    const x = rBore * Math.cos(halfKeyAngle) + Math.min(gearCfg.keyDepth, Math.max(0.4, maxSafeBoreR - rBore + 1.2));
                     return { x, y };
                 }
                 return { x: rBore * Math.cos(theta), y: rBore * Math.sin(theta) };
@@ -1308,7 +1330,7 @@
         function generateGear2DLoop(params, quality) {
             const { z, alphaT, rp, rb, ra, rf, sPitch, isInternal } = params;
             const pitchAngle = (2 * Math.PI) / z;
-            const halfToothAnglePitch = sPitch / (2 * rp);
+            const halfToothAnglePitch = Math.max(0.01, Math.min(pitchAngle * 0.42, sPitch / (2 * rp)));
             const invAlphaT = involute(alphaT);
             const halfBaseAngle = halfToothAnglePitch + invAlphaT;
 
@@ -1321,9 +1343,9 @@
             const rInner = isInternal ? ra : rf;
 
             let maxCheckR = rOuter;
-            for (let s = 0; s < 12; s++) {
-                const rc = rStart + (rOuter - rStart) * (s / 12);
-                const ac = Math.acos(Math.min(1, rb / rc));
+            for (let s = 0; s <= 16; s++) {
+                const rc = rStart + (rOuter - rStart) * (s / 16);
+                const ac = Math.acos(Math.min(1, rb / Math.max(rb, rc)));
                 if (halfBaseAngle - involute(ac) <= 0.002) {
                     maxCheckR = rc;
                     break;
@@ -1332,10 +1354,10 @@
 
             const singleTooth = [];
             if (!isInternal) {
-                const rTipActual = Math.min(ra, maxCheckR);
+                const rTipActual = Math.max(rStart + 0.05, Math.min(ra, maxCheckR));
                 const alphaTip = Math.acos(Math.min(1, rb / Math.max(rb, rTipActual)));
                 const thetaTip = Math.max(0.001, halfBaseAngle - involute(alphaTip));
-                const thetaRoot = halfBaseAngle;
+                const thetaRoot = Math.min(pitchAngle * 0.46, halfBaseAngle);
                 const rootArcStart = -pitchAngle / 2;
                 const rootFlankStart = -thetaRoot;
 
@@ -1351,8 +1373,8 @@
                 for (let i = 0; i <= flankSamples; i++) {
                     const t = i / flankSamples;
                     const r = rStart + t * (rTipActual - rStart);
-                    const alphaR = Math.acos(Math.min(1, rb / r));
-                    const ang = -(halfBaseAngle - involute(alphaR));
+                    const alphaR = Math.acos(Math.min(1, rb / Math.max(rb, r)));
+                    const ang = -Math.min(thetaRoot, Math.max(0.001, halfBaseAngle - involute(alphaR)));
                     singleTooth.push({ r, a: ang });
                 }
                 for (let i = 1; i < tipSamples; i++) {
@@ -1363,8 +1385,8 @@
                 for (let i = flankSamples; i >= 0; i--) {
                     const t = i / flankSamples;
                     const r = rStart + t * (rTipActual - rStart);
-                    const alphaR = Math.acos(Math.min(1, rb / r));
-                    const ang = +(halfBaseAngle - involute(alphaR));
+                    const alphaR = Math.acos(Math.min(1, rb / Math.max(rb, r)));
+                    const ang = +Math.min(thetaRoot, Math.max(0.001, halfBaseAngle - involute(alphaR)));
                     singleTooth.push({ r, a: ang });
                 }
                 if (rf < rb) {
@@ -1376,7 +1398,7 @@
                 const alphaOuter = Math.acos(Math.min(1, rb / Math.max(rb, rOuter)));
                 const thetaOuter = Math.max(0.002, halfBaseAngle - involute(alphaOuter));
                 const alphaInner = Math.acos(Math.min(1, rb / Math.max(rb, rInnerStart)));
-                const thetaInner = Math.max(0.002, halfBaseAngle - involute(alphaInner));
+                const thetaInner = Math.min(pitchAngle * 0.46, Math.max(0.002, halfBaseAngle - involute(alphaInner)));
                 const tipArcStart = -pitchAngle / 2;
 
                 for (let i = 0; i < rootSamples; i++) {
@@ -1387,8 +1409,8 @@
                 for (let i = 0; i <= flankSamples; i++) {
                     const t = i / flankSamples;
                     const r = rInnerStart + t * (rOuter - rInnerStart);
-                    const alphaR = Math.acos(Math.min(1, rb / r));
-                    const ang = -(halfBaseAngle - involute(alphaR));
+                    const alphaR = Math.acos(Math.min(1, rb / Math.max(rb, r)));
+                    const ang = -Math.min(thetaInner, Math.max(0.002, halfBaseAngle - involute(alphaR)));
                     singleTooth.push({ r, a: ang });
                 }
                 for (let i = 1; i < tipSamples; i++) {
@@ -1399,8 +1421,8 @@
                 for (let i = flankSamples; i >= 0; i--) {
                     const t = i / flankSamples;
                     const r = rInnerStart + t * (rOuter - rInnerStart);
-                    const alphaR = Math.acos(Math.min(1, rb / r));
-                    const ang = +(halfBaseAngle - involute(alphaR));
+                    const alphaR = Math.acos(Math.min(1, rb / Math.max(rb, r)));
+                    const ang = +Math.min(thetaInner, Math.max(0.002, halfBaseAngle - involute(alphaR)));
                     singleTooth.push({ r, a: ang });
                 }
             }
@@ -1541,7 +1563,7 @@
             const m = isGearA ? metrics.mA : metrics.mB;
             const mt = isGearA ? metrics.mtA : metrics.mtB;
             const alphaT = isGearA ? metrics.alphaTA : metrics.alphaTB;
-            const z = gearCfg.teeth;
+            const z = Math.max(4, gearCfg.teeth);
             const x = gearCfg.profileShift;
             const rp = isGearA ? metrics.rpA : metrics.rpB;
             const rb = isGearA ? metrics.rbA : metrics.rbB;
@@ -1562,7 +1584,7 @@
             else if (arch === 'bevel') axialSlices = state.meshQuality === 'ultra' ? 16 : 10;
 
             const betaRad = (arch === 'helical' || arch === 'herringbone' || isWormWheel) ? (gearCfg.helixAngle * Math.PI) / 180 : 0;
-            const twistRate = gearCfg.hand * Math.tan(betaRad) / rp;
+            const twistRate = gearCfg.hand * Math.tan(betaRad) / Math.max(1, rp);
             const gamma = isGearA ? metrics.gammaA : metrics.gammaB;
             const coneDistR = metrics.coneDistR;
 
@@ -1656,7 +1678,7 @@
                     for (let i = 0; i < N; i++) {
                         const next = (i + 1) % N;
                         if (!isInternal) pushQuad(bA[next], bA[i], bB[i], bB[next]);
-                        else pushQuad(bA[i], bA[next], bB[next], bA[next]);
+                        else pushQuad(bA[i], bA[next], bB[next], bB[i]);
                     }
                 }
             }
@@ -1693,7 +1715,7 @@
         function buildLinearRackGeometry(metrics) {
             const m = metrics.mB;
             const alpha = metrics.alphaB;
-            const zRack = state.gearB.teeth;
+            const zRack = Math.max(4, state.gearB.teeth);
             const p = Math.PI * m;
             const ha = m * 1.0;
             const hf = m * 1.25;
@@ -1751,7 +1773,7 @@
             geoA = resA.geometry;
 
             if (!meshA) {
-                const matA = new THREE.MeshStandardMaterial({ color: 0x5ce1e6, metalness: 0.38, roughness: 0.36, flatShading: true });
+                const matA = new THREE.MeshStandardMaterial({ color: 0x4deeea, metalness: 0.38, roughness: 0.36, flatShading: true });
                 meshA = new THREE.Mesh(geoA, matA);
                 groupA.add(meshA);
             } else {
@@ -1770,7 +1792,7 @@
                 totalTris += resB.triCount;
 
                 if (!meshB) {
-                    const matB = new THREE.MeshStandardMaterial({ color: 0xff99c8, metalness: 0.38, roughness: 0.38, flatShading: true });
+                    const matB = new THREE.MeshStandardMaterial({ color: 0xf4b6c2, metalness: 0.38, roughness: 0.38, flatShading: true });
                     meshB = new THREE.Mesh(geoB, matB);
                     groupB.add(meshB);
                 } else {
@@ -1782,7 +1804,7 @@
             positionAssemblyGroups(metrics);
             rebuildPitchOverlays(metrics);
 
-            document.getElementById('polyCountBadge').textContent = `${totalTris.toLocaleString()} tris`;
+            safeSetText('polyCountBadge', totalTris.toLocaleString() + ' tris');
             updateMetrologyReadouts(metrics);
             runCompatibilityDiagnostics(metrics);
             computeStructuralFailureMetrics(metrics);
@@ -1812,10 +1834,6 @@
                 groupA.position.set(-halfDist, 0, 0);
                 groupA.rotation.set(-Math.PI / 2, 0, 0);
                 groupB.position.set(halfDist, 0, 0);
-            } else if (arch === 'rack') {
-                const halfDist = metrics.operatingCenterDist / 2;
-                groupA.position.set(-halfDist, 0, 0);
-                groupB.position.set(halfDist, 0, 0);
             } else {
                 const halfDist = metrics.operatingCenterDist / 2;
                 groupA.position.set(-halfDist, 0, 0);
@@ -1827,22 +1845,23 @@
             while (overlayGroup.children.length > 0) {
                 const c = overlayGroup.children[0];
                 if (c.geometry) c.geometry.dispose();
+                if (c.material) c.material.dispose();
                 overlayGroup.remove(c);
             }
             if (!state.showPitchSurfaces) return;
 
-            const matPitchA = new THREE.MeshBasicMaterial({ color: 0x5ce1e6, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
-            const matPitchB = new THREE.MeshBasicMaterial({ color: 0xff99c8, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
+            const matPitchA = new THREE.MeshBasicMaterial({ color: 0x4deeea, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
+            const matPitchB = new THREE.MeshBasicMaterial({ color: 0xf4b6c2, transparent: true, opacity: 0.16, side: THREE.DoubleSide, depthWrite: false });
 
             if (state.architecture === 'bevel') {
-                const hA = metrics.rpA / Math.tan(metrics.gammaA);
+                const hA = metrics.rpA / Math.max(0.05, Math.tan(metrics.gammaA));
                 const coneA = new THREE.ConeGeometry(metrics.rpA, hA, 48, 1, true);
                 coneA.rotateX(Math.PI / 2);
                 coneA.translate(0, 0, -hA / 2);
                 overlayGroup.add(new THREE.Mesh(coneA, matPitchA));
 
                 if (state.assemblyMode) {
-                    const hB = metrics.rpB / Math.tan(metrics.gammaB);
+                    const hB = metrics.rpB / Math.max(0.05, Math.tan(metrics.gammaB));
                     const coneB = new THREE.ConeGeometry(metrics.rpB, hB, 48, 1, true);
                     coneB.rotateX(Math.PI / 2);
                     coneB.translate(0, 0, -hB / 2);
@@ -1949,7 +1968,7 @@
             const cxA = pitchPx - metrics.rpA * scale;
 
             ctx.save();
-            ctx.strokeStyle = 'rgba(92, 225, 230, 0.50)';
+            ctx.strokeStyle = 'rgba(77, 238, 234, 0.50)';
             ctx.setLineDash([4, 3]);
             ctx.beginPath();
             if (state.architecture === 'worm') {
@@ -1959,7 +1978,7 @@
             }
             ctx.stroke();
 
-            ctx.strokeStyle = 'rgba(255, 153, 200, 0.50)';
+            ctx.strokeStyle = 'rgba(244, 182, 194, 0.50)';
             ctx.beginPath();
             if (state.architecture === 'rack') {
                 ctx.moveTo(pitchPx, 0); ctx.lineTo(pitchPx, h);
@@ -1977,8 +1996,8 @@
             const userPhasePx = (state.meshPhaseDeg / 180) * (p / 2);
 
             ctx.save();
-            ctx.fillStyle = 'rgba(92, 225, 230, 0.28)';
-            ctx.strokeStyle = '#5ce1e6';
+            ctx.fillStyle = 'rgba(77, 238, 234, 0.28)';
+            ctx.strokeStyle = '#4deeea';
             ctx.lineWidth = 1.6;
             const haPx = metrics.haA * scale, hfPx = metrics.hfA * scale;
             const tanA = Math.tan(metrics.alphaTA);
@@ -1998,8 +2017,8 @@
 
             if (state.assemblyMode) {
                 ctx.save();
-                ctx.fillStyle = 'rgba(255, 153, 200, 0.28)';
-                ctx.strokeStyle = '#ff99c8';
+                ctx.fillStyle = 'rgba(244, 182, 194, 0.28)';
+                ctx.strokeStyle = '#f4b6c2';
                 ctx.lineWidth = 1.6;
                 const deltaPx = state.centerDistDelta * scale;
 
@@ -2027,7 +2046,7 @@
             ctx.lineTo(pitchPx + loaLen * sinA, pitchPy + loaLen * cosA);
             ctx.stroke();
 
-            ctx.fillStyle = '#5ce1e6';
+            ctx.fillStyle = '#4deeea';
             ctx.beginPath();
             ctx.arc(pitchPx, pitchPy, 3.2, 0, Math.PI * 2);
             ctx.fill();
@@ -2042,28 +2061,28 @@
                 if (Math.abs(metrics.mA - metrics.mB) > 0.001) {
                     issues.push({
                         level: 'critical',
-                        title: `Module Mismatch (mA=${metrics.mA} vs mB=${metrics.mB})`,
+                        title: 'Module Mismatch (mA=' + metrics.mA + ' vs mB=' + metrics.mB + ')',
                         desc: 'Conjugate gear action requires identical base pitch.',
                         fixLabel: 'Sync Module mB = mA',
-                        fixFn: () => { state.gearB.moduleOverride = state.module; document.getElementById('num_moduleB').value = state.module; rebuildSceneModels(); }
+                        fixFn: () => { state.gearB.moduleOverride = state.module; safeSetVal('num_moduleB', state.module); rebuildSceneModels(); }
                     });
                 }
                 if (Math.abs(metrics.alphaDegA - metrics.alphaDegB) > 0.01) {
                     issues.push({
                         level: 'critical',
-                        title: `Pressure Angle Mismatch (${metrics.alphaDegA}° vs ${metrics.alphaDegB}°)`,
+                        title: 'Pressure Angle Mismatch (' + metrics.alphaDegA + '° vs ' + metrics.alphaDegB + '°)',
                         desc: 'Meshing involute gears must share the exact same normal pressure angle α.',
                         fixLabel: 'Sync Angle αB = αA',
-                        fixFn: () => { state.gearB.alphaOverride = state.pressureAngle; document.getElementById('num_alphaB').value = state.pressureAngle; rebuildSceneModels(); }
+                        fixFn: () => { state.gearB.alphaOverride = state.pressureAngle; safeSetVal('num_alphaB', state.pressureAngle); rebuildSceneModels(); }
                     });
                 }
             }
 
-            if (state.assemblyMode && arch === 'helical') {
+            if (state.assemblyMode && (arch === 'helical' || arch === 'herringbone')) {
                 if (Math.abs(state.gearA.helixAngle - state.gearB.helixAngle) > 0.1) {
                     issues.push({
                         level: 'critical',
-                        title: `Helix Angle Mismatch (βA=${state.gearA.helixAngle}° vs βB=${state.gearB.helixAngle}°)`,
+                        title: 'Helix Angle Mismatch (βA=' + state.gearA.helixAngle + '° vs βB=' + state.gearB.helixAngle + '°)',
                         desc: 'Parallel-shaft helical gears must have equal helix angles β.',
                         fixLabel: 'Match βB = βA',
                         fixFn: () => setGearParam('B', 'helixAngle', state.gearA.helixAngle)
@@ -2075,8 +2094,20 @@
                         level: 'critical',
                         title: 'Same Helix Handedness on Parallel Shafts',
                         desc: 'External parallel helical gears MUST have opposite helix hands.',
-                        fixLabel: `Set Gear B to ${targetHandName}`,
+                        fixLabel: 'Set Gear B to ' + targetHandName,
                         fixFn: () => setGearParam('B', 'hand', -state.gearA.hand)
+                    });
+                }
+            }
+
+            if (state.assemblyMode && arch === 'internal') {
+                if (metrics.zB - metrics.zA < 8) {
+                    issues.push({
+                        level: 'critical',
+                        title: 'Internal Ring Tip Fouling (zB - zA = ' + (metrics.zB - metrics.zA) + ' < 8)',
+                        desc: 'Internal ring gears require a tooth difference of at least 8–10 teeth to prevent trochoidal tip interference.',
+                        fixLabel: 'Increase Ring zB to ' + (metrics.zA + 12),
+                        fixFn: () => updateTeeth('B', metrics.zA + 12)
                     });
                 }
             }
@@ -2088,7 +2119,7 @@
                         level: 'critical',
                         title: 'Worm & Wheel Handedness Conflict',
                         desc: 'For a 90° crossed-axis worm drive, the worm wheel helix hand MUST match the worm thread hand.',
-                        fixLabel: `Set Wheel B to ${handStr}`,
+                        fixLabel: 'Set Wheel B to ' + handStr,
                         fixFn: () => setGearParam('B', 'hand', state.gearA.hand)
                     });
                 }
@@ -2097,9 +2128,9 @@
                     const targetBeta = parseFloat(metrics.wormLeadAngleDeg.toFixed(2));
                     issues.push({
                         level: 'critical',
-                        title: `Wheel Helix ≠ Worm Lead Angle (βB=${state.gearB.helixAngle.toFixed(1)}° vs γ=${targetBeta}°)`,
+                        title: 'Wheel Helix ≠ Worm Lead Angle (βB=' + state.gearB.helixAngle.toFixed(1) + '° vs γ=' + targetBeta + '°)',
                         desc: 'For orthogonal 90° shaft alignment, the worm wheel helix angle β2 must equal the worm lead angle γ1.',
-                        fixLabel: `Sync βB = ${targetBeta}°`,
+                        fixLabel: 'Sync βB = ' + targetBeta + '°',
                         fixFn: () => syncWormWheelHelix()
                     });
                 }
@@ -2109,20 +2140,31 @@
                 const recXA = Math.min(0.6, Math.ceil(metrics.xMinA * 20) / 20);
                 issues.push({
                     level: 'warning',
-                    title: `Undercutting Risk on Pinion A (zA=${metrics.zA})`,
-                    desc: `Apply positive profile shift xA ≥ +${recXA.toFixed(2)} to strengthen the tooth root.`,
-                    fixLabel: `Apply Shift xA = +${recXA.toFixed(2)}`,
+                    title: 'Undercutting Risk on Pinion A (zA=' + metrics.zA + ')',
+                    desc: 'Apply positive profile shift xA ≥ +' + recXA.toFixed(2) + ' to strengthen the tooth root.',
+                    fixLabel: 'Apply Shift xA = +' + recXA.toFixed(2),
                     fixFn: () => setGearParam('A', 'profileShift', recXA)
+                });
+            }
+
+            if (state.gearA.boreType !== 'none' && state.gearA.boreDia > metrics.rfA * 1.35) {
+                const safeBoreA = Math.max(2, Math.floor(metrics.rfA * 1.1));
+                issues.push({
+                    level: 'warning',
+                    title: 'Thin Rim Wall on Part A (Bore Ø' + state.gearA.boreDia + ' mm vs Root Ø' + (metrics.rfA * 2).toFixed(1) + ' mm)',
+                    desc: 'Bore & keyway are too close to the tooth root circle rfA, risking rim fracture.',
+                    fixLabel: 'Reduce Bore A to ' + safeBoreA + ' mm',
+                    fixFn: () => setGearParam('A', 'boreDia', safeBoreA)
                 });
             }
 
             if (metrics.epsAlpha < 1.2) {
                 issues.push({
                     level: metrics.epsAlpha < 1.05 ? 'critical' : 'warning',
-                    title: `Low Transverse Contact Ratio (εα = ${metrics.epsAlpha.toFixed(2)})`,
+                    title: 'Low Transverse Contact Ratio (εα = ' + metrics.epsAlpha.toFixed(2) + ')',
                     desc: 'ISO recommends εα ≥ 1.20 for quiet, vibration-free power transmission.',
                     fixLabel: 'Optimize Teeth & Reset Δa',
-                    fixFn: () => { setSharedParam('centerDistDelta', 0); if (state.gearA.teeth < 18) updateTeeth('A', 18); if (state.gearB.teeth < 30) updateTeeth('B', 30); }
+                    fixFn: () => { setSharedParam('centerDistDelta', 0); if (state.architecture !== 'worm' && state.gearA.teeth < 18) updateTeeth('A', 18); if (state.gearB.teeth < 30) updateTeeth('B', 30); }
                 });
             }
 
@@ -2149,12 +2191,12 @@
             btnFixAll.classList.toggle('hidden', actionableCount === 0);
 
             if (critCount > 0) {
-                badgeEl.className = 'ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/40';
+                badgeEl.className = 'ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/40';
                 if (bannerEl) {
-                    bannerEl.className = 'hidden md:flex items-center space-x-3 bg-[#1c1417] border border-[#ff99c8]/50 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner';
-                    bannerDot.className = 'w-2.5 h-2.5 rounded-full bg-[#ff99c8] shrink-0 animate-ping';
-                    bannerTitle.className = 'text-[10px] font-mono font-bold uppercase tracking-wider text-[#ff99c8]';
-                    bannerTitle.textContent = `ALERT · ${critCount} CRITICAL MESH CONFLICT`;
+                    bannerEl.className = 'hidden md:flex items-center space-x-3 bg-[#1c1417] border border-[#f4b6c2]/50 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner';
+                    bannerDot.className = 'w-2.5 h-2.5 rounded-full bg-[#f4b6c2] shrink-0 animate-ping';
+                    bannerTitle.className = 'text-[10px] font-mono font-bold uppercase tracking-wider text-[#f4b6c2]';
+                    bannerTitle.textContent = 'ALERT · ' + critCount + ' CRITICAL MESH CONFLICT';
                     bannerSub.textContent = issues.find(i => i.level === 'critical').title;
                 }
                 alertStrip.classList.remove('hidden');
@@ -2165,17 +2207,17 @@
                     bannerEl.className = 'hidden md:flex items-center space-x-3 bg-[#191712] border border-amber-500/40 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner';
                     bannerDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0';
                     bannerTitle.className = 'text-[10px] font-mono font-bold uppercase tracking-wider text-amber-300';
-                    bannerTitle.textContent = `ADVISORY · ${warnCount} PROFILE WARNING`;
+                    bannerTitle.textContent = 'ADVISORY · ' + warnCount + ' PROFILE WARNING';
                     bannerSub.textContent = issues.find(i => i.level === 'warning').title;
                 }
                 alertStrip.classList.remove('hidden');
                 alertText.textContent = issues.find(i => i.level === 'warning').title;
             } else {
-                badgeEl.className = 'ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#5ce1e6]/20 text-[#5ce1e6]';
+                badgeEl.className = 'ml-0.5 px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-[#4deeea]/20 text-[#4deeea]';
                 if (bannerEl) {
-                    bannerEl.className = 'hidden md:flex items-center space-x-3 bg-[#15191d] border border-[#5ce1e6]/40 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner';
-                    bannerDot.className = 'w-2.5 h-2.5 rounded-full bg-[#5ce1e6] shrink-0 shadow-[0_0_8px_#5ce1e6]';
-                    bannerTitle.className = 'text-[10px] font-mono font-bold uppercase tracking-wider text-[#5ce1e6]';
+                    bannerEl.className = 'hidden md:flex items-center space-x-3 bg-[#15191d] border border-[#4deeea]/40 rounded-lg px-4 py-1.5 min-w-[340px] max-w-lg shadow-inner';
+                    bannerDot.className = 'w-2.5 h-2.5 rounded-full bg-[#4deeea] shrink-0 shadow-[0_0_8px_#4deeea]';
+                    bannerTitle.className = 'text-[10px] font-mono font-bold uppercase tracking-wider text-[#4deeea]';
                     bannerTitle.textContent = 'READY · ISO MESH & CONJUGATE ACTION VALID';
                     bannerSub.textContent = 'Watertight manifold solid ready for .STP214 / .STL export & load testing.';
                 }
@@ -2183,15 +2225,15 @@
             }
 
             if (issues.length === 0) {
-                listEl.innerHTML = `<div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-center space-y-1"><div class="text-xs font-bold text-emerald-300">All ISO 21771 & Conjugate Checks Passed</div></div>`;
+                listEl.innerHTML = '<div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-center space-y-1"><div class="text-xs font-bold text-emerald-300">All ISO 21771 & Conjugate Checks Passed</div></div>';
                 return;
             }
 
             listEl.innerHTML = '';
             issues.forEach((item, idx) => {
                 const card = document.createElement('div');
-                card.className = `p-3 rounded-xl border bg-slate-800/60 border-slate-700 text-slate-200 space-y-2`;
-                card.innerHTML = `<div class="flex items-center justify-between gap-2"><span class="text-xs font-bold">${item.title}</span><span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border bg-sky-500/20 text-sky-300 border-sky-500/40">${item.level}</span></div><p class="text-[11px] text-slate-300">${item.desc}</p><div class="pt-1 flex justify-end"><button onclick="triggerDiagnosticFix(${idx})" class="px-2.5 py-1 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[11px] font-semibold">${item.fixLabel}</button></div>`;
+                card.className = 'p-3 rounded-xl border bg-slate-800/60 border-slate-700 text-slate-200 space-y-2';
+                card.innerHTML = '<div class="flex items-center justify-between gap-2"><span class="text-xs font-bold">' + item.title + '</span><span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border bg-sky-500/20 text-sky-300 border-sky-500/40">' + item.level + '</span></div><p class="text-[11px] text-slate-300">' + item.desc + '</p><div class="pt-1 flex justify-end"><button onclick="triggerDiagnosticFix(' + idx + ')" class="px-2.5 py-1 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[11px] font-semibold">' + item.fixLabel + '</button></div>';
                 listEl.appendChild(card);
             });
         }
@@ -2199,12 +2241,15 @@
         function triggerDiagnosticFix(idx) {
             if (activeDiagnostics[idx] && activeDiagnostics[idx].fixFn) {
                 activeDiagnostics[idx].fixFn();
-                showToast(`Applied Fix: ${activeDiagnostics[idx].fixLabel}`);
+                showToast('Applied Fix: ' + activeDiagnostics[idx].fixLabel);
             }
         }
 
         function fixAllIssues() {
-            activeDiagnostics.forEach(d => { if (d.fixFn) d.fixFn(); });
+            const fixes = activeDiagnostics.slice();
+            fixes.forEach(function(d) {
+                if (d.fixFn) d.fixFn();
+            });
             showToast('All ISO Profile Issues Auto-Resolved');
         }
 
@@ -2212,35 +2257,44 @@
             const arch = state.architecture;
             const ratio = metrics.zB / metrics.zA;
 
-            document.getElementById('read_ratio').textContent = arch === 'rack' ? `${(Math.PI * metrics.mA * metrics.zA).toFixed(1)} mm/rev` : `1 : ${ratio.toFixed(2)}`;
-            document.getElementById('read_centerDist').textContent = arch === 'bevel' ? `Σ = ${state.shaftAngle.toFixed(0)}°` : `${metrics.operatingCenterDist.toFixed(2)} mm`;
-            document.getElementById('read_pitchAB').textContent = arch === 'rack' ? `${(metrics.rpA * 2).toFixed(1)} / Rack` : `${(metrics.rpA * 2).toFixed(1)} / ${(metrics.rpB * 2).toFixed(1)}`;
-            document.getElementById('read_outerAB').textContent = arch === 'rack' ? `${(metrics.raA * 2).toFixed(1)} / ${(metrics.zB * Math.PI * metrics.mB).toFixed(0)}L` : `${(metrics.raA * 2).toFixed(1)} / ${(metrics.raB * 2).toFixed(1)}`;
+            safeSetText('read_ratio', arch === 'rack' ? (Math.PI * metrics.mA * metrics.zA).toFixed(1) + ' mm/rev' : '1 : ' + ratio.toFixed(2));
+            safeSetText('read_centerDist', arch === 'bevel' ? 'Σ = ' + state.shaftAngle.toFixed(0) + '°' : metrics.operatingCenterDist.toFixed(2) + ' mm');
+            safeSetText('read_pitchAB', arch === 'rack' ? (metrics.rpA * 2).toFixed(1) + ' / Rack' : (metrics.rpA * 2).toFixed(1) + ' / ' + (metrics.rpB * 2).toFixed(1));
+            safeSetText('read_outerAB', arch === 'rack' ? (metrics.raA * 2).toFixed(1) + ' / ' + (metrics.zB * Math.PI * metrics.mB).toFixed(0) + 'L' : (metrics.raA * 2).toFixed(1) + ' / ' + (metrics.raB * 2).toFixed(1));
 
             const epsEl = document.getElementById('read_epsAlpha');
-            epsEl.textContent = metrics.epsAlpha.toFixed(2);
-            epsEl.className = `text-xs sm:text-sm font-mono font-bold ${metrics.epsAlpha < 1.2 ? 'text-amber-400' : 'text-emerald-400'}`;
-            document.getElementById('contactRatioBadge2D').textContent = `εα = ${metrics.epsAlpha.toFixed(2)}`;
+            if (epsEl) {
+                epsEl.textContent = metrics.epsAlpha.toFixed(2);
+                epsEl.className = 'text-xs font-mono font-bold ' + (metrics.epsAlpha < 1.2 ? 'text-[#f4b6c2]' : 'text-[#4deeea]');
+            }
+            safeSetText('contactRatioBadge2D', 'εα = ' + metrics.epsAlpha.toFixed(2));
 
             if (arch === 'worm') {
                 document.getElementById('lbl_metric_epsBeta').innerHTML = 'Lead Angle (γ)';
-                document.getElementById('read_epsBeta').textContent = `${metrics.wormLeadAngleDeg.toFixed(2)}°`;
-                document.getElementById('lbl_metric_vel').textContent = 'Worm Efficiency';
-                document.getElementById('read_pitchVel').textContent = `η ≈ ${(metrics.wormEfficiency * 100).toFixed(1)}%`;
-                document.getElementById('lbl_metric_gcd').textContent = 'Drive Lock';
-                document.getElementById('read_gcd').textContent = metrics.isWormSelfLocking ? 'Self-Locking' : 'Back-Drivable';
-                document.getElementById('wormReadGamma').textContent = `${metrics.wormLeadAngleDeg.toFixed(2)}°`;
-                document.getElementById('wormReadQ').textContent = metrics.qWorm.toFixed(1);
-                document.getElementById('wormReadEff').textContent = `${(metrics.wormEfficiency * 100).toFixed(1)}%`;
+                safeSetText('read_epsBeta', metrics.wormLeadAngleDeg.toFixed(2) + '°');
+                safeSetText('lbl_metric_vel', 'Worm Efficiency');
+                safeSetText('read_pitchVel', 'η ≈ ' + (metrics.wormEfficiency * 100).toFixed(1) + '%');
+                safeSetText('lbl_metric_gcd', 'Drive Lock');
+                safeSetText('read_gcd', metrics.isWormSelfLocking ? 'Self-Locking' : 'Back-Drivable');
+                safeSetText('wormReadGamma', metrics.wormLeadAngleDeg.toFixed(2) + '°');
+                safeSetText('wormReadQ', metrics.qWorm.toFixed(1));
+                safeSetText('wormReadEff', (metrics.wormEfficiency * 100).toFixed(1) + '%');
+                const lockBadge = document.getElementById('wormLockBadge');
+                if (lockBadge) {
+                    lockBadge.textContent = metrics.isWormSelfLocking ? 'Self-Locking' : 'Back-Drivable';
+                    lockBadge.className = metrics.isWormSelfLocking
+                        ? 'px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/40'
+                        : 'px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/40';
+                }
             } else {
                 document.getElementById('lbl_metric_epsBeta').innerHTML = 'Overlap Ratio (ε<sub>β</sub>)';
-                document.getElementById('read_epsBeta').textContent = metrics.epsBeta.toFixed(2);
-                document.getElementById('lbl_metric_vel').textContent = 'Pitch Line Vel';
+                safeSetText('read_epsBeta', metrics.epsBeta.toFixed(2));
+                safeSetText('lbl_metric_vel', 'Pitch Line Vel');
                 const pitchVel = ((state.rpm * 2 * Math.PI) / 60) * metrics.rpA;
-                document.getElementById('read_pitchVel').textContent = `${pitchVel.toFixed(1)} mm/s`;
-                document.getElementById('lbl_metric_gcd').textContent = 'Hunting GCD';
+                safeSetText('read_pitchVel', pitchVel.toFixed(1) + ' mm/s');
+                safeSetText('lbl_metric_gcd', 'Hunting GCD');
                 const g = gcd(metrics.zA, metrics.zB);
-                document.getElementById('read_gcd').textContent = g === 1 ? '1 (Hunting)' : `GCD = ${g}`;
+                safeSetText('read_gcd', g === 1 ? '1 (Hunting)' : 'GCD = ' + g);
             }
         }
 
@@ -2256,8 +2310,8 @@
             if (!MATERIAL_DB[matKey]) return;
             state.materialA = matKey;
             state.materialB = matKey;
-            document.getElementById('sel_matA').value = matKey;
-            document.getElementById('sel_matB').value = matKey;
+            safeSetVal('sel_matA', matKey);
+            safeSetVal('sel_matB', matKey);
             updateMaterialButtonsUI();
             if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
         }
@@ -2272,55 +2326,45 @@
 
         function updateMaterialButtonsUI() {
             const activeKey = (state.materialA === state.materialB) ? state.materialA : null;
-            ['al6063', 'steel1045', 'cf_stacked', 'pom'].forEach(k => {
-                const btn = document.getElementById(`matBtn_${k}`);
+            ['al6063', 'steel1045', 'cf_stacked', 'pom'].forEach(function(k) {
+                const btn = document.getElementById('matBtn_' + k);
                 if (!btn) return;
-                if (k === activeKey) btn.className = 'mat-btn text-left p-2 rounded border border-[#5ce1e6] bg-[#5ce1e6]/15 transition shadow';
+                if (k === activeKey) btn.className = 'mat-btn text-left p-2 rounded border border-[#4deeea] bg-[#4deeea]/15 transition shadow';
                 else btn.className = 'mat-btn text-left p-2 rounded border border-[#252930] bg-[#111316] hover:border-zinc-600 transition';
             });
             const matA = MATERIAL_DB[state.materialA];
             const matB = state.assemblyMode ? MATERIAL_DB[state.materialB] : matA;
-            document.getElementById('read_matBendLim').textContent = `${Math.min(matA.sigmaBendingLim, matB.sigmaBendingLim)} MPa`;
-            document.getElementById('read_matContactLim').textContent = `${Math.min(matA.sigmaContactLim, matB.sigmaContactLim)} MPa`;
-            document.getElementById('read_matShearLim').textContent = `${Math.min(matA.tauShaftLim, matB.tauShaftLim)} MPa`;
+            safeSetText('read_matBendLim', Math.min(matA.sigmaBendingLim, matB.sigmaBendingLim) + ' MPa');
+            safeSetText('read_matContactLim', Math.min(matA.sigmaContactLim, matB.sigmaContactLim) + ' MPa');
+            safeSetText('read_matShearLim', Math.min(matA.tauShaftLim, matB.tauShaftLim) + ' MPa');
         }
 
         function updateAppliedForce(val) {
-            const f = Math.max(1, Math.min(50000, parseFloat(val) || 10));
+            const f = Math.max(1, Math.min(50000, parseFloat(val) || 100));
+            state.forceControlMode = 'force';
             state.appliedForceN = f;
-            state.loadInputMode = 'force';
             const rpA = cachedMetrics ? Math.max(2, cachedMetrics.rpA) : 22.5;
             state.appliedTorqueNm = (f * rpA) / 1000;
 
-            const numF = document.getElementById('num_appliedForce');
-            const rngF = document.getElementById('rng_appliedForce');
-            if (numF && document.activeElement !== numF) numF.value = Math.round(f);
-            if (rngF) rngF.value = Math.min(10000, f);
-
-            const numT = document.getElementById('num_appliedTorque');
-            const rngT = document.getElementById('rng_appliedTorque');
-            if (numT) numT.value = state.appliedTorqueNm.toFixed(1);
-            if (rngT) rngT.value = Math.min(500, state.appliedTorqueNm);
+            safeSetVal('num_appliedForce', Math.round(f));
+            safeSetVal('rng_appliedForce', Math.min(10000, Math.round(f)));
+            safeSetVal('num_appliedTorque', state.appliedTorqueNm.toFixed(1));
+            safeSetVal('rng_appliedTorque', Math.min(500, state.appliedTorqueNm));
 
             if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
         }
 
         function updateAppliedTorque(val) {
             const t = Math.max(0.1, Math.min(2500, parseFloat(val) || 1.0));
+            state.forceControlMode = 'torque';
             state.appliedTorqueNm = t;
-            state.loadInputMode = 'torque';
             const rpA = cachedMetrics ? Math.max(2, cachedMetrics.rpA) : 22.5;
             state.appliedForceN = (t * 1000) / rpA;
 
-            const numT = document.getElementById('num_appliedTorque');
-            const rngT = document.getElementById('rng_appliedTorque');
-            if (numT && document.activeElement !== numT) numT.value = t.toFixed(1);
-            if (rngT) rngT.value = Math.min(500, t);
-
-            const numF = document.getElementById('num_appliedForce');
-            const rngF = document.getElementById('rng_appliedForce');
-            if (numF) numF.value = Math.round(state.appliedForceN);
-            if (rngF) rngF.value = Math.min(10000, state.appliedForceN);
+            safeSetVal('num_appliedTorque', t.toFixed(1));
+            safeSetVal('rng_appliedTorque', Math.min(500, t));
+            safeSetVal('num_appliedForce', Math.round(state.appliedForceN));
+            safeSetVal('rng_appliedForce', Math.min(10000, Math.round(state.appliedForceN)));
 
             if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
         }
@@ -2328,21 +2372,15 @@
         function computeStructuralFailureMetrics(metrics) {
             const matA = MATERIAL_DB[state.materialA];
             const matB = state.assemblyMode ? MATERIAL_DB[state.materialB] : matA;
-            const m = metrics.mA, b = state.faceWidth, rpA = metrics.rpA, rpB = metrics.rpB;
+            const m = metrics.mA;
+            const b = state.faceWidth;
+            const rpA = Math.max(2, metrics.rpA);
+            const rpB = Math.max(2, metrics.rpB);
 
-            // Automatically recalculate Force (Ft) or Torque (TA) from current pitch radius rpA = d_pA / 2
-            if (state.loadInputMode === 'torque') {
-                state.appliedForceN = (state.appliedTorqueNm * 1000) / Math.max(2, rpA);
-                const numF = document.getElementById('num_appliedForce');
-                const rngF = document.getElementById('rng_appliedForce');
-                if (numF && document.activeElement !== numF) numF.value = Math.round(state.appliedForceN);
-                if (rngF) rngF.value = Math.min(10000, state.appliedForceN);
+            if (state.forceControlMode === 'force') {
+                state.appliedTorqueNm = (state.appliedForceN * rpA) / 1000;
             } else {
-                state.appliedTorqueNm = (state.appliedForceN * Math.max(2, rpA)) / 1000;
-                const numT = document.getElementById('num_appliedTorque');
-                const rngT = document.getElementById('rng_appliedTorque');
-                if (numT && document.activeElement !== numT) numT.value = state.appliedTorqueNm.toFixed(1);
-                if (rngT) rngT.value = Math.min(500, state.appliedTorqueNm);
+                state.appliedForceN = (state.appliedTorqueNm * 1000) / rpA;
             }
 
             const vPitchMs = (((state.rpm * 2 * Math.PI) / 60) * rpA) / 1000;
@@ -2362,139 +2400,188 @@
             const invEA = (1 - matA.poisson * matA.poisson) / (matA.youngsModulus * 1000);
             const invEB = (1 - matB.poisson * matB.poisson) / (matB.youngsModulus * 1000);
             const ZE = Math.sqrt(1.0 / (Math.PI * (invEA + invEB)));
-            const ZH = Math.sqrt(2.0 / (Math.sin(metrics.alphaTA) * Math.cos(metrics.alphaTA)));
+            const ZH = Math.sqrt(2.0 / Math.max(0.1, Math.sin(metrics.alphaTA) * Math.cos(metrics.alphaTA)));
             const ratioU = metrics.zB / Math.max(1, metrics.zA);
-            const uTerm = state.architecture === 'rack' ? 1.0 : ((ratioU + 1.0) / ratioU);
+            const uTerm = state.architecture === 'rack' ? 1.0 : (state.architecture === 'internal' ? Math.max(0.2, (ratioU - 1.0) / ratioU) : ((ratioU + 1.0) / ratioU));
             const d1Eff = Math.max(6, rpA * 2);
 
             const contactAllow = Math.min(matA.sigmaContactLim, matB.sigmaContactLim);
             const maxFt_contact = (Math.pow(contactAllow / (ZE * ZH), 2) * (b * d1Eff)) / (Kv * uTerm);
 
-            function calcShaftAndRimMaxFt(gearCfg, rp, rf, mat) {
+            function calcShaftAndRimMaxFt(gearCfg, rp, mat) {
                 if (gearCfg.boreType === 'none' || gearCfg.boreDia <= 1) return { maxFt: 999999 };
                 const dShaft = gearCfg.boreDia;
                 const Tmax_torsion = (Math.PI / 16) * Math.pow(dShaft, 3) * mat.tauShaftLim;
-                return { maxFt: Tmax_torsion / Math.max(2, rp) };
+                let maxT = Tmax_torsion;
+                if (gearCfg.boreType === 'keyway') {
+                    const kw = Math.max(1, gearCfg.keyWidth || 3);
+                    const Tmax_key = 0.75 * kw * b * (dShaft / 2) * mat.tauShaftLim;
+                    maxT = Math.min(Tmax_torsion, Tmax_key);
+                }
+                return { maxFt: maxT / Math.max(2, rp) };
             }
 
-            const shaftResA = calcShaftAndRimMaxFt(state.gearA, rpA, metrics.rfA, matA);
-            const shaftResB = state.assemblyMode ? calcShaftAndRimMaxFt(state.gearB, rpB, metrics.rfB, matB) : { maxFt: Infinity };
+            const shaftResA = calcShaftAndRimMaxFt(state.gearA, rpA, matA);
+            const shaftResB = (state.assemblyMode && state.architecture !== 'rack' && state.architecture !== 'internal') ? calcShaftAndRimMaxFt(state.gearB, rpB, matB) : { maxFt: Infinity };
             const maxFt_shaft = Math.min(shaftResA.maxFt, shaftResB.maxFt);
             const maxFt_overall = Math.min(maxFt_bend, maxFt_contact, maxFt_shaft);
-
-            let governingMode = `Tooth Root Bending (${bendWeakPart})`;
-            if (maxFt_overall === maxFt_contact) governingMode = 'Flank Surface Pitting';
-            else if (maxFt_overall === maxFt_shaft) governingMode = 'Shaft / Keyway Shear';
 
             const maxTorqueA_Nm = (maxFt_overall * rpA) / 1000;
             const maxTorqueB_Nm = (maxFt_overall * rpB) / 1000;
 
             const currentFt = state.appliedForceN;
             const currentFr = currentFt * Math.tan(metrics.alphaTA);
-            const currentFn = currentFt / Math.max(0.2, Math.cos(metrics.alphaTA));
-            const currSigmaBend = currentFt * Math.max(bendFactorA, state.assemblyMode ? bendFactorB : 0);
-            const allowBend = maxFt_bendA <= maxFt_bendB ? matA.sigmaBendingLim : matB.sigmaBendingLim;
-            const pctBend = Math.round((currSigmaBend / allowBend) * 100);
+            const currentFn = currentFt / Math.cos(metrics.alphaTA);
+
+            safeSetVal('num_appliedForce', Math.round(currentFt));
+            safeSetVal('rng_appliedForce', Math.min(10000, Math.round(currentFt)));
+            safeSetVal('num_appliedTorque', state.appliedTorqueNm.toFixed(1));
+            safeSetVal('rng_appliedTorque', Math.min(500, state.appliedTorqueNm));
+
+            safeSetText('read_forcePitchDia', (rpA * 2).toFixed(1) + ' mm');
+            safeSetText('read_currentFn', Math.round(currentFn).toLocaleString() + ' N');
+            safeSetText('read_currentFr', Math.round(currentFr).toLocaleString() + ' N');
+
+            const stressBendA = currentFt * bendFactorA;
+            const stressBendB = state.assemblyMode ? (currentFt * bendFactorB) : 0;
+            const ratioBendA = stressBendA / matA.sigmaBendingLim;
+            const ratioBendB = state.assemblyMode ? (stressBendB / matB.sigmaBendingLim) : 0;
+            const currSigmaBend = ratioBendA >= ratioBendB ? stressBendA : stressBendB;
+            const allowBend = ratioBendA >= ratioBendB ? matA.sigmaBendingLim : matB.sigmaBendingLim;
+            const pctBend = Math.round(Math.max(ratioBendA, ratioBendB) * 100);
 
             const currSigmaContact = ZE * ZH * Math.sqrt((currentFt * Kv * uTerm) / (b * d1Eff));
             const pctContact = Math.round((currSigmaContact / contactAllow) * 100);
 
-            const allowShaftTau = Math.min(matA.tauShaftLim, state.assemblyMode ? matB.tauShaftLim : Infinity);
+            const allowShaftTau = shaftResA.maxFt <= shaftResB.maxFt ? matA.tauShaftLim : matB.tauShaftLim;
             const currTauShaft = (currentFt / Math.max(1, maxFt_shaft)) * allowShaftTau;
             const pctShaft = Math.round((currTauShaft / allowShaftTau) * 100);
 
+            let governingMode = 'Tooth Root Bending (' + bendWeakPart + ')';
+            if (maxFt_contact <= maxFt_bend && maxFt_contact <= maxFt_shaft) {
+                governingMode = (state.materialA === 'cf_stacked' || state.materialB === 'cf_stacked') ? 'CF Plate Delamination' : 'Flank Contact Pitting';
+            } else if (maxFt_shaft <= maxFt_bend && maxFt_shaft <= maxFt_contact) {
+                governingMode = 'Shaft / Keyway Shear';
+            }
+
             const safetyFactor = maxFt_overall / Math.max(1, currentFt);
-            cachedFailureSummary = { maxFt_overall, maxTorqueA_Nm, maxTorqueB_Nm, governingMode, safetyFactor };
+            cachedFailureSummary = { maxFt_overall: maxFt_overall, maxTorqueA_Nm: maxTorqueA_Nm, maxTorqueB_Nm: maxTorqueB_Nm, governingMode: governingMode, safetyFactor: safetyFactor };
 
-            const pitchDiaEl = document.getElementById('read_forcePitchDia');
-            if (pitchDiaEl) pitchDiaEl.textContent = `${(rpA * 2).toFixed(1)} mm`;
-            const fnEl = document.getElementById('read_currentFn');
-            if (fnEl) fnEl.textContent = `${Math.round(currentFn).toLocaleString()} N`;
-            document.getElementById('read_currentFr').textContent = `${Math.round(currentFr).toLocaleString()} N`;
-
-            const updateBar = (barId, lblId, currVal, limVal, pct) => {
-                const bar = document.getElementById(barId), lbl = document.getElementById(lblId);
-                lbl.textContent = `${Math.round(currVal)} / ${Math.round(limVal)} MPa (${pct}%)`;
-                bar.style.width = `${Math.min(100, pct)}%`;
-                bar.className = `h-full transition-all duration-150 ${pct >= 100 ? 'bg-[#ff99c8]' : (pct >= 75 ? 'bg-amber-400' : 'bg-[#5ce1e6]')}`;
-                lbl.className = `font-bold ${pct >= 100 ? 'text-[#ff99c8]' : (pct >= 75 ? 'text-amber-300' : 'text-[#5ce1e6]')}`;
+            const updateBar = function(barId, lblId, currVal, limVal, pct) {
+                const bar = document.getElementById(barId);
+                const lbl = document.getElementById(lblId);
+                if (!bar || !lbl) return;
+                lbl.textContent = Math.round(currVal) + ' / ' + Math.round(limVal) + ' MPa (' + pct + '%)';
+                bar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+                bar.className = 'h-full transition-all duration-150 ' + (pct >= 100 ? 'bg-[#f4b6c2]' : (pct >= 75 ? 'bg-amber-400' : 'bg-[#4deeea]'));
+                lbl.className = 'font-bold ' + (pct >= 100 ? 'text-[#f4b6c2]' : 'text-[#4deeea]');
             };
             updateBar('bar_bending', 'lbl_barBending', currSigmaBend, allowBend, pctBend);
             updateBar('bar_contact', 'lbl_barContact', currSigmaContact, contactAllow, pctContact);
             updateBar('bar_shaft', 'lbl_barShaft', currTauShaft, allowShaftTau, pctShaft);
 
             const sfBadge = document.getElementById('stressStateBadge');
-            if (safetyFactor < 1.0) {
-                sfBadge.textContent = `FAILURE (SF ${safetyFactor.toFixed(2)})`;
-                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#ff99c8]/20 text-[#ff99c8] border border-[#ff99c8]/50';
-            } else if (safetyFactor < 1.4) {
-                sfBadge.textContent = `MARGINAL (SF ${safetyFactor.toFixed(2)})`;
-                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
-            } else {
-                sfBadge.textContent = `SAFE (SF ${Math.min(99, safetyFactor).toFixed(1)})`;
-                sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#5ce1e6]/20 text-[#5ce1e6] border border-[#5ce1e6]/40';
+            if (sfBadge) {
+                if (safetyFactor < 1.0) {
+                    sfBadge.textContent = 'FAILURE (SF ' + safetyFactor.toFixed(2) + ')';
+                    sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/50 animate-pulse';
+                } else if (safetyFactor < 1.35) {
+                    sfBadge.textContent = 'MARGINAL (SF ' + safetyFactor.toFixed(2) + ')';
+                    sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40';
+                } else {
+                    sfBadge.textContent = 'SAFE (SF ' + Math.min(99, safetyFactor).toFixed(1) + ')';
+                    sfBadge.className = 'text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/40';
+                }
             }
 
-            document.getElementById('spec_maxForce').textContent = `${Math.round(maxFt_overall).toLocaleString()} N`;
-            document.getElementById('spec_maxTorque').textContent = `${maxTorqueA_Nm.toFixed(1)} / ${maxTorqueB_Nm.toFixed(0)} N·m`;
-            document.getElementById('spec_failMode').textContent = governingMode;
-            const maxPowerW = maxTorqueA_Nm * ((state.rpm * 2 * Math.PI) / 60);
-            document.getElementById('spec_maxPower').textContent = `${maxPowerW.toFixed(1)} W`;
-            document.getElementById('spec_rowBendForce').textContent = `${Math.round(maxFt_bend).toLocaleString()} N`;
-            document.getElementById('spec_rowSurfForce').textContent = `${Math.round(maxFt_contact).toLocaleString()} N`;
-            document.getElementById('spec_rowShaftForce').textContent = `${Math.round(maxFt_shaft).toLocaleString()} N`;
-            document.getElementById('spec_rowLewis').textContent = `${yFA.toFixed(3)} / ${yFB.toFixed(3)}`;
-
-            // Estimate Part A & Part B masses from pitch cylinder volume and material density
             const volA_cm3 = (Math.PI * Math.pow(rpA / 10, 2) * (b / 10)) * 0.85;
             const volB_cm3 = (Math.PI * Math.pow(rpB / 10, 2) * (b / 10)) * 0.85;
-            const massA_g = Math.max(2, Math.round(volA_cm3 * matA.density));
-            const massB_g = Math.max(5, Math.round(volB_cm3 * matB.density));
-            const massEl = document.getElementById('spec_massAB');
-            if (massEl) massEl.textContent = `Mass: ${massA_g}g / ${massB_g}g`;
+            const massA_g = Math.round(volA_cm3 * matA.density);
+            const massB_g = Math.round(volB_cm3 * matB.density);
+            const maxSafeRpm = Math.round((matA.maxPitchVel * 1000 * 60) / (2 * Math.PI * Math.max(5, rpA)));
 
-            const vMaxMs = Math.min(matA.maxPitchVel, matB.maxPitchVel);
-            const maxSafeRpm = Math.round((vMaxMs * 1000 * 60) / (2 * Math.PI * Math.max(2, rpA)));
-            const maxRpmEl = document.getElementById('spec_rowMaxRpm');
-            if (maxRpmEl) maxRpmEl.textContent = `${maxSafeRpm.toLocaleString()} RPM`;
+            safeSetText('spec_maxForce', Math.round(maxFt_overall).toLocaleString() + ' N');
+            safeSetText('spec_maxTorque', maxTorqueA_Nm.toFixed(1) + ' / ' + maxTorqueB_Nm.toFixed(0) + ' N·m');
+            safeSetText('spec_failMode', governingMode);
+            const maxPowerW = maxTorqueA_Nm * ((state.rpm * 2 * Math.PI) / 60);
+            safeSetText('spec_maxPower', maxPowerW.toFixed(1) + ' W');
+            safeSetText('spec_massAB', 'Mass: ' + massA_g + 'g / ' + massB_g + 'g');
+            safeSetText('spec_rowBendForce', Math.round(maxFt_bend).toLocaleString() + ' N');
+            safeSetText('spec_rowSurfForce', Math.round(maxFt_contact).toLocaleString() + ' N');
+            safeSetText('spec_rowShaftForce', Math.round(maxFt_shaft).toLocaleString() + ' N');
+            safeSetText('spec_rowLewis', yFA.toFixed(3) + ' / ' + yFB.toFixed(3));
+            safeSetText('spec_rowMaxRpm', maxSafeRpm.toLocaleString() + ' RPM');
+
+            if (meshA && meshA.material) {
+                meshA.material.emissive.setHex(safetyFactor < 1.0 ? 0x441122 : 0x000000);
+            }
+            if (meshB && meshB.material) {
+                meshB.material.emissive.setHex(safetyFactor < 1.0 ? 0x441122 : 0x000000);
+            }
         }
 
         function rampLoadToFailure() {
             if (!cachedFailureSummary) return;
-            updateAppliedForce(Math.round(cachedFailureSummary.maxFt_overall * 1.05));
-            showToast('Simulated Tooth/Shaft Failure Limit (105% Load)');
+            const targetLoad = Math.round(cachedFailureSummary.maxFt_overall * 1.05);
+            updateAppliedForce(targetLoad);
+            showToast('Simulated Failure Load: ' + targetLoad.toLocaleString() + ' N');
         }
 
         function setSafeRatedLoad() {
             if (!cachedFailureSummary) return;
             updateAppliedForce(Math.max(10, Math.round(cachedFailureSummary.maxFt_overall / 1.5)));
-            showToast('Set Safe Operating Load (SF=1.5)');
+            showToast('Set Safe Operating Load (SF = 1.5)');
         }
 
-        function updateSimulationButtonsUI() {
-            const topText = document.getElementById('playPauseText');
-            const botText = document.getElementById('bottomSimText');
-            const botBtn = document.getElementById('btnBottomStartSim');
-            if (topText) topText.textContent = state.isPlaying ? 'Running (Pause)' : 'Paused (Play)';
-            if (botText) botText.textContent = state.isPlaying ? 'Pause Simulation' : 'Start Simulation';
-            if (botBtn) {
-                botBtn.className = state.isPlaying
-                    ? 'w-full py-2.5 px-4 rounded-lg bg-[#5ce1e6] hover:bg-[#4cd2d6] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#5ce1e6]/15 transition active:scale-98 flex items-center justify-center gap-2'
-                    : 'w-full py-2.5 px-4 rounded-lg bg-[#ff99c8] hover:bg-[#ff85bc] text-[#0c0d0f] font-mono font-bold text-xs tracking-wide shadow-lg shadow-[#ff99c8]/15 transition active:scale-98 flex items-center justify-center gap-2';
+        function resetCamera() {
+            if (!camera || !controls) return;
+            const span = cachedMetrics ? Math.max(80, (cachedMetrics.rpA + cachedMetrics.rpB) * 2.4) : 160;
+            camera.position.set(span * 0.2, -span * 1.15, span * 0.85);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        function setCameraTop() {
+            if (!camera || !controls) return;
+            const span = cachedMetrics ? Math.max(90, (cachedMetrics.rpA + cachedMetrics.rpB) * 2.5) : 180;
+            camera.position.set(0, -0.01, span * 1.35);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        }
+
+        function togglePitchOverlay() {
+            state.showPitchSurfaces = !state.showPitchSurfaces;
+            const btn = document.getElementById('btnPitchOverlay');
+            if (btn) {
+                btn.className = state.showPitchSurfaces
+                    ? 'flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30 transition'
+                    : 'flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] text-zinc-300 hover:bg-[#1f242b] transition';
+            }
+            if (cachedMetrics) rebuildPitchOverlays(cachedMetrics);
+        }
+
+        function toggleWireframe() {
+            state.wireframe = !state.wireframe;
+            if (meshA && meshA.material) meshA.material.wireframe = state.wireframe;
+            if (meshB && meshB.material) meshB.material.wireframe = state.wireframe;
+            const btn = document.getElementById('btnWireframe');
+            if (btn) {
+                btn.className = state.wireframe
+                    ? 'flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/30 transition'
+                    : 'flex items-center space-x-1 px-2.5 py-1 rounded text-[11px] text-zinc-300 hover:bg-[#1f242b] transition';
             }
         }
 
-        function runLoadAndKinematicSimulation() {
-            if (!state.isPlaying) {
-                state.isPlaying = true;
-                if (state.rpm <= 0) updateRPM(18);
-                rebuildSceneModels();
-                showToast(`Simulation Running · Ft = ${Math.round(state.appliedForceN)} N (${state.appliedTorqueNm.toFixed(1)} N·m)`);
-            } else {
-                state.isPlaying = false;
-                showToast('Simulation Paused');
-            }
-            updateSimulationButtonsUI();
+        function syncWormWheelHelix() {
+            const metrics = computeSystemMetrics();
+            const gamma = parseFloat(metrics.wormLeadAngleDeg.toFixed(2));
+            state.gearB.helixAngle = gamma;
+            state.gearB.hand = state.gearA.hand;
+            safeSetVal('num_betaB', gamma);
+            safeSetVal('rng_betaB', gamma);
+            setGearParam('B', 'hand', state.gearA.hand);
+            rebuildSceneModels();
+            showToast('Synced Wheel Helix βB = ' + gamma + '°');
         }
 
         function toggleAssemblyMode(checked) {
@@ -2504,19 +2591,24 @@
         }
 
         function updateTeeth(gearKey, val) {
-            const z = Math.max(1, Math.min(140, parseInt(val) || 18));
+            const parsed = parseInt(val, 10);
+            if (isNaN(parsed)) return;
             if (gearKey === 'A') {
+                const minZ = state.architecture === 'worm' ? 1 : 6;
+                const maxZ = state.architecture === 'worm' ? 8 : 100;
+                const z = Math.max(minZ, Math.min(maxZ, parsed));
                 state.gearA.teeth = z;
-                document.getElementById('lbl_zA').textContent = z;
-                document.getElementById('rng_quick_zA').value = z;
-                document.getElementById('num_zA').value = z;
-                document.getElementById('rng_zA').value = z;
+                safeSetText('lbl_zA', z);
+                safeSetVal('rng_quick_zA', z);
+                safeSetVal('num_zA', z);
+                safeSetVal('rng_zA', z);
             } else {
+                const z = Math.max(6, Math.min(140, parsed));
                 state.gearB.teeth = z;
-                document.getElementById('lbl_zB').textContent = z;
-                document.getElementById('rng_quick_zB').value = z;
-                document.getElementById('num_zB').value = z;
-                document.getElementById('rng_zB').value = z;
+                safeSetText('lbl_zB', z);
+                safeSetVal('rng_quick_zB', z);
+                safeSetVal('num_zB', z);
+                safeSetVal('rng_zB', z);
             }
             rebuildSceneModels();
         }
@@ -2525,15 +2617,548 @@
             const numVal = parseFloat(val);
             if (isNaN(numVal)) return;
             state[key] = numVal;
-            const rng = document.getElementById(`rng_${key}`), num = document.getElementById(`num_${key}`);
-            if (rng) rng.value = numVal;
-            if (num) num.value = numVal;
+            safeSetVal('rng_' + key, numVal);
+            safeSetVal('num_' + key, numVal);
             rebuildSceneModels();
         }
 
         function setGearParam(gearKey, prop, val) {
             const target = gearKey === 'A' ? state.gearA : state.gearB;
-            if (prop === 'boreType') target.boreType = val;
-            else if (prop === 'hand') {
-                target.hand = parseInt(val);
-                document.getElement
+            if (prop === 'boreType') {
+                target.boreType = val;
+                safeSetVal('sel_boreType' + gearKey, val);
+            } else if (prop === 'hand') {
+                target.hand = parseInt(val, 10);
+                const btnR = document.getElementById('btnHand' + gearKey + '_R');
+                const btnL = document.getElementById('btnHand' + gearKey + '_L');
+                if (btnR) btnR.className = target.hand === 1 ? 'px-2.5 py-1 rounded text-xs font-medium bg-[#4deeea]/20 text-[#4deeea] border border-[#4deeea]/30' : 'px-2.5 py-1 rounded text-xs font-medium text-zinc-400';
+                if (btnL) btnL.className = target.hand === -1 ? 'px-2.5 py-1 rounded text-xs font-medium bg-[#f4b6c2]/20 text-[#f4b6c2] border border-[#f4b6c2]/30' : 'px-2.5 py-1 rounded text-xs font-medium text-zinc-400';
+            } else {
+                const numVal = parseFloat(val);
+                if (isNaN(numVal)) return;
+                target[prop] = numVal;
+
+                const syncMap = {
+                    profileShift: ['num_x' + gearKey, 'rng_x' + gearKey],
+                    helixAngle: ['num_beta' + gearKey, 'rng_beta' + gearKey],
+                    boreDia: ['num_bore' + gearKey, 'rng_bore' + gearKey],
+                    keyWidth: ['num_kw' + gearKey],
+                    keyDepth: ['num_kd' + gearKey],
+                    wormQuotient: ['num_wormQ', 'rng_wormQ'],
+                    wormLength: ['num_wormLen', 'rng_wormLen'],
+                    rackBaseHeight: ['num_rackHeight', 'rng_rackHeight'],
+                    ringWall: ['num_ringWall', 'rng_ringWall'],
+                    moduleOverride: ['num_moduleB'],
+                    alphaOverride: ['num_alphaB']
+                };
+                if (syncMap[prop]) {
+                    syncMap[prop].forEach(function(id) {
+                        safeSetVal(id, numVal);
+                    });
+                }
+            }
+            rebuildSceneModels();
+        }
+
+        function syncAllUIInputsFromState() {
+            ['module', 'pressureAngle', 'faceWidth', 'shaftAngle', 'backlash', 'centerDistDelta'].forEach(function(k) {
+                safeSetVal('rng_' + k, state[k]);
+                safeSetVal('num_' + k, state[k]);
+            });
+            safeSetText('lbl_zA', state.gearA.teeth);
+            safeSetVal('rng_quick_zA', state.gearA.teeth);
+            safeSetVal('num_zA', state.gearA.teeth);
+            safeSetVal('rng_zA', state.gearA.teeth);
+
+            safeSetText('lbl_zB', state.gearB.teeth);
+            safeSetVal('rng_quick_zB', state.gearB.teeth);
+            safeSetVal('num_zB', state.gearB.teeth);
+            safeSetVal('rng_zB', state.gearB.teeth);
+
+            safeSetVal('num_xA', state.gearA.profileShift);
+            safeSetVal('rng_xA', state.gearA.profileShift);
+            safeSetVal('num_betaA', state.gearA.helixAngle);
+            safeSetVal('rng_betaA', state.gearA.helixAngle);
+            safeSetVal('sel_boreTypeA', state.gearA.boreType);
+            safeSetVal('num_boreA', state.gearA.boreDia);
+            safeSetVal('rng_boreA', state.gearA.boreDia);
+            safeSetVal('num_kwA', state.gearA.keyWidth);
+            safeSetVal('num_kdA', state.gearA.keyDepth);
+            safeSetVal('num_wormQ', state.gearA.wormQuotient);
+            safeSetVal('rng_wormQ', state.gearA.wormQuotient);
+            safeSetVal('num_wormLen', state.gearA.wormLength);
+            safeSetVal('rng_wormLen', state.gearA.wormLength);
+
+            safeSetVal('num_xB', state.gearB.profileShift);
+            safeSetVal('rng_xB', state.gearB.profileShift);
+            safeSetVal('num_betaB', state.gearB.helixAngle);
+            safeSetVal('rng_betaB', state.gearB.helixAngle);
+            safeSetVal('sel_boreTypeB', state.gearB.boreType);
+            safeSetVal('num_boreB', state.gearB.boreDia);
+            safeSetVal('rng_boreB', state.gearB.boreDia);
+            safeSetVal('num_kwB', state.gearB.keyWidth);
+            safeSetVal('num_kdB', state.gearB.keyDepth);
+            safeSetVal('num_rackHeight', state.gearB.rackBaseHeight);
+            safeSetVal('rng_rackHeight', state.gearB.rackBaseHeight);
+            safeSetVal('num_ringWall', state.gearB.ringWall);
+            safeSetVal('rng_ringWall', state.gearB.ringWall);
+
+            setGearParam('A', 'hand', state.gearA.hand);
+            setGearParam('B', 'hand', state.gearB.hand);
+        }
+
+        function unlockIndependentParams() {
+            state.gearB.mismatchUnlocked = !state.gearB.mismatchUnlocked;
+            state.gearB.moduleOverride = state.module;
+            state.gearB.alphaOverride = state.pressureAngle;
+            safeSetVal('num_moduleB', state.module);
+            safeSetVal('num_alphaB', state.pressureAngle);
+            document.getElementById('mismatchTesterBox').classList.toggle('hidden', !state.gearB.mismatchUnlocked);
+            rebuildSceneModels();
+        }
+
+        function autoKeyway(gearKey) {
+            const target = gearKey === 'A' ? state.gearA : state.gearB;
+            for (let i = 0; i < DIN_6885_KEYWAYS.length; i++) {
+                const maxD = DIN_6885_KEYWAYS[i][0];
+                const kw = DIN_6885_KEYWAYS[i][1];
+                const kd = DIN_6885_KEYWAYS[i][2];
+                if (target.boreDia <= maxD) {
+                    target.keyWidth = kw;
+                    target.keyDepth = kd;
+                    safeSetVal('num_kw' + gearKey, kw);
+                    safeSetVal('num_kd' + gearKey, kd);
+                    break;
+                }
+            }
+            rebuildSceneModels();
+            showToast('Applied DIN 6885 Keyway (' + target.keyWidth + '×' + target.keyDepth + ' mm)');
+        }
+
+        function snapStandardModule() {
+            let best = ISO_MODULES[0];
+            let minDiff = Math.abs(state.module - best);
+            for (let i = 1; i < ISO_MODULES.length; i++) {
+                const diff = Math.abs(state.module - ISO_MODULES[i]);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    best = ISO_MODULES[i];
+                }
+            }
+            setSharedParam('module', best);
+            showToast('Snapped to ISO 54 Standard Module: ' + best + ' mm');
+        }
+
+        function syncPlayUI() {
+            safeSetText('playPauseText', state.isPlaying ? 'Running (Pause)' : 'Paused (Play)');
+            const bottomBtn = document.getElementById('btnBottomRightSim');
+            const bottomText = document.getElementById('bottomSimText');
+            if (bottomBtn && bottomText) {
+                if (state.isPlaying) {
+                    bottomText.textContent = 'Simulation Running (Pause)';
+                    bottomBtn.className = 'w-full py-2.5 px-4 rounded-lg bg-[#4deeea] hover:bg-[#3cdad6] text-[#0c0d0f] font-mono font-extrabold text-xs tracking-wide shadow-lg shadow-[#4deeea]/20 transition active:scale-98 flex items-center justify-center gap-2';
+                } else {
+                    bottomText.textContent = 'Start Simulation';
+                    bottomBtn.className = 'w-full py-2.5 px-4 rounded-lg bg-[#f4b6c2] hover:bg-[#e09fae] text-[#0c0d0f] font-mono font-extrabold text-xs tracking-wide shadow-lg shadow-[#f4b6c2]/20 transition active:scale-98 flex items-center justify-center gap-2';
+                }
+            }
+        }
+
+        function togglePlaySimulation() {
+            state.isPlaying = !state.isPlaying;
+            syncPlayUI();
+        }
+
+        function runFullSimulation() {
+            if (!state.isPlaying) {
+                state.isPlaying = true;
+                if (state.rpm <= 0) updateRPM(18);
+                showToast('Started Kinematic & FEA Load Simulation (' + Math.round(state.appliedForceN) + ' N)');
+            } else {
+                state.isPlaying = false;
+                showToast('Simulation Paused');
+            }
+            syncPlayUI();
+            if (cachedMetrics) computeStructuralFailureMetrics(cachedMetrics);
+        }
+
+        function reverseSimulationDir() {
+            state.direction *= -1;
+        }
+
+        function updateRPM(val) {
+            const parsed = parseFloat(val);
+            if (isNaN(parsed)) return;
+            state.rpm = parsed;
+            safeSetText('lbl_rpm', state.rpm + ' RPM');
+            safeSetVal('rng_rpm', state.rpm);
+            if (cachedMetrics) {
+                updateMetrologyReadouts(cachedMetrics);
+                computeStructuralFailureMetrics(cachedMetrics);
+            }
+        }
+
+        function updateMeshPhase(val) {
+            state.meshPhaseDeg = parseFloat(val) || 0;
+            safeSetText('lbl_phase', state.meshPhaseDeg.toFixed(1) + '°');
+            safeSetVal('rng_phase', state.meshPhaseDeg);
+        }
+
+        function setMeshQuality(qual) {
+            state.meshQuality = qual;
+            ['draft', 'high', 'ultra'].forEach(function(q) {
+                const btn = document.getElementById('qual_' + q);
+                if (!btn) return;
+                btn.className = q === qual
+                    ? 'py-1 rounded border border-[#4deeea]/40 bg-[#4deeea]/20 text-[10px] text-[#4deeea]'
+                    : 'py-1 rounded border border-[#2b3038] text-[10px] text-zinc-400 hover:text-white';
+            });
+            rebuildSceneModels();
+        }
+
+        function applyPreset(presetName) {
+            state.centerDistDelta = 0.0;
+            state.gearA.profileShift = 0.0;
+            state.gearB.profileShift = 0.0;
+            if (presetName === 'spurPair') {
+                state.module = 2.5; state.pressureAngle = 20; state.faceWidth = 14;
+                state.gearA.teeth = 18; state.gearB.teeth = 36;
+                setArchitecture('spur');
+            } else if (presetName === 'helicalPair') {
+                state.module = 2.5; state.pressureAngle = 20; state.faceWidth = 16;
+                state.gearA.teeth = 20; state.gearB.teeth = 40;
+                state.gearA.helixAngle = 20; state.gearB.helixAngle = 20;
+                state.gearA.hand = 1; state.gearB.hand = -1;
+                setArchitecture('helical');
+            } else if (presetName === 'bevel90') {
+                state.module = 3.0; state.pressureAngle = 20; state.faceWidth = 12; state.shaftAngle = 90;
+                state.gearA.teeth = 16; state.gearB.teeth = 32;
+                setArchitecture('bevel');
+            } else if (presetName === 'rackPinion') {
+                state.module = 2.5; state.pressureAngle = 20; state.faceWidth = 14;
+                state.gearA.teeth = 18; state.gearB.teeth = 24;
+                setArchitecture('rack');
+            } else if (presetName === 'wormDrive') {
+                state.module = 2.5; state.pressureAngle = 20; state.faceWidth = 14;
+                state.gearA.teeth = 2; state.gearA.wormQuotient = 10; state.gearB.teeth = 32;
+                state.gearA.hand = 1; state.gearB.hand = 1;
+                setArchitecture('worm');
+                syncWormWheelHelix();
+            }
+            syncAllUIInputsFromState();
+            rebuildSceneModels();
+            resetCamera();
+            showToast('Loaded Preset: ' + presetName);
+        }
+
+        function setArchitecture(arch) {
+            const prevArch = state.architecture;
+            state.architecture = arch;
+
+            if (arch === 'worm' && state.gearA.teeth > 6) {
+                state.gearA.teeth = 2;
+                const gamma = parseFloat((Math.atan(state.gearA.teeth / state.gearA.wormQuotient) * 180 / Math.PI).toFixed(2));
+                state.gearB.helixAngle = gamma;
+                state.gearB.hand = state.gearA.hand;
+            } else if (prevArch === 'worm' && arch !== 'worm' && state.gearA.teeth < 8) {
+                state.gearA.teeth = 18;
+                state.gearB.helixAngle = 20;
+                state.gearB.hand = -state.gearA.hand;
+            }
+
+            if (arch === 'internal' && state.gearB.teeth < state.gearA.teeth + 10) {
+                state.gearB.teeth = state.gearA.teeth + 18;
+            }
+
+            document.querySelectorAll('.arch-btn').forEach(function(btn) {
+                if (btn.dataset.arch === arch) btn.className = 'arch-btn flex flex-col items-center justify-center py-1.5 px-1 rounded border text-[10px] font-mono font-bold transition bg-[#4deeea]/20 text-[#4deeea] border-[#4deeea]/50 shadow';
+                else btn.className = 'arch-btn flex flex-col items-center justify-center py-1.5 px-1 rounded border border-[#252930] bg-[#14171a] text-zinc-400 text-[10px] font-mono transition';
+            });
+
+            const isHelical = (arch === 'helical' || arch === 'herringbone');
+            document.getElementById('wormTelemetryCard').classList.toggle('hidden', arch !== 'worm');
+            document.getElementById('wormSpecificBoxA').classList.toggle('hidden', arch !== 'worm');
+            document.getElementById('wormWheelSyncNote').classList.toggle('hidden', arch !== 'worm');
+            document.getElementById('box_xA').classList.toggle('hidden', arch === 'worm');
+            document.getElementById('box_xB').classList.toggle('hidden', arch === 'rack');
+            document.getElementById('helixBoxA').classList.toggle('hidden', !isHelical && arch !== 'worm');
+            document.getElementById('helixAngleSliderBoxA').classList.toggle('hidden', !isHelical);
+            document.getElementById('helixBoxB').classList.toggle('hidden', !isHelical && arch !== 'worm');
+            document.getElementById('bevelSigmaControl').classList.toggle('hidden', arch !== 'bevel');
+            document.getElementById('rackSpecificControls').classList.toggle('hidden', arch !== 'rack');
+            document.getElementById('ringSpecificControls').classList.toggle('hidden', arch !== 'internal');
+            document.getElementById('boreBoxB').classList.toggle('hidden', arch === 'rack' || arch === 'internal');
+
+            safeSetText('tabLabelGearA', arch === 'worm' ? 'Worm A' : 'Pinion A');
+            safeSetText('tabLabelGearB', arch === 'rack' ? 'Rack B' : (arch === 'internal' ? 'Ring B' : (arch === 'worm' ? 'Wheel B' : 'Gear B')));
+            document.getElementById('lbl_title_zA').innerHTML = arch === 'worm' ? 'Worm Starts z<sub>1</sub>' : 'Pinion z<sub>A</sub>';
+            document.getElementById('lbl_title_zB').innerHTML = arch === 'rack' ? 'Rack Teeth z<sub>B</sub>' : 'Gear z<sub>B</sub>';
+
+            syncAllUIInputsFromState();
+            rebuildSceneModels();
+            resetCamera();
+        }
+
+        function switchSidebarTab(tabName) {
+            ['shared', 'gearA', 'gearB', 'diag'].forEach(function(t) {
+                document.getElementById('panel_' + t).classList.toggle('hidden', t !== tabName);
+                const btn = document.getElementById('tabBtn_' + t);
+                if (t === tabName) btn.className = 'py-2.5 border-b-2 border-[#4deeea] text-[#4deeea] bg-[#1b1f24] flex items-center justify-center gap-1';
+                else btn.className = 'py-2.5 border-b-2 border-transparent text-zinc-400 hover:text-zinc-200 flex items-center justify-center gap-1';
+            });
+        }
+
+        function triggerFileDownload(blob, fileName) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function() { URL.revokeObjectURL(url); }, 1500);
+        }
+
+        function exportSingleSTEP214(partKey, useWorldCoords) {
+            const targetMesh = partKey === 'A' ? meshA : meshB;
+            if (!targetMesh || !targetMesh.geometry) return null;
+            targetMesh.updateMatrixWorld(true);
+            const matWorld = targetMesh.matrixWorld;
+            const posAttr = targetMesh.geometry.getAttribute('position');
+            const triCount = posAttr.count / 3;
+            const fileName = 'ISO_' + state.architecture.toUpperCase() + '_Part' + partKey + '.stp';
+            const rgb = partKey === 'A' ? [0.3019, 0.9333, 0.9059] : [0.9568, 0.7137, 0.7608];
+
+            let id = 10;
+            const nextId = function() { return '#' + (id++); };
+            const entities = [];
+            const addEnt = function(str) {
+                const eid = nextId();
+                entities.push(eid + '=' + str + ';');
+                return eid;
+            };
+            const vertMap = new Map();
+
+            const getVertexIds = function(v) {
+                const key = v.x.toFixed(4) + ',' + v.y.toFixed(4) + ',' + v.z.toFixed(4);
+                let entry = vertMap.get(key);
+                if (!entry) {
+                    const cpId = addEnt("CARTESIAN_POINT('',(" + v.x.toFixed(5) + "," + v.y.toFixed(5) + "," + v.z.toFixed(5) + "))");
+                    const vpId = addEnt("VERTEX_POINT(''," + cpId + ")");
+                    entry = { cpId: cpId, vpId: vpId };
+                    vertMap.set(key, entry);
+                }
+                return entry;
+            };
+
+            const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
+            const ab = new THREE.Vector3(), cb = new THREE.Vector3(), norm = new THREE.Vector3();
+            const faceIds = [];
+
+            for (let i = 0; i < triCount; i++) {
+                const idx = i * 3;
+                vA.fromBufferAttribute(posAttr, idx);
+                vB.fromBufferAttribute(posAttr, idx + 1);
+                vC.fromBufferAttribute(posAttr, idx + 2);
+                if (useWorldCoords) {
+                    vA.applyMatrix4(matWorld);
+                    vB.applyMatrix4(matWorld);
+                    vC.applyMatrix4(matWorld);
+                }
+                ab.subVectors(vB, vA);
+                cb.subVectors(vC, vA);
+                norm.crossVectors(ab, cb);
+                if (norm.lengthSq() < 1e-10) continue;
+                norm.normalize();
+                ab.normalize();
+
+                const pA = getVertexIds(vA), pB = getVertexIds(vB), pC = getVertexIds(vC);
+                const makeEdge = function(vStart, vEnd, ptStart, ptEnd) {
+                    const dirVec = new THREE.Vector3().subVectors(ptEnd, ptStart).normalize();
+                    const dirId = addEnt("DIRECTION('',(" + dirVec.x.toFixed(5) + "," + dirVec.y.toFixed(5) + "," + dirVec.z.toFixed(5) + "))");
+                    const vecId = addEnt("VECTOR(''," + dirId + ",1.0)");
+                    const lineId = addEnt("LINE(''," + vStart.cpId + "," + vecId + ")");
+                    const ecId = addEnt("EDGE_CURVE(''," + vStart.vpId + "," + vEnd.vpId + "," + lineId + ",.T.)");
+                    return addEnt("ORIENTED_EDGE('',*,*," + ecId + ",.T.)");
+                };
+
+                const elId = addEnt("EDGE_LOOP('',(" + makeEdge(pA, pB, vA, vB) + "," + makeEdge(pB, pC, vB, vC) + "," + makeEdge(pC, pA, vC, vA) + "))");
+                const fobId = addEnt("FACE_OUTER_BOUND(''," + elId + ",.T.)");
+                const nDirId = addEnt("DIRECTION('',(" + norm.x.toFixed(5) + "," + norm.y.toFixed(5) + "," + norm.z.toFixed(5) + "))");
+                const refDirId = addEnt("DIRECTION('',(" + ab.x.toFixed(5) + "," + ab.y.toFixed(5) + "," + ab.z.toFixed(5) + "))");
+                const axId = addEnt("AXIS2_PLACEMENT_3D(''," + pA.cpId + "," + nDirId + "," + refDirId + ")");
+                const plId = addEnt("PLANE(''," + axId + ")");
+                faceIds.push(addEnt("ADVANCED_FACE('',(" + fobId + ")," + plId + ",.T.)"));
+            }
+
+            const shellId = addEnt("CLOSED_SHELL('" + fileName + "',(" + faceIds.join(",") + "))");
+            addEnt("MANIFOLD_SOLID_BREP('Part_" + partKey + "'," + shellId + ")");
+            const colId = addEnt("COLOUR_RGB(''," + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")");
+            addEnt("FILL_AREA_STYLE_COLOUR(''," + colId + ")");
+
+            const nl = String.fromCharCode(13, 10);
+            const isoStamp = new Date().toISOString().slice(0, 19);
+            const stepText = [
+                "ISO-10303-21;",
+                "HEADER;",
+                "FILE_DESCRIPTION(('GENGEAR AP214'),'2;1');",
+                "FILE_NAME('" + fileName + "','" + isoStamp + "',('GENGEAR'),('CAD'),'GENGEAR','GENGEAR','');",
+                "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));",
+                "ENDSEC;",
+                "DATA;",
+                entities.join(nl),
+                "ENDSEC;",
+                "END-ISO-10303-21;"
+            ].join(nl) + nl;
+
+            const blob = new Blob([stepText], { type: 'application/step' });
+            triggerFileDownload(blob, fileName);
+            return fileName;
+        }
+
+        function exportSeparateSTEP214Pair() {
+            const fA = exportSingleSTEP214('A', false);
+            if (state.assemblyMode && meshB) {
+                setTimeout(function() {
+                    const fB = exportSingleSTEP214('B', false);
+                    showToast('Exported: ' + fA + ' & ' + fB);
+                }, 320);
+            } else if (fA) {
+                showToast('Exported: ' + fA);
+            }
+        }
+
+        function exportMeshSTL(partKey, format, useWorldCoords) {
+            const meshes = [];
+            if (partKey === 'A' && meshA) meshes.push(meshA);
+            else if (partKey === 'B' && meshB) meshes.push(meshB);
+            else if (partKey === 'both') {
+                if (meshA) meshes.push(meshA);
+                if (state.assemblyMode && meshB) meshes.push(meshB);
+            }
+            if (meshes.length === 0) return;
+
+            let totalTris = 0;
+            meshes.forEach(function(m) {
+                m.updateMatrixWorld(true);
+                totalTris += m.geometry.getAttribute('position').count / 3;
+            });
+
+            const fileName = 'ISO_' + state.architecture.toUpperCase() + '_' + partKey + '_m' + state.module + '.stl';
+            const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
+            const cb = new THREE.Vector3(), ab = new THREE.Vector3();
+
+            if (format === 'ascii') {
+                const lines = ['solid GENGEAR_' + partKey];
+                meshes.forEach(function(m) {
+                    const pos = m.geometry.getAttribute('position');
+                    const count = pos.count / 3;
+                    for (let i = 0; i < count; i++) {
+                        vA.fromBufferAttribute(pos, i * 3);
+                        vB.fromBufferAttribute(pos, i * 3 + 1);
+                        vC.fromBufferAttribute(pos, i * 3 + 2);
+                        if (useWorldCoords) {
+                            vA.applyMatrix4(m.matrixWorld);
+                            vB.applyMatrix4(m.matrixWorld);
+                            vC.applyMatrix4(m.matrixWorld);
+                        }
+                        ab.subVectors(vB, vA);
+                        cb.subVectors(vC, vA);
+                        cb.crossVectors(ab, cb).normalize();
+                        lines.push('facet normal ' + cb.x.toFixed(5) + ' ' + cb.y.toFixed(5) + ' ' + cb.z.toFixed(5));
+                        lines.push('  outer loop');
+                        lines.push('    vertex ' + vA.x.toFixed(5) + ' ' + vA.y.toFixed(5) + ' ' + vA.z.toFixed(5));
+                        lines.push('    vertex ' + vB.x.toFixed(5) + ' ' + vB.y.toFixed(5) + ' ' + vB.z.toFixed(5));
+                        lines.push('    vertex ' + vC.x.toFixed(5) + ' ' + vC.y.toFixed(5) + ' ' + vC.z.toFixed(5));
+                        lines.push('  endloop');
+                        lines.push('endfacet');
+                    }
+                });
+                lines.push('endsolid GENGEAR_' + partKey);
+                const nl = String.fromCharCode(13, 10);
+                triggerFileDownload(new Blob([lines.join(nl)], { type: 'model/stl' }), fileName);
+            } else {
+                const buffer = new ArrayBuffer(84 + totalTris * 50);
+                const view = new DataView(buffer);
+                view.setUint32(80, totalTris, true);
+                let offset = 84;
+                meshes.forEach(function(m) {
+                    const pos = m.geometry.getAttribute('position');
+                    const count = pos.count / 3;
+                    for (let i = 0; i < count; i++) {
+                        vA.fromBufferAttribute(pos, i * 3);
+                        vB.fromBufferAttribute(pos, i * 3 + 1);
+                        vC.fromBufferAttribute(pos, i * 3 + 2);
+                        if (useWorldCoords) {
+                            vA.applyMatrix4(m.matrixWorld);
+                            vB.applyMatrix4(m.matrixWorld);
+                            vC.applyMatrix4(m.matrixWorld);
+                        }
+                        ab.subVectors(vB, vA);
+                        cb.subVectors(vC, vA);
+                        cb.crossVectors(ab, cb).normalize();
+                        view.setFloat32(offset, cb.x, true);
+                        view.setFloat32(offset + 4, cb.y, true);
+                        view.setFloat32(offset + 8, cb.z, true);
+                        view.setFloat32(offset + 12, vA.x, true);
+                        view.setFloat32(offset + 16, vA.y, true);
+                        view.setFloat32(offset + 20, vA.z, true);
+                        view.setFloat32(offset + 24, vB.x, true);
+                        view.setFloat32(offset + 28, vB.y, true);
+                        view.setFloat32(offset + 32, vB.z, true);
+                        view.setFloat32(offset + 36, vC.x, true);
+                        view.setFloat32(offset + 40, vC.y, true);
+                        view.setFloat32(offset + 44, vC.z, true);
+                        view.setUint16(offset + 48, 0, true);
+                        offset += 50;
+                    }
+                });
+                triggerFileDownload(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
+            }
+            showToast('Exported: ' + fileName);
+        }
+
+        function exportCAD() {
+            const target = document.getElementById('exportTarget').value;
+            const fmt = document.getElementById('stlFormat') ? document.getElementById('stlFormat').value : 'step214';
+            if (fmt === 'step214') {
+                if (target === 'A') {
+                    const f = exportSingleSTEP214('A', false);
+                    if (f) showToast('Exported: ' + f);
+                } else if (target === 'B') {
+                    const f = exportSingleSTEP214('B', false);
+                    if (f) showToast('Exported: ' + f);
+                } else {
+                    exportSeparateSTEP214Pair();
+                }
+            } else {
+                if (target === 'both_separate') {
+                    exportMeshSTL('A', fmt, false);
+                    if (state.assemblyMode && meshB) {
+                        setTimeout(function() { exportMeshSTL('B', fmt, false); }, 300);
+                    }
+                } else if (target === 'both') {
+                    exportMeshSTL('both', fmt, true);
+                } else {
+                    exportMeshSTL(target, fmt, false);
+                }
+            }
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toastBanner');
+            document.getElementById('toastMessage').textContent = msg;
+            el.classList.remove('hidden');
+            setTimeout(function() { el.classList.add('hidden'); }, 3400);
+        }
+
+        window.onload = function () {
+            lucide.createIcons();
+            initThreeViewport();
+            updateMaterialButtonsUI();
+            setArchitecture('spur');
+            syncPlayUI();
+        };
+    </script>
+</body>
+</html>
