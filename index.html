@@ -139,7 +139,7 @@
             </select>
 
             <select id="stlFormat" class="hidden sm:block bg-[#171a1e] text-xs text-zinc-300 border border-[#2a2e37] rounded px-2 py-1.5 font-mono focus:outline-none focus:border-[#4deeea]">
-                <option value="step214" selected>.STP214</option>
+                <option value="step214" selected>.STEP (AP214)</option>
                 <option value="binary">.STL (Bin)</option>
                 <option value="ascii">.STL (ASCII)</option>
             </select>
@@ -149,9 +149,9 @@
                 <span>Export</span>
             </button>
 
-            <button onclick="exportSeparateSTEP214Pair()" class="hidden sm:flex items-center space-x-1 bg-[#4deeea] hover:bg-[#3cdad6] text-[#0c0d0f] font-mono font-bold text-xs px-3 py-1.5 rounded shadow transition active:scale-95" title="Download Gear A and Gear B as two separate ISO 10303-214 (.stp) CAD files">
+            <button onclick="exportSeparateSTEP214Pair()" class="hidden sm:flex items-center space-x-1 bg-[#4deeea] hover:bg-[#3cdad6] text-[#0c0d0f] font-mono font-bold text-xs px-3 py-1.5 rounded shadow transition active:scale-95" title="Download Gear A and Gear B as two separate SolidWorks-compatible ISO 10303-214 (.step) CAD files">
                 <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-                <span>A+B .STP</span>
+                <span>A+B .STEP</span>
             </button>
         </div>
     </header>
@@ -2926,10 +2926,11 @@
             const matWorld = targetMesh.matrixWorld;
             const posAttr = targetMesh.geometry.getAttribute('position');
             const triCount = posAttr.count / 3;
-            const fileName = 'ISO_' + state.architecture.toUpperCase() + '_Part' + partKey + '.stp';
+            const partName = 'ISO_' + state.architecture.toUpperCase() + '_Part' + partKey + '_m' + state.module;
+            const fileName = partName + '.step';
             const rgb = partKey === 'A' ? [0.3019, 0.9333, 0.9059] : [0.9568, 0.7137, 0.7608];
 
-            let id = 10;
+            let id = 1;
             const nextId = function() { return '#' + (id++); };
             const entities = [];
             const addEnt = function(str) {
@@ -2937,18 +2938,77 @@
                 entities.push(eid + '=' + str + ';');
                 return eid;
             };
-            const vertMap = new Map();
 
-            const getVertexIds = function(v) {
+            // 1. SolidWorks-required AP214 Product & Application Context Boilerplate
+            const appCtx = addEnt("APPLICATION_CONTEXT('core data for automotive mechanical design processes')");
+            addEnt("APPLICATION_PROTOCOL_DEFINITION('international standard','automotive_design',2000," + appCtx + ")");
+            const prodCtx = addEnt("PRODUCT_CONTEXT(''," + appCtx + ",'mechanical')");
+            const prod = addEnt("PRODUCT('" + partName + "','" + partName + "','',(" + prodCtx + "))");
+            const prodRelCat = addEnt("PRODUCT_RELATED_PRODUCT_CATEGORY('part','',(" + prod + "))");
+            const prodDefForm = addEnt("PRODUCT_DEFINITION_FORMATION('','', " + prod + ")");
+            const prodDefCtx = addEnt("PRODUCT_DEFINITION_CONTEXT('part definition'," + appCtx + ",'design')");
+            const prodDef = addEnt("PRODUCT_DEFINITION('design','', " + prodDefForm + "," + prodDefCtx + ")");
+            const prodDefShape = addEnt("PRODUCT_DEFINITION_SHAPE('','', " + prodDef + ")");
+
+            // 2. Compound Geometric Representation Context (Millimeters, Radians, Steradians, Uncertainty)
+            const lenUnit = addEnt("(LENGTH_UNIT()NAMED_UNIT(*)SI_UNIT(.MILLI.,.METRE.))");
+            const angUnit = addEnt("(NAMED_UNIT(*)PLANE_ANGLE_UNIT()SI_UNIT($,.RADIAN.))");
+            const solAngUnit = addEnt("(NAMED_UNIT(*)SI_UNIT($,.STERADIAN.)SOLID_ANGLE_UNIT())");
+            const uncert = addEnt("UNCERTAINTY_MEASURE_WITH_UNIT(LENGTH_MEASURE(1.E-05)," + lenUnit + ",'distance_accuracy_value','confusion accuracy')");
+            const geomCtx = addEnt("(GEOMETRIC_REPRESENTATION_CONTEXT(3)GLOBAL_UNCERTAINTY_ASSIGNED_CONTEXT((" + uncert + "))GLOBAL_UNIT_ASSIGNED_CONTEXT((" + lenUnit + "," + angUnit + "," + solAngUnit + "))REPRESENTATION_CONTEXT('Context #1','3D Context with UNIT and UNCERTAINTY'))");
+
+            // Root Assembly Origin Placement
+            const originCp = addEnt("CARTESIAN_POINT('',(0.0,0.0,0.0))");
+            const originZ = addEnt("DIRECTION('',(0.0,0.0,1.0))");
+            const originX = addEnt("DIRECTION('',(1.0,0.0,0.0))");
+            const originAxis = addEnt("AXIS2_PLACEMENT_3D(''," + originCp + "," + originZ + "," + originX + ")");
+
+            // 3. Deduplicated Vertex & Shared Topological Edge Map (Required for watertight SolidWorks B-Rep)
+            const vertMap = new Map();
+            const edgeMap = new Map();
+
+            const getVertexInfo = function(v) {
                 const key = v.x.toFixed(4) + ',' + v.y.toFixed(4) + ',' + v.z.toFixed(4);
                 let entry = vertMap.get(key);
                 if (!entry) {
                     const cpId = addEnt("CARTESIAN_POINT('',(" + v.x.toFixed(5) + "," + v.y.toFixed(5) + "," + v.z.toFixed(5) + "))");
                     const vpId = addEnt("VERTEX_POINT(''," + cpId + ")");
-                    entry = { cpId: cpId, vpId: vpId };
+                    entry = { idx: vertMap.size, cpId: cpId, vpId: vpId, vec: v.clone() };
                     vertMap.set(key, entry);
                 }
                 return entry;
+            };
+
+            const getOrientedEdge = function(vStart, vEnd) {
+                if (vStart.idx < vEnd.idx) {
+                    const eKey = vStart.idx + '_' + vEnd.idx;
+                    let ecId = edgeMap.get(eKey);
+                    if (!ecId) {
+                        const dirVec = new THREE.Vector3().subVectors(vEnd.vec, vStart.vec);
+                        const len = Math.max(1e-6, dirVec.length());
+                        dirVec.divideScalar(len);
+                        const dirId = addEnt("DIRECTION('',(" + dirVec.x.toFixed(6) + "," + dirVec.y.toFixed(6) + "," + dirVec.z.toFixed(6) + "))");
+                        const vecId = addEnt("VECTOR(''," + dirId + "," + len.toFixed(6) + ")");
+                        const lineId = addEnt("LINE(''," + vStart.cpId + "," + vecId + ")");
+                        ecId = addEnt("EDGE_CURVE(''," + vStart.vpId + "," + vEnd.vpId + "," + lineId + ",.T.)");
+                        edgeMap.set(eKey, ecId);
+                    }
+                    return addEnt("ORIENTED_EDGE('',*,*," + ecId + ",.T.)");
+                } else {
+                    const eKey = vEnd.idx + '_' + vStart.idx;
+                    let ecId = edgeMap.get(eKey);
+                    if (!ecId) {
+                        const dirVec = new THREE.Vector3().subVectors(vStart.vec, vEnd.vec);
+                        const len = Math.max(1e-6, dirVec.length());
+                        dirVec.divideScalar(len);
+                        const dirId = addEnt("DIRECTION('',(" + dirVec.x.toFixed(6) + "," + dirVec.y.toFixed(6) + "," + dirVec.z.toFixed(6) + "))");
+                        const vecId = addEnt("VECTOR(''," + dirId + "," + len.toFixed(6) + ")");
+                        const lineId = addEnt("LINE(''," + vEnd.cpId + "," + vecId + ")");
+                        ecId = addEnt("EDGE_CURVE(''," + vEnd.vpId + "," + vStart.vpId + "," + lineId + ",.T.)");
+                        edgeMap.set(eKey, ecId);
+                    }
+                    return addEnt("ORIENTED_EDGE('',*,*," + ecId + ",.F.)");
+                }
             };
 
             const vA = new THREE.Vector3(), vB = new THREE.Vector3(), vC = new THREE.Vector3();
@@ -2972,37 +3032,46 @@
                 norm.normalize();
                 ab.normalize();
 
-                const pA = getVertexIds(vA), pB = getVertexIds(vB), pC = getVertexIds(vC);
-                const makeEdge = function(vStart, vEnd, ptStart, ptEnd) {
-                    const dirVec = new THREE.Vector3().subVectors(ptEnd, ptStart).normalize();
-                    const dirId = addEnt("DIRECTION('',(" + dirVec.x.toFixed(5) + "," + dirVec.y.toFixed(5) + "," + dirVec.z.toFixed(5) + "))");
-                    const vecId = addEnt("VECTOR(''," + dirId + ",1.0)");
-                    const lineId = addEnt("LINE(''," + vStart.cpId + "," + vecId + ")");
-                    const ecId = addEnt("EDGE_CURVE(''," + vStart.vpId + "," + vEnd.vpId + "," + lineId + ",.T.)");
-                    return addEnt("ORIENTED_EDGE('',*,*," + ecId + ",.T.)");
-                };
+                const pA = getVertexInfo(vA), pB = getVertexInfo(vB), pC = getVertexInfo(vC);
+                if (pA.idx === pB.idx || pB.idx === pC.idx || pC.idx === pA.idx) continue;
 
-                const elId = addEnt("EDGE_LOOP('',(" + makeEdge(pA, pB, vA, vB) + "," + makeEdge(pB, pC, vB, vC) + "," + makeEdge(pC, pA, vC, vA) + "))");
+                const oe1 = getOrientedEdge(pA, pB);
+                const oe2 = getOrientedEdge(pB, pC);
+                const oe3 = getOrientedEdge(pC, pA);
+
+                const elId = addEnt("EDGE_LOOP('',(" + oe1 + "," + oe2 + "," + oe3 + "))");
                 const fobId = addEnt("FACE_OUTER_BOUND(''," + elId + ",.T.)");
-                const nDirId = addEnt("DIRECTION('',(" + norm.x.toFixed(5) + "," + norm.y.toFixed(5) + "," + norm.z.toFixed(5) + "))");
-                const refDirId = addEnt("DIRECTION('',(" + ab.x.toFixed(5) + "," + ab.y.toFixed(5) + "," + ab.z.toFixed(5) + "))");
+                const nDirId = addEnt("DIRECTION('',(" + norm.x.toFixed(6) + "," + norm.y.toFixed(6) + "," + norm.z.toFixed(6) + "))");
+                const refDirId = addEnt("DIRECTION('',(" + ab.x.toFixed(6) + "," + ab.y.toFixed(6) + "," + ab.z.toFixed(6) + "))");
                 const axId = addEnt("AXIS2_PLACEMENT_3D(''," + pA.cpId + "," + nDirId + "," + refDirId + ")");
                 const plId = addEnt("PLANE(''," + axId + ")");
                 faceIds.push(addEnt("ADVANCED_FACE('',(" + fobId + ")," + plId + ",.T.)"));
             }
 
-            const shellId = addEnt("CLOSED_SHELL('" + fileName + "',(" + faceIds.join(",") + "))");
-            addEnt("MANIFOLD_SOLID_BREP('Part_" + partKey + "'," + shellId + ")");
+            // 4. Close B-Rep Solid & Link to Shape Definition Representation
+            const shellId = addEnt("CLOSED_SHELL('" + partName + "',(" + faceIds.join(",") + "))");
+            const brepId = addEnt("MANIFOLD_SOLID_BREP('" + partName + "'," + shellId + ")");
+            const shapeRep = addEnt("ADVANCED_BREP_SHAPE_REPRESENTATION('" + partName + "',(" + brepId + "," + originAxis + ")," + geomCtx + ")");
+            addEnt("SHAPE_DEFINITION_REPRESENTATION(" + prodDefShape + "," + shapeRep + ")");
+
+            // 5. AP214 Surface Color Presentation Styling
             const colId = addEnt("COLOUR_RGB(''," + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")");
-            addEnt("FILL_AREA_STYLE_COLOUR(''," + colId + ")");
+            const fillColId = addEnt("FILL_AREA_STYLE_COLOUR(''," + colId + ")");
+            const fillStyleId = addEnt("FILL_AREA_STYLE('',(" + fillColId + "))");
+            const surfFillId = addEnt("SURFACE_STYLE_FILL_AREA(" + fillStyleId + ")");
+            const surfSideId = addEnt("SURFACE_SIDE_STYLE('',(" + surfFillId + "))");
+            const surfUsageId = addEnt("SURFACE_STYLE_USAGE(.BOTH.," + surfSideId + ")");
+            const presAssignId = addEnt("PRESENTATION_STYLE_ASSIGNMENT((" + surfUsageId + "))");
+            const styledItemId = addEnt("STYLED_ITEM('color',(" + presAssignId + ")," + brepId + ")");
+            addEnt("MECHANICAL_DESIGN_GEOMETRIC_PRESENTATION_REPRESENTATION('',(" + styledItemId + ")," + geomCtx + ")");
 
             const nl = String.fromCharCode(13, 10);
             const isoStamp = new Date().toISOString().slice(0, 19);
             const stepText = [
                 "ISO-10303-21;",
                 "HEADER;",
-                "FILE_DESCRIPTION(('GENGEAR AP214'),'2;1');",
-                "FILE_NAME('" + fileName + "','" + isoStamp + "',('GENGEAR'),('CAD'),'GENGEAR','GENGEAR','');",
+                "FILE_DESCRIPTION(('STEP AP214 SolidWorks Part'),'2;1');",
+                "FILE_NAME('" + fileName + "','" + isoStamp + "',('GENGEAR'),('GENGEAR CAD'),'GENGEAR v3.5','SolidWorks 2024','');",
                 "FILE_SCHEMA(('AUTOMOTIVE_DESIGN { 1 0 10303 214 1 1 1 1 }'));",
                 "ENDSEC;",
                 "DATA;",
